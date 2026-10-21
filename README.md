@@ -1,0 +1,94 @@
+# ASTERION
+
+**Intent. Evidence. Payment.**
+
+ASTERION is a working prototype for conditional agentic commerce. A buyer agent negotiates a complete stargazing experience in La Palma with supplier agents. The customer approves an explicit spending mandate and arms Autopilot. A persisted server job then evaluates evidence, captures or voids the authorization, and requests separate supplier payouts without further clicks.
+
+The product question is simple: **can an agent explain why money should move, and prove why it did not move when conditions failed?**
+
+The default experience runs locally without accounts or API keys. It uses reproducible negotiation, weather fixtures and simulated payments, clearly identified as demo data. Optional adapters provide PayPal Sandbox, Anthropic and AEMET access. Credentials and end-to-end provider verification are separate setup steps; the repository does not claim they have been completed.
+
+## Run locally
+
+Requirements: Node.js **24 or newer** and pnpm **11**. Node's built-in SQLite module stores agreements and their audit history.
+
+```powershell
+pnpm install
+Copy-Item .env.example .env
+node scripts/preflight.mjs
+pnpm dev
+```
+
+Open [localhost:5173](http://localhost:5173). The API listens on [localhost:8787](http://localhost:8787). Keep the terminal running.
+
+```powershell
+pnpm test
+pnpm build
+pnpm smoke
+pnpm start
+```
+
+After a production build, the Node server serves the application and API from port 8787. The development frontend proxies API requests to the backend.
+
+## What to try
+
+1. Submit a mandate for a private La Palma stargazing experience within the displayed budget.
+2. Review supplier offers and the negotiated bundle in the AG Grid operations table.
+3. Accept the mandate and authorize payment. In demo mode these are local simulations; in PayPal Sandbox the buyer must approve through PayPal.
+4. Select a clear-sky fixture and arm Autopilot. A job is saved in SQLite and scheduled three seconds later; watch the server evaluate, capture and disburse without another action.
+5. Start a separate agreement with cloudy or stale evidence and arm it. The server voids the authorization without capture; inspect the audit receipt and job outcome.
+
+The default two-person scenario trades 20 minutes of schedule flexibility for a €1,480 bundle within a €1,500 mandate. With fixed timing the €1,680 opening offer cannot fit that mandate. These are simulated commercial offers, not quotes from actual La Palma operators.
+
+The Spanish [demo script](docs/DEMO.es.md) includes a 2 minute 50 second presentation and the boundary between fixtures and external services.
+
+Autopilot is a real server scheduler, including in the simulated-payment demo. Jobs are persisted before the arm request returns and can resume after a process restart if the database survives. This does not make the free hosting filesystem durable. Manual controls remain available for diagnostics when an autonomous job is not active.
+
+## Payment model
+
+This prototype uses **one organizer merchant** for the customer transaction. PayPal authorization and capture are separate operations. Supplier disbursements are subsequent Payouts operations from the organizer's prefunded balance, or a visibly simulated ledger in demo mode. They are **not an atomic split of a checkout payment**.
+
+An authorization is not an escrow service. Voiding an authorization is not refunding a captured payment, and the issuing provider controls when an authorization hold disappears. ASTERION evaluates an application policy; it does not install a smart contract inside PayPal. PayPal documents a 29-day authorization window and recommends capture within its initial three-day honor period; later capture is not guaranteed. See the [official authorize and capture guide](https://developer.paypal.com/docs/checkout/standard/customize/authorization/).
+
+## Integrations and current scope
+
+| Component | Repository status | External verification |
+| --- | --- | --- |
+| AG Grid Community | Real React operations grid | No cloud account required |
+| Local agent negotiation | Reproducible deterministic execution | No foundation model used in default mode |
+| PayPal | Sandbox-only adapter, selectable through configuration | Requires credentials and buyer approval; no production payment claim |
+| Anthropic | Optional model adapter | Requires API key and explicit model choice |
+| AEMET | Optional observation adapter | Requires API key and station ID; incomplete evidence fails closed |
+| Render | Free public-demo Blueprint; optional paid persistent template | Not deployed by adding the files |
+| APIMatic | PayPal Context Plugin installed and used for implementation review | Development aid; [evidence](docs/APIMATIC-CONTEXT.md), no generated SDK or runtime integration claim |
+| Kernel | Optional browser-session adapter | Requires credentials and server-configured destination; no booking claim |
+| Astropods, Elastic, Channel3 | Planned extensions | Not active integrations |
+
+The definitive implementation notes and account requirements are in [INTEGRATIONS](docs/INTEGRATIONS.md) and [ACCOUNTS.es](docs/ACCOUNTS.es.md). A planned integration does not qualify as a completed sponsor submission.
+
+## Deployment
+
+[render.yaml](render.yaml) prepares a free public demo with `PUBLIC_DEMO=true`, simulated payments and SQLite under `/tmp/asterion`. Guest sessions use signed HttpOnly cookies; agreements and receipts are scoped to that browser's session. The server blocks PayPal Sandbox payments and Kernel launches in public-demo mode.
+
+**The free hosted demo has ephemeral storage:** agreements and session signing keys can disappear on redeploy, restart or idle spin-down. A cold start can delay the first visit. Local SQLite persists under `DATA_DIR`; this does not make the free hosted filesystem persistent. See [Render free-service limits](https://render.com/docs/free).
+
+[render.persistent.yaml](render.persistent.yaml) is an optional paid template with one `0.5c-512mb` service and a 1 GB persistent disk at `/var/data`. Applying it incurs compute and disk charges and requires separate budget approval. Neither file deploys resources by itself. Review [Render pricing](https://render.com/pricing) before selecting a paid option.
+
+Sandbox testing belongs in a private environment with `PUBLIC_DEMO=false`. Guest sessions are not verified user identities or an operator authorization system. The [architecture notes](docs/ARCHITECTURE.md) describe the production work still required.
+
+## Location and evidence
+
+The story is set around Roque de los Muchachos, La Palma. Public telescope visits are offered during daylight; the nighttime experience must use a permitted nearby site and the operator's own equipment. The prototype does not imply an IAC partnership or access to research telescopes. See [IAC visits](https://iac.es/es/observatorios-de-canarias/observatorio-del-roque-de-los-muchachos/visitas) and [La Palma tourism guidance](https://visitlapalma.es/observacion-de-estrellas/la-palma/roque-de-los-muchachos/).
+
+Weather thresholds are demo policy parameters, not a scientific guarantee of a perfect sky. Forecasts, local observations, freshness and availability have different meanings. Missing or stale evidence must not become a positive observation.
+
+## Project notes
+
+- [Architecture and trust boundaries](docs/ARCHITECTURE.md)
+- [Integration matrix and configuration](docs/INTEGRATIONS.md)
+- [APIMatic installation and review evidence](docs/APIMATIC-CONTEXT.md)
+- [Spanish demo narration](docs/DEMO.es.md)
+- [Devpost submission draft](docs/SUBMISSION.md)
+- [Accounts and user setup, in Spanish](docs/ACCOUNTS.es.md)
+
+MIT licensed. Built as a hackathon prototype; no real-money or production readiness claim.

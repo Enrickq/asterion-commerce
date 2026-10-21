@@ -1,0 +1,30 @@
+# Free public demo. SQLite and guest-session signing key are ephemeral.
+# Use render.persistent.yaml only after explicitly approving paid resources.
+services:
+  - type: web
+    name: asterion
+    runtime: node
+    plan: free
+    region: frankfurt
+    numInstances: 1
+    autoDeployTrigger: "off"
+    buildCommand: pnpm install --frozen-lockfile && pnpm build
+    startCommand: pnpm start
+    healthCheckPath: /api/status
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: DATA_DIR
+        value: /tmp/asterion
+      - key: PUBLIC_DEMO
+        value: "true"
+      - key: PAYMENTS_MODE
+        value: demo
+      - key: AGENT_MODE
+        value: deterministic
+      - key: WEATHER_MODE
+        value: fixtures
