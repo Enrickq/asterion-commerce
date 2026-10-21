@@ -2,11 +2,13 @@ export function getIntegrationStatus(env = process.env) {
   const paymentMode = env.PAYMENTS_MODE || env.PAYPAL_MODE || 'demo';
   const agentMode = env.AGENT_MODE || 'deterministic';
   const weatherMode = env.WEATHER_MODE || 'fixtures';
+  const modelConfigured = agentMode === 'gemini' ? Boolean(env.GEMINI_API_KEY && /^gemini-[A-Za-z0-9][A-Za-z0-9._-]{0,119}$/.test(env.GEMINI_MODEL || ''))
+    : agentMode === 'anthropic' ? Boolean(env.ANTHROPIC_API_KEY && env.ANTHROPIC_MODEL) : false;
   return [
     { id: 'paypal', name: 'PayPal', status: paymentMode === 'demo' ? 'demo' : env.PAYPAL_CLIENT_ID && env.PAYPAL_CLIENT_SECRET ? 'configured' : 'requires-credentials',
       mode: paymentMode, detail: paymentMode === 'demo' ? 'Simulación local explícita; no mueve dinero.' : 'Adaptador PayPal Sandbox. No admite Live.' },
-    { id: 'agents', name: 'Agentes negociadores', status: agentMode === 'anthropic' ? env.ANTHROPIC_API_KEY && env.ANTHROPIC_MODEL ? 'configured' : 'requires-credentials' : 'demo',
-      mode: agentMode, detail: agentMode === 'anthropic' ? 'Ofertas mediante Anthropic con límites deterministas.' : 'Agentes locales con precios de reserva independientes. No se usa un LLM.' },
+    { id: 'agents', name: 'Agentes negociadores', status: ['anthropic', 'gemini'].includes(agentMode) ? modelConfigured ? 'configured' : 'requires-credentials' : 'demo',
+      mode: agentMode, detail: agentMode === 'gemini' ? 'Adaptador Google Gemini opt-in: propuestas estructuradas y límites deterministas. Configuración no acredita una ejecución ni un nivel gratuito.' : agentMode === 'anthropic' ? 'Ofertas mediante Anthropic con límites deterministas.' : 'Agentes locales con precios de reserva independientes. No se usa un LLM.' },
     { id: 'weather', name: 'Oráculo meteorológico', status: weatherMode === 'fixtures' ? 'demo' : env.AEMET_API_KEY && env.AEMET_STATION_ID ? 'configured' : 'requires-credentials',
       mode: weatherMode, detail: weatherMode === 'fixtures' ? 'Escenarios meteorológicos reproducibles y etiquetados.' : 'AEMET: observación de estación; insuficiente por sí sola para capturar.' },
     { id: 'kernel', name: 'Kernel', status: env.KERNEL_API_KEY && env.KERNEL_SUPPLIER_URL ? 'configured' : 'configurable', mode: 'optional-adapter',

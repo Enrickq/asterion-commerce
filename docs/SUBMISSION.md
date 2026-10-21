@@ -20,11 +20,11 @@ Our first story is a private stargazing experience in La Palma: a guide, portabl
 
 The buyer's mandate becomes a negotiated agreement. Supplier offers and allocations appear in an AG Grid operations view. A deterministic policy evaluates evidence and drives separate authorization, capture and void stages. An audit receipt explains the decision and distinguishes local demo events from payment-provider responses. Supplier disbursements follow capture as separate operations.
 
-The repository includes a reproducible local mode without accounts, alongside configurable PayPal Sandbox, Anthropic and AEMET adapters. The default demonstration uses deterministic agents, labeled weather fixtures and simulated payment transitions. External runs require credentials and must be verified independently before being represented in the submission video.
+The repository includes a reproducible local mode without accounts, alongside configurable PayPal Sandbox, Google Gemini, Anthropic and AEMET adapters. The default demonstration uses deterministic agents, labeled weather fixtures and simulated payment transitions. External runs require credentials and must be verified independently before being represented in the submission video.
 
 ## How we built it
 
-React and Vite power the interface. AG Grid Community provides the operations table. A Node.js 24 HTTP service owns agreement transitions and SQLite persistence. The payment adapter separates order creation, buyer approval, authorization, evidence-gated capture or void, reconciliation and supplier payouts. An optional Anthropic adapter supplies model-generated negotiation proposals without giving the model direct authority to settle money. An optional AEMET adapter retrieves observations and refuses to treat missing astronomical evidence as clear skies.
+React and Vite power the interface. AG Grid Community provides the operations table. A Node.js 24 HTTP service owns agreement transitions and SQLite persistence. Autopilot persists a scheduled job before acknowledging it, then evaluates and settles without further browser commands. The payment adapter separates order creation, buyer approval, authorization, evidence-gated capture or void, reconciliation and supplier payouts. Optional Gemini and Anthropic adapters supply model-generated negotiation proposals without giving the model direct authority to settle money. An optional AEMET adapter retrieves observations and refuses to treat missing astronomical evidence as clear skies.
 
 The repository also prepares a free Render public-demo deployment, an optional paid persistent-storage template, and an optional Kernel browser-session adapter for a server-configured supplier destination. Neither configuration proves a completed cloud run. Signed guest sessions scope agreements and receipts to a browser session; public-demo mode blocks Sandbox payments and Kernel launches. The free hosting option has ephemeral storage and cold starts. We do not claim Render Workflows execution. APIMatic is a development context workflow; Astropods, Elastic and Channel3 remain future integrations unless separately implemented and evidenced.
 
@@ -37,6 +37,7 @@ The hard part is preserving distinctions that a chat interface can hide: a forec
 - A complete intent-to-agreement-to-policy-to-payment simulation.
 - An actual AG Grid interface for inspecting operational data.
 - Persistent agreements and audit events in SQLite.
+- Autonomous server execution after a single approved mandate, including recovery after a restart when the database survives.
 - A successful-condition path and a failed-condition path that blocks capture.
 - Separate adapters for optional external services, with no credentials required for the default demo.
 
@@ -52,7 +53,7 @@ Verify the PayPal Sandbox and model flows end to end, then pilot with an actual 
 
 ## Built with
 
-Node.js 24, React, Vite, SQLite, AG Grid Community. Optional implemented adapters: PayPal Sandbox REST APIs, Anthropic Messages API, AEMET OpenData, Kernel browser sessions. Deployment configuration: Render Blueprint. Do not list planned integrations as technologies used.
+Node.js 24, React, Vite, SQLite, AG Grid Community. Optional implemented adapters: PayPal Sandbox REST APIs, Gemini generateContent, Anthropic Messages API, AEMET OpenData, Kernel browser sessions. Deployment configuration: Render Blueprint. Do not list planned integrations as technologies used.
 
 ## Evidence to add before submission
 

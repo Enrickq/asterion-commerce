@@ -6,7 +6,7 @@ ASTERION is a working prototype for conditional agentic commerce. A buyer agent 
 
 The product question is simple: **can an agent explain why money should move, and prove why it did not move when conditions failed?**
 
-The default experience runs locally without accounts or API keys. It uses reproducible negotiation, weather fixtures and simulated payments, clearly identified as demo data. Optional adapters provide PayPal Sandbox, Anthropic and AEMET access. Credentials and end-to-end provider verification are separate setup steps; the repository does not claim they have been completed.
+The default experience runs locally without accounts or API keys. It uses reproducible negotiation, weather fixtures and simulated payments, clearly identified as demo data. Optional adapters provide PayPal Sandbox, Google Gemini, Anthropic and AEMET access. Credentials and end-to-end provider verification are separate setup steps; the repository does not claim they have been completed.
 
 ## Run locally
 
@@ -58,6 +58,7 @@ An authorization is not an escrow service. Voiding an authorization is not refun
 | Local agent negotiation | Reproducible deterministic execution | No foundation model used in default mode |
 | PayPal | Sandbox-only adapter, selectable through configuration | Requires credentials and buyer approval; no production payment claim |
 | Anthropic | Optional model adapter | Requires API key and explicit model choice |
+| Google Gemini | Optional model adapter with three isolated supplier requests | Requires API key and an available model ID; external inference remains unverified |
 | AEMET | Optional observation adapter | Requires API key and station ID; incomplete evidence fails closed |
 | Render | Free public-demo Blueprint; optional paid persistent template | Not deployed by adding the files |
 | APIMatic | PayPal Context Plugin installed and used for implementation review | Development aid; [evidence](docs/APIMATIC-CONTEXT.md), no generated SDK or runtime integration claim |

@@ -8,6 +8,7 @@ Status vocabulary: **integrated** means real code is used locally; **configurabl
 | Local negotiation | Integrated | Reproducible buyer/supplier negotiation under a mandate | This mode does not call a foundation model |
 | PayPal Sandbox | Configurable | OAuth, order authorization, conditional capture/void and separate Payouts adapter | Configure test app and buyer, run both outcomes, verify provider records and webhook delivery |
 | Anthropic | Configurable | Optional model-based negotiation through the Messages API | Key, billing access, explicit available model and end-to-end run |
+| Google Gemini | Configurable, opt-in | Three independent supplier calls through Gemini `generateContent`, with a structured `quote` function and backend price validation | Server key, explicit available model ID, user verification of the project's Free Tier/quota and an end-to-end run |
 | AEMET | Configurable | Fresh local observation retrieval through OpenData | Key and valid station ID; astronomical evidence completeness must still pass |
 | Render | Prepared | Free public-demo Blueprint; optional paid persistent template | Connect repository, deploy and verify the chosen environment |
 | APIMatic | Used in development | PayPal Context Plugin installed in Codex and consulted for implementation review | No generated SDK or runtime use claim; [evidence](APIMATIC-CONTEXT.md) |
@@ -33,14 +34,33 @@ Copy `.env.example` to `.env`. The startup commands load local configuration. Re
 | `PAYPAL_WEBHOOK_ID` | Registered Sandbox webhook ID for verification |
 | `PAYPAL_PAYOUT_RECIPIENTS` | JSON object mapping allocation IDs to Sandbox recipient emails |
 | `PAYPAL_GUIDE_EMAIL`, `PAYPAL_TELESCOPE_EMAIL`, `PAYPAL_TRANSPORT_EMAIL` | Alternative recipient configuration |
-| `AGENT_MODE` | `deterministic` or `anthropic` |
+| `AGENT_MODE` | `deterministic`, `anthropic` or `gemini`; default remains deterministic |
 | `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` | Model credentials and an explicitly available model ID |
+| `GEMINI_API_KEY`, `GEMINI_MODEL` | Google AI Studio server credential and available Gemini model ID; no URL or `models/` prefix |
 | `WEATHER_MODE` | `fixtures` or `aemet` |
 | `AEMET_API_KEY`, `AEMET_STATION_ID` | OpenData key and actual station identifier |
 | `KERNEL_API_KEY`, `KERNEL_SUPPLIER_URL` | Optional browser-session credential and approved HTTPS destination |
 | `APIMATIC_CONTEXT_INSTALLED` | Development metadata only; set true only after actual installation and use |
 
 Do not prefix secrets with `VITE_`, commit `.env`, paste keys into chat, or embed them in the UI. `node scripts/preflight.mjs` checks configuration presence without printing credential values. It cannot verify access, balance, permissions or correctness of credentials.
+
+## Optional Google Gemini negotiation
+
+Public hosting continues to use `AGENT_MODE=deterministic`. To opt in later, the user must verify the project's Free Tier status and model quota in [Google AI Studio](https://aistudio.google.com/), choose an actually available model ID, and then configure `AGENT_MODE=gemini`, `GEMINI_API_KEY` and `GEMINI_MODEL` on the server. No model ID is assumed or selected by this project. Configuration alone is not evidence of a real inference run. Missing credentials/model return 503; provider rejection or invalid proposals stop negotiation without silently falling back to local prices.
+
+For the first private Gemini verification, use a **1,700 EUR budget** (`budgetMinor: 170000`) with the default **two guests and 20 minutes of scheduling flexibility**. Valid quotes from these suppliers can total 1,680 EUR; a 1,500 EUR budget may correctly reject a proposal even when every individual quote satisfies its supplier's limits. This recommendation applies to that default group and catalog, not larger groups or a different service configuration.
+
+Record the following before describing Gemini as verified:
+
+1. Confirm the selected model is available to the actual AI Studio project and its Free Tier quota has been checked.
+2. Set its exact model identifier in `GEMINI_MODEL`, without a URL or `models/` prefix.
+3. Observe three actual provider requests, one for each supplier, without recording credentials.
+4. Confirm the negotiation returns `agentMode: "gemini"`, `provider: "gemini"` and the configured model ID.
+5. Keep configuration presence separate from execution evidence: a key, a `configured` status or passing mocked tests does not prove real inference.
+
+The adapter sends three independent REST requests to `https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent`. The key is only in `x-goog-api-key`, never a URL, prompt, receipt or browser bundle. Each supplier receives its own limits in `systemInstruction`, and the consumer brief separately in `contents`. The only declared function is `quote`, using `parametersJsonSchema` with forced function calling. Returned arguments are data: no function is executed by the model, and no payment or browser tool is exposed. The backend rechecks whole-cent prices against each supplier's floor/ask and rejects malformed, incomplete, extra-field or out-of-range proposals. See the [official REST function schema](https://ai.google.dev/api/generate-content#FunctionDeclaration), [generation endpoint](https://ai.google.dev/api/generate-content#method-models.generatecontent) and [structured-output guidance](https://ai.google.dev/gemini-api/docs/structured-output).
+
+Google's [billing documentation](https://ai.google.dev/gemini-api/docs/billing) confirms Free Tier availability in the EEA, including the EU, for eligible models/projects and subject to quotas. An API key inherits its project's billing tier: this code cannot guarantee zero cost or infer whether billing has been enabled. It never enables billing, selects a paid fallback, retries quota failures automatically, or uses GitHub CLI credentials for inference. Use fictitious demo briefs and inspect the provider's current data-use terms before sending personal information. Live Gemini access has not been tested without an authorized key.
 
 ## PayPal Sandbox validation
 

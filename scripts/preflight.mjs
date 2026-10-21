@@ -18,12 +18,16 @@ const requireKeys = (names) => {
   for (const name of names) if (!config[name]?.trim()) problems.push(`${name} is required for the selected mode.`);
 };
 const payments = mode('PAYMENTS_MODE', 'demo', ['demo', 'paypal-sandbox']);
-const agent = mode('AGENT_MODE', 'deterministic', ['deterministic', 'anthropic']);
+const agent = mode('AGENT_MODE', 'deterministic', ['deterministic', 'anthropic', 'gemini']);
 const weather = mode('WEATHER_MODE', 'fixtures', ['fixtures', 'aemet']);
 if (payments === 'paypal-sandbox') requireKeys(['PAYPAL_CLIENT_ID', 'PAYPAL_CLIENT_SECRET']);
 if (['true', '1'].includes(config.PUBLIC_DEMO) && payments !== 'demo') problems.push('PUBLIC_DEMO requires PAYMENTS_MODE=demo.');
 if (config.SESSION_SECRET && config.SESSION_SECRET.length < 32) problems.push('SESSION_SECRET must contain at least 32 characters.');
 if (agent === 'anthropic') requireKeys(['ANTHROPIC_API_KEY', 'ANTHROPIC_MODEL']);
+if (agent === 'gemini') {
+  requireKeys(['GEMINI_API_KEY', 'GEMINI_MODEL']);
+  if (config.GEMINI_MODEL && !/^gemini-[A-Za-z0-9][A-Za-z0-9._-]{0,119}$/.test(config.GEMINI_MODEL)) problems.push('GEMINI_MODEL must be a Gemini model ID, without a URL or models/ prefix.');
+}
 if (weather === 'aemet') requireKeys(['AEMET_API_KEY', 'AEMET_STATION_ID']);
 if (config.KERNEL_API_KEY || config.KERNEL_SUPPLIER_URL) requireKeys(['KERNEL_API_KEY', 'KERNEL_SUPPLIER_URL']);
 if (config.PUBLIC_BASE_URL) {
