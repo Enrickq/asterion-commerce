@@ -2,6 +2,8 @@
 
 La demo local no necesita ninguna cuenta. Ya se puede probar con los modos `demo`, `deterministic` y `fixtures` de `.env.example`. Crear cuentas de proveedores no equivale a tener sus integraciones verificadas.
 
+GitHub y Render ya están configurados para esta entrega: [repositorio público](https://github.com/Enrickq/asterion-commerce) y [demo publicada](https://asterion-mj13.onrender.com/). La demo gratuita utiliza pagos, agentes y meteorología simulados. PayPal Sandbox y un modelo real siguen pendientes de credenciales y pruebas externas.
+
 ## Lo mínimo que debe completar el titular
 
 Para abrir servicios externos se necesita una identidad y un correo del titular, y en algunos casos verificación por email, sesión de navegador, condiciones del proveedor o facturación. Estos datos no están configurados por este repositorio. El titular debe completar la autenticación y las verificaciones que se le presenten; después se puede continuar con la configuración técnica.
@@ -12,6 +14,7 @@ No enviar contraseñas, códigos de verificación ni claves API por el chat. Gua
 | --- | --- | --- | --- |
 | PayPal Developer | [Dashboard](https://developer.paypal.com/dashboard/) y [guía inicial](https://developer.paypal.com/api/get-started/) | Probar la ruta PayPal Sandbox | Client ID y Secret de app Sandbox; cuenta comprador personal y merchant business de prueba |
 | Anthropic / Claude API | [Consola](https://platform.claude.com/) y [guía de claves](https://platform.claude.com/docs/en/get-api-key) | Negociación con modelo real | API key, modelo disponible y acceso/facturación API |
+| Google Gemini | [AI Studio](https://aistudio.google.com/) | Alternativa de negociación con modelo real | API key de servidor, modelo disponible y nivel de facturación/cuota verificado |
 | AEMET OpenData | [Portal](https://opendata.aemet.es/centrodedescargas/inicio) y [API](https://opendata.aemet.es/dist/) | Observaciones meteorológicas externas | API key vigente e ID real de estación |
 | Render | [Dashboard](https://dashboard.render.com/) y [Blueprints](https://render.com/docs/infrastructure-as-code) | Publicar la aplicación | Repositorio conectado, revisión de costes y configuración privada |
 | APIMatic | [Marketplace de contexto](https://context.apimatic.io/) | Contexto PayPal en un asistente compatible | No confundir instalación de desarrollo con integración de producción |
@@ -34,6 +37,8 @@ Ninguna de estas operaciones utiliza dinero real. El código solo admite modo de
 ## Modelo real y meteorología real
 
 Para Anthropic: configurar `AGENT_MODE=anthropic`, `ANTHROPIC_API_KEY` y un `ANTHROPIC_MODEL` disponible en esa cuenta. Una suscripción de chat no demuestra acceso API. Los proveedores pueden cobrar llamadas; revisar la facturación propia antes de ejecutar.
+
+Para Gemini: configurar `AGENT_MODE=gemini`, `GEMINI_API_KEY` y el identificador exacto de un `GEMINI_MODEL` disponible en el proyecto. Verificar la cuota y el nivel de facturación antes de llamar a la API. Para la primera prueba del paquete de dos personas, usar 1.700 € de presupuesto para cubrir todas las ofertas válidas. La demo pública conserva el modo determinista.
 
 Para AEMET: configurar `WEATHER_MODE=aemet`, `AEMET_API_KEY` y `AEMET_STATION_ID`. Las observaciones convencionales no garantizan por sí solas cielo despejado; si faltan variables exigidas por el mandato, el sistema debe bloquear la captura. No sustituir campos ausentes por valores favorables.
 

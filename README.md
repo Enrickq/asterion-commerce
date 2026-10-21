@@ -2,6 +2,10 @@
 
 **Intent. Evidence. Payment.**
 
+[Open the public demo](https://asterion-mj13.onrender.com/) · [Verified CI run](https://github.com/Enrickq/asterion-commerce/actions/runs/39691960571)
+
+![ASTERION public demo](docs/assets/asterion-public.png)
+
 ASTERION is a working prototype for conditional agentic commerce. A buyer agent negotiates a complete stargazing experience in La Palma with supplier agents. The customer approves an explicit spending mandate and arms Autopilot. A persisted server job then evaluates evidence, captures or voids the authorization, and requests separate supplier payouts without further clicks.
 
 The product question is simple: **can an agent explain why money should move, and prove why it did not move when conditions failed?**
@@ -60,7 +64,7 @@ An authorization is not an escrow service. Voiding an authorization is not refun
 | Anthropic | Optional model adapter | Requires API key and explicit model choice |
 | Google Gemini | Optional model adapter with three isolated supplier requests | Requires API key and an available model ID; external inference remains unverified |
 | AEMET | Optional observation adapter | Requires API key and station ID; incomplete evidence fails closed |
-| Render | Free public-demo Blueprint; optional paid persistent template | Not deployed by adding the files |
+| Render | Free public demo deployed in Frankfurt | Hosted Autopilot clear/cloudy flows verified; [verification record](docs/VERIFICATION.es.md) |
 | APIMatic | PayPal Context Plugin installed and used for implementation review | Development aid; [evidence](docs/APIMATIC-CONTEXT.md), no generated SDK or runtime integration claim |
 | Kernel | Optional browser-session adapter | Requires credentials and server-configured destination; no booking claim |
 | Astropods, Elastic, Channel3 | Planned extensions | Not active integrations |
@@ -68,6 +72,8 @@ An authorization is not an escrow service. Voiding an authorization is not refun
 The definitive implementation notes and account requirements are in [INTEGRATIONS](docs/INTEGRATIONS.md) and [ACCOUNTS.es](docs/ACCOUNTS.es.md). A planned integration does not qualify as a completed sponsor submission.
 
 ## Deployment
+
+The [public demo](https://asterion-mj13.onrender.com/) runs on Render Free with auto-deploy disabled. The deployed application commit is `c7d2884`; later documentation commits do not change the running code. Deployment and both autonomous outcomes were verified on October 22, 2026, Canary Islands time.
 
 [render.yaml](render.yaml) prepares a free public demo with `PUBLIC_DEMO=true`, simulated payments and SQLite under `/tmp/asterion`. Guest sessions use signed HttpOnly cookies; agreements and receipts are scoped to that browser's session. The server blocks PayPal Sandbox payments and Kernel launches in public-demo mode.
 
@@ -91,5 +97,6 @@ Weather thresholds are demo policy parameters, not a scientific guarantee of a p
 - [Spanish demo narration](docs/DEMO.es.md)
 - [Devpost submission draft](docs/SUBMISSION.md)
 - [Accounts and user setup, in Spanish](docs/ACCOUNTS.es.md)
+- [Public deployment verification](docs/VERIFICATION.es.md)
 
 MIT licensed. Built as a hackathon prototype; no real-money or production readiness claim.

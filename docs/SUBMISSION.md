@@ -26,7 +26,7 @@ The repository includes a reproducible local mode without accounts, alongside co
 
 React and Vite power the interface. AG Grid Community provides the operations table. A Node.js 24 HTTP service owns agreement transitions and SQLite persistence. Autopilot persists a scheduled job before acknowledging it, then evaluates and settles without further browser commands. The payment adapter separates order creation, buyer approval, authorization, evidence-gated capture or void, reconciliation and supplier payouts. Optional Gemini and Anthropic adapters supply model-generated negotiation proposals without giving the model direct authority to settle money. An optional AEMET adapter retrieves observations and refuses to treat missing astronomical evidence as clear skies.
 
-The repository also prepares a free Render public-demo deployment, an optional paid persistent-storage template, and an optional Kernel browser-session adapter for a server-configured supplier destination. Neither configuration proves a completed cloud run. Signed guest sessions scope agreements and receipts to a browser session; public-demo mode blocks Sandbox payments and Kernel launches. The free hosting option has ephemeral storage and cold starts. We do not claim Render Workflows execution. APIMatic is a development context workflow; Astropods, Elastic and Channel3 remain future integrations unless separately implemented and evidenced.
+The public demo runs on a free Render web service in Frankfurt. Hosted clear and cloudy Autopilot flows and receipt integrity were verified on October 22, 2026, Canary Islands time. The repository also prepares an optional paid persistent-storage template and an optional Kernel browser-session adapter for a server-configured supplier destination. Signed guest sessions scope agreements and receipts to a browser session; public-demo mode blocks Sandbox payments and Kernel launches. Free hosting has ephemeral storage and cold starts. We do not claim Render Workflows execution. APIMatic is a development context workflow; Astropods, Elastic and Channel3 remain future integrations unless separately implemented and evidenced.
 
 ## Challenges
 
@@ -57,8 +57,8 @@ Node.js 24, React, Vite, SQLite, AG Grid Community. Optional implemented adapter
 
 ## Evidence to add before submission
 
-- Public repository URL and commit hash: **pending**.
-- Public demo URL, checked after deployment: **pending**.
+- Public repository: https://github.com/Enrickq/asterion-commerce; deployed application commit: `c7d2884d8afa2a50a338e48562150ebc10c4709d`.
+- Public demo: https://asterion-mj13.onrender.com/; hosted flows verified, see [record](VERIFICATION.es.md).
 - Video URL and final runtime: **pending**.
 - Actual PayPal Sandbox authorization/capture/void evidence: **pending**.
 - Actual model run, if entering as model-based AI rather than deterministic agent simulation: **pending**.

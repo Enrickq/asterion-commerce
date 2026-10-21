@@ -10,7 +10,7 @@ Status vocabulary: **integrated** means real code is used locally; **configurabl
 | Anthropic | Configurable | Optional model-based negotiation through the Messages API | Key, billing access, explicit available model and end-to-end run |
 | Google Gemini | Configurable, opt-in | Three independent supplier calls through Gemini `generateContent`, with a structured `quote` function and backend price validation | Server key, explicit available model ID, user verification of the project's Free Tier/quota and an end-to-end run |
 | AEMET | Configurable | Fresh local observation retrieval through OpenData | Key and valid station ID; astronomical evidence completeness must still pass |
-| Render | Prepared | Free public-demo Blueprint; optional paid persistent template | Connect repository, deploy and verify the chosen environment |
+| Render | Deployed and verified | Free Node service in Frankfurt with autonomous clear/cloudy flows | Free storage remains ephemeral; paid persistent template is optional |
 | APIMatic | Used in development | PayPal Context Plugin installed in Codex and consulted for implementation review | No generated SDK or runtime use claim; [evidence](APIMATIC-CONTEXT.md) |
 | Kernel | Configurable | Open a real browser session at a server-configured supplier URL | Credentials and external verification; navigation, extraction and reservations are not implemented |
 | Astropods | Planned | Hosting and lifecycle of independently deployed supplier agents | Package, publish, deploy and instrument actual agents |
@@ -91,6 +91,8 @@ pnpm dlx context-plugins install paypal
 The plugin was installed in Codex on October 21, 2026 as `paypal@context-plugins`, version 0.4.1. Its integration and error-handling references were used to review uncertain capture responses and reconciliation. [The evidence note](APIMATIC-CONTEXT.md) describes the installation and implementation review. This application uses direct REST calls; it does not use the generated PayPal TypeScript SDK. APIMatic supplies development context and does not process payments or authorize runtime actions.
 
 ## Render deployment
+
+The [public demo](https://asterion-mj13.onrender.com/) is deployed as a Free web service in Frankfurt. Hosted clear and cloudy Autopilot flows and receipt integrity were verified on October 22, 2026, Canary Islands time. See the [verification record](VERIFICATION.es.md). Auto-deploy is disabled. The active public modes are deterministic agents, fixture weather and demo payments.
 
 `render.yaml` targets one Free web service with ephemeral `/tmp/asterion`, `PUBLIC_DEMO=true` and simulated payments. It has no disk and needs no external credentials. Render free services can spin down on idle and cold-start on the next visit. SQLite and guest-session keys are lost on redeploy, restart or spin-down. See [free-service limits](https://render.com/docs/free).
 
