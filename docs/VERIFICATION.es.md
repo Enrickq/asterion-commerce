@@ -31,3 +31,11 @@ El servidor, la orquestación autónoma y AG Grid funcionan en Render. Los preci
 El plan gratuito usa SQLite temporal. Un reinicio, reemplazo o suspensión por inactividad puede eliminar acuerdos y claves de sesión. La persistencia local probada no convierte ese alojamiento gratuito en almacenamiento durable. No se han contratado recursos de pago.
 
 La entrega del hackathon y el vídeo siguen pendientes. Este documento acredita la versión pública del prototipo, no su elegibilidad final ni un resultado en el concurso.
+
+## Revisión de recuperación PayPal Sandbox
+
+Una revisión posterior añadió recuperación de respuestas perdidas mediante GET de autorización, orden y captura, validación de importes y referencias del proveedor, y exposición del control privado de Autopilot únicamente tras el opt-in del servidor. El recorrido de autorización conserva por separado el estado de la orden y el de la autorización.
+
+**64 pruebas pasan** en esta revisión. Incluyen payloads Sandbox simulados con respuesta de captura perdida, autorización pendiente, importes incorrectos, referencias ajenas y capturas múltiples. La prueba de integración verifica que la recuperación registra `CAPTURE_RECOVERED` con un solo POST de captura. Una anulación incierta bloquea nuevas ejecuciones y reevaluaciones hasta reconciliarse, incluso tras reiniciar SQLite. Estas pruebas utilizan mocks y no acreditan llamadas externas de PayPal.
+
+La configuración privada `.env.sandbox` está excluida de Git, usa datos y puerto separados y no tiene Autopilot Sandbox activado por defecto. Las credenciales y la ejecución externa continúan pendientes del dashboard del titular.

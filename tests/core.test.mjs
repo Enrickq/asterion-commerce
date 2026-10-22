@@ -26,7 +26,7 @@ function fixture(t, options = {}) {
       if (options.captureThrows) throw new Error('access_token=DO-NOT-EXPOSE');
       return { captureId: 'CAPTURE-1', status: options.captureStatus ?? 'COMPLETED' };
     },
-    async void() { calls.void++; return { status: 'VOIDED' }; },
+    async void() { calls.void++; if (options.voidThrows) throw new Error('uncertain void response'); return { status: 'VOIDED' }; },
     async payouts() {
       calls.payouts++;
       return { batchId: 'BATCH-1', status: 'SUCCESS', items: ['guide', 'telescope', 'transport'].map(allocationId => ({ allocationId, status: 'SUCCESS' })) };
@@ -64,6 +64,15 @@ function fixture(t, options = {}) {
 test('canonical JSON is stable across key insertion orders', () => {
   assert.equal(canonicalize({ z: 1, nested: { b: 2, a: 3 } }), canonicalize({ nested: { a: 3, b: 2 }, z: 1 }));
   assert.throws(() => canonicalize({ value: Infinity }));
+});
+
+test('status exposes Sandbox autopilot only for the Sandbox provider with explicit opt-in', async t => {
+  const demo = fixture(t, { allowSandboxAutopilot: true });
+  const sandboxManual = fixture(t, { adapter: { mode: 'paypal-sandbox' }, allowSandboxAutopilot: false });
+  const sandboxEnabled = fixture(t, { adapter: { mode: 'paypal-sandbox' }, allowSandboxAutopilot: true });
+  assert.equal(demo.core.status().sandboxAutopilotEnabled, false);
+  assert.equal(sandboxManual.core.status().sandboxAutopilotEnabled, false);
+  assert.equal(sandboxEnabled.core.status().sandboxAutopilotEnabled, true);
 });
 
 test('authorization and order creation require exact consent; no provider side effects', async t => {
@@ -219,6 +228,39 @@ test('failed reconciliation after a lost capture response preserves uncertainty'
   assert.equal(f.core.get(agreement.id).payment.status, 'CAPTURE_PENDING');
   await assert.rejects(f.core.execute(agreement.id), { code: 'RECONCILE_REQUIRED' });
   assert.equal(f.calls.capture, 1);
+});
+
+test('an uncertain void cannot be reevaluated or changed to capture; CREATED keeps it pending until VOIDED', async t => {
+  const f = fixture(t, { voidThrows: true });
+  const agreement = await f.authorized();
+  await f.core.evaluate(agreement.id, { scenario: 'cloudy' });
+  await assert.rejects(f.core.execute(agreement.id), { code: 'PAYMENT_UNCONFIRMED' });
+  let pending = f.core.get(agreement.id);
+  assert.equal(pending.status, 'VOID_PENDING');
+  assert.equal(pending.payment.status, 'VOID_REQUESTED');
+  const evidenceHash = pending.evaluation.evidenceHash;
+  await assert.rejects(f.core.evaluate(agreement.id, { scenario: 'clear' }), { code: 'RECONCILE_REQUIRED' });
+  await assert.rejects(f.core.execute(agreement.id), { code: 'RECONCILE_REQUIRED' });
+  assert.equal(f.calls.capture, 0);
+  assert.equal(f.calls.void, 1);
+  f.adapter.reconcile = async () => ({ payment: { authorizationId: 'AUTH-1', status: 'CREATED' } });
+  pending = await f.core.reconcile(agreement.id);
+  assert.equal(pending.status, 'VOID_PENDING');
+  assert.equal(pending.payment.status, 'VOID_REQUESTED');
+  assert.equal(pending.evaluation.evidenceHash, evidenceHash);
+  assert.equal(pending.evaluation.eligible, false);
+  f.reopen();
+  await assert.rejects(f.core.evaluate(agreement.id, { scenario: 'clear' }), { code: 'RECONCILE_REQUIRED' });
+  await assert.rejects(f.core.execute(agreement.id), { code: 'RECONCILE_REQUIRED' });
+  f.adapter.reconcile = async () => ({ payment: { authorizationId: 'AUTH-1', status: 'VOIDED' } });
+  const voided = await f.core.reconcile(agreement.id);
+  assert.equal(voided.status, 'VOIDED');
+  assert.equal(voided.payment.status, 'VOIDED');
+  assert.equal(voided.payment.lastError, null);
+  assert.ok(voided.payment.voidedAt);
+  await f.core.execute(agreement.id);
+  assert.equal(f.calls.capture, 0);
+  assert.equal(f.calls.void, 1);
 });
 
 test('SQLite survives a restart with immutable terms, consent and event chain', async t => {

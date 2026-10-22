@@ -72,6 +72,8 @@ const STATUS = {
   CONDITION_FAILED: ["Conditions failed", "rose"],
   CAPTURED: ["Payment captured", "mint"],
   CAPTURE_PENDING: ["Capture pending", "gold"],
+  CAPTURE_FAILED: ["Capture declined", "rose"],
+  VOID_PENDING: ["Void pending", "gold"],
   VOIDED: ["Authorization voided", "rose"],
   PAYOUTS_PENDING: ["Distributing", "gold"],
   SETTLED: ["Distribution complete", "mint"],
@@ -267,7 +269,7 @@ function App() {
     hasAuth &&
     !hasCaptured &&
     !terminal &&
-    status !== "CAPTURE_PENDING" &&
+    !["CAPTURE_PENDING", "VOID_PENDING", "CAPTURE_FAILED"].includes(status) &&
     !autonomous;
   const phase = !agreement
     ? 0
@@ -277,6 +279,7 @@ function App() {
         ? 2
         : 3;
   const integrated = system?.integrations;
+  const canArmAutopilot = isDemo || system?.sandboxAutopilotEnabled === true;
 
   const refreshList = useCallback(async () => {
     try {
@@ -339,6 +342,16 @@ function App() {
       await refreshList();
     } catch (e) {
       setError(e.message);
+      if (agreement?.id) {
+        try {
+          const persisted = await api(`/agreements/${agreement.id}`);
+          setAgreement((current) =>
+            current?.id === agreement.id ? persisted : current,
+          );
+        } catch {
+          // Keep the original error if the follow-up read also fails.
+        }
+      }
     } finally {
       setBusy("");
     }
@@ -443,7 +456,13 @@ function App() {
   const armAutopilot = () =>
     run("arming", async () => {
       setAgreement(
-        await api(`/agreements/${agreement.id}/autopilot`, { scenario }),
+        await api(`/agreements/${agreement.id}/autopilot`, {
+          scenario,
+          ...(!isDemo && {
+            agreementHash: agreement.hash,
+            confirmSandboxAutopilot: true,
+          }),
+        }),
       );
       setToast(
         "Autonomous execution armed. The server will evaluate, act and reconcile without another click.",
@@ -789,7 +808,9 @@ function App() {
                   label="SUPPLIER AGENTS"
                   value="03"
                   detail={
-                    ["anthropic", "gemini"].includes(agreement?.negotiationProvider)
+                    ["anthropic", "gemini"].includes(
+                      agreement?.negotiationProvider,
+                    )
                       ? "Model-assisted negotiation"
                       : "Independent, deterministic demo agents"
                   }
@@ -1235,29 +1256,39 @@ function App() {
                       </button>
                     </>
                   )}
-                  {status === "AUTHORIZED" && isDemo && !autonomous && (
-                    <div className="autopilot-card">
-                      <div>
-                        <Orbit size={17} />
-                        <span>LET THE AGREEMENT RUN</span>
-                        <Badge tone="gold">DEMO</Badge>
+                  {status === "AUTHORIZED" &&
+                    canArmAutopilot &&
+                    !autonomous && (
+                      <div className="autopilot-card">
+                        <div>
+                          <Orbit size={17} />
+                          <span>LET THE AGREEMENT RUN</span>
+                          <Badge tone="gold">
+                            {isDemo ? "DEMO" : "SANDBOX"}
+                          </Badge>
+                        </div>
+                        <p>
+                          Arm the server to evaluate the selected weather
+                          scenario, capture or void, then distribute. No
+                          additional payment click.
+                          {!isDemo &&
+                            " This private Sandbox run uses test funds and simulated weather. Supplier payouts require configured Sandbox recipients."}
+                        </p>
+                        <button
+                          className="button button-primary full"
+                          disabled={Boolean(busy)}
+                          onClick={armAutopilot}
+                        >
+                          {busy === "arming" ? (
+                            <Spinner />
+                          ) : (
+                            <Radio size={15} />
+                          )}
+                          Arm autonomous execution
+                          <ArrowRight size={15} />
+                        </button>
                       </div>
-                      <p>
-                        Arm the server to evaluate the selected weather
-                        scenario, capture or void, then distribute. No
-                        additional payment click.
-                      </p>
-                      <button
-                        className="button button-primary full"
-                        disabled={Boolean(busy)}
-                        onClick={armAutopilot}
-                      >
-                        {busy === "arming" ? <Spinner /> : <Radio size={15} />}
-                        Arm autonomous execution
-                        <ArrowRight size={15} />
-                      </button>
-                    </div>
-                  )}
+                    )}
                   {autonomous && (
                     <div className="autopilot-card running">
                       <div>
@@ -1314,17 +1345,22 @@ function App() {
                       <ArrowRight size={15} />
                     </button>
                   )}
-                  {(status === "CAPTURE_PENDING" ||
-                    status === "PAYOUTS_PENDING") && (
-                    <button
-                      className="button button-secondary full"
-                      disabled={Boolean(busy)}
-                      onClick={reconcile}
-                    >
-                      <RefreshCw size={15} />
-                      Reconcile payment state
-                    </button>
-                  )}
+                  {!autonomous &&
+                    (status === "CAPTURE_PENDING" ||
+                      status === "PAYOUTS_PENDING" ||
+                      status === "VOID_PENDING" ||
+                      (!isDemo &&
+                        agreement?.payment?.orderId &&
+                        agreement?.payment?.lastError)) && (
+                      <button
+                        className="button button-secondary full"
+                        disabled={Boolean(busy)}
+                        onClick={reconcile}
+                      >
+                        <RefreshCw size={15} />
+                        Reconcile payment state
+                      </button>
+                    )}
                   {terminal && (
                     <div
                       className={`terminal-banner ${status === "VOIDED" ? "voided" : ""}`}
@@ -1935,7 +1971,8 @@ function Integrations({ system, isDemo, onArchitecture }) {
       href: "https://www.ag-grid.com/",
     },
     {
-      name: agentConnection?.mode === "gemini" ? "Google Gemini" : "AI negotiation",
+      name:
+        agentConnection?.mode === "gemini" ? "Google Gemini" : "AI negotiation",
       tag: agentConnection?.status === "configured" ? "CONFIGURED" : "OPTIONAL",
       tone: agentConnection?.status === "configured" ? "mint" : "muted",
       icon: Sparkles,
@@ -1975,10 +2012,9 @@ function Integrations({ system, isDemo, onArchitecture }) {
       icon: Code2,
       description:
         "The PayPal Context Plugin supports the coding workflow with PayPal integration guidance and error-handling references.",
-      detail:
-        contextUsed
-          ? "Installed and consulted during development. It does not execute payments or run production agents."
-          : "Installation and use are documented. Runtime payment authorization stays in the server adapter.",
+      detail: contextUsed
+        ? "Installed and consulted during development. It does not execute payments or run production agents."
+        : "Installation and use are documented. Runtime payment authorization stays in the server adapter.",
       href: "https://context.apimatic.io/",
     },
     {

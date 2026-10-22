@@ -5,6 +5,8 @@ import { negotiate } from '../server/connectors/agents.mjs';
 import { createEvidence, createWeatherAdapter } from '../server/connectors/weather.mjs';
 import { createKernelAdapter } from '../server/connectors/kernel.mjs';
 import { getIntegrationStatus } from '../server/connectors/integrations.mjs';
+import { createCore } from '../server/core.mjs';
+import { createStore } from '../server/store.mjs';
 
 const agreement = {
   id: 'agreement-test-1', totalMinor: 148_000, currency: 'EUR',
@@ -53,8 +55,8 @@ test('Sandbox builds one AUTHORIZE purchase unit, caches OAuth and preserves PEN
   const mock = queuedFetch([
     json({ access_token: 'private-token', expires_in: 3600 }),
     json({ id: 'ORDER123', status: 'PAYER_ACTION_REQUIRED', links: [{ rel: 'payer-action', href: 'https://www.sandbox.paypal.com/checkoutnow?token=ORDER123' }] }),
-    json({ purchase_units: [{ payments: { authorizations: [{ id: 'AUTH123', status: 'CREATED' }] } }] }),
-    json({ id: 'CAPTURE123', status: 'PENDING' }),
+    json({ id: 'ORDER123', status: 'COMPLETED', purchase_units: [{ payments: { authorizations: [{ id: 'AUTH123', status: 'CREATED', amount: { currency_code: 'EUR', value: '1480.00' } }] } }] }),
+    json({ id: 'CAPTURE123', status: 'PENDING', amount: { currency_code: 'EUR', value: '1480.00' } }),
   ]);
   const adapter = createPaymentAdapter(sandboxEnv, { fetch: mock.fetch });
   const order = await adapter.createOrder({ agreement, requestId: 'create' });
@@ -72,6 +74,143 @@ test('Sandbox builds one AUTHORIZE purchase unit, caches OAuth and preserves PEN
   assert.equal(mock.calls[2].headers.authorization, 'Bearer private-token');
   assert.equal(mock.calls[1].headers['PayPal-Request-Id'].length, 36);
   assert.equal(JSON.stringify(capture).includes('private-token'), false);
+});
+
+test('Authorize preserves authorization CREATED/PENDING/DENIED independently of a COMPLETED order', async () => {
+  for (const status of ['CREATED', 'PENDING', 'DENIED']) {
+    const mock = queuedFetch([json({ access_token: 'token', expires_in: 3600 }), json({
+      id: 'ORDER123', status: 'COMPLETED', intent: 'AUTHORIZE',
+      purchase_units: [{ reference_id: agreement.id, payments: { authorizations: [{ id: 'AUTH123', status,
+        amount: { currency_code: 'EUR', value: '1480.00' }, expiration_time: '2026-11-19T20:00:00Z' }] } }],
+    })]);
+    const result = await createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }).authorizeOrder({ agreement, orderId: 'ORDER123' });
+    assert.equal(result.status, status);
+    assert.equal(result.authorizationStatus, status);
+    assert.equal(result.amountMinor, 148000);
+    assert.equal(result.expirationTime, '2026-11-19T20:00:00Z');
+  }
+});
+
+test('Authorize rejects an unexpected order, authorization amount or currency', async () => {
+  for (const [overrides, expectedCode] of [
+    [{ orderId: 'OTHERORDER' }, 'PAYMENT_REFERENCE_MISMATCH'],
+    [{ value: '1479.99' }, 'AUTHORIZATION_AMOUNT_MISMATCH'],
+    [{ currency: 'USD' }, 'AUTHORIZATION_AMOUNT_MISMATCH'],
+    [{ value: '1480.001' }, 'AUTHORIZATION_AMOUNT_MISMATCH'],
+    [{ status: 'UNRECOGNIZED' }, 'INVALID_PROVIDER_RESPONSE'],
+  ]) {
+    const mock = queuedFetch([json({ access_token: 'token', expires_in: 3600 }), json({
+      id: overrides.orderId || 'ORDER123', status: 'COMPLETED', purchase_units: [{ reference_id: agreement.id,
+        payments: { authorizations: [{ id: 'AUTH123', status: overrides.status || 'CREATED', amount: { currency_code: overrides.currency || 'EUR', value: overrides.value || '1480.00' } }] } }],
+    })]);
+    await assert.rejects(createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }).authorizeOrder({ agreement, orderId: 'ORDER123' }), { code: expectedCode });
+  }
+});
+
+function recoveryPayloads({ captureStatus = 'COMPLETED', captureAmount = '1480.00', relatedAuthorizationId = 'AUTH123', captures = true } = {}) {
+  const authorization = { id: 'AUTH123', status: 'CAPTURED', amount: { currency_code: 'EUR', value: '1480.00' } };
+  const candidate = { id: 'CAPTURE123', status: captureStatus, amount: { currency_code: 'EUR', value: '1480.00' }, final_capture: true };
+  return [
+    json({ access_token: 'private-recovery-token', expires_in: 3600 }),
+    json(authorization),
+    json({ id: 'ORDER123', status: 'COMPLETED', intent: 'AUTHORIZE', purchase_units: [{ reference_id: agreement.id,
+      amount: { currency_code: 'EUR', value: '1480.00' }, payments: { authorizations: [authorization], captures: captures === true ? [candidate] : captures === false ? [] : captures } }] }),
+    json({ ...candidate, amount: { currency_code: 'EUR', value: captureAmount }, supplementary_data: { related_ids: { order_id: 'ORDER123', authorization_id: relatedAuthorizationId } } }),
+  ];
+}
+
+test('Lost capture response is recovered through GET of the known order and its capture, without another write', async () => {
+  const mock = queuedFetch(recoveryPayloads());
+  const result = await createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }).reconcile({ agreement: {
+    ...agreement, operations: { capture: 'original-persisted-capture-key' }, payment: { orderId: 'ORDER123', authorizationId: 'AUTH123', status: 'CAPTURE_PENDING' },
+  } });
+  assert.equal(result.payment.captureId, 'CAPTURE123');
+  assert.equal(result.payment.status, 'COMPLETED');
+  assert.equal(result.payment.amountMinor, 148000);
+  assert.equal(result.payment.authorizationId, 'AUTH123');
+  assert.deepEqual(mock.calls.slice(1).map(call => [call.method, new URL(call.url).pathname]), [
+    ['GET', '/v2/payments/authorizations/AUTH123'], ['GET', '/v2/checkout/orders/ORDER123'], ['GET', '/v2/payments/captures/CAPTURE123'],
+  ]);
+  assert.equal(mock.calls.filter(call => call.method === 'POST' && !call.url.endsWith('/v1/oauth2/token')).length, 0);
+  assert.equal(JSON.stringify(result).includes('private-recovery-token'), false);
+});
+
+test('Recovery preserves PENDING capture and does not infer completion from authorization CAPTURED alone', async () => {
+  const pending = queuedFetch(recoveryPayloads({ captureStatus: 'PENDING' }));
+  const refs = { ...agreement, payment: { orderId: 'ORDER123', authorizationId: 'AUTH123', status: 'CAPTURE_PENDING' } };
+  const pendingResult = await createPaymentAdapter(sandboxEnv, { fetch: pending.fetch }).reconcile({ agreement: refs });
+  assert.equal(pendingResult.payment.status, 'PENDING');
+  assert.equal(pendingResult.payment.captureId, 'CAPTURE123');
+  const absent = queuedFetch(recoveryPayloads({ captures: false }).slice(0, 3));
+  const absentResult = await createPaymentAdapter(sandboxEnv, { fetch: absent.fetch }).reconcile({ agreement: refs });
+  assert.equal(absentResult.payment.status, 'PENDING');
+  assert.equal(absentResult.payment.recoveryPending, true);
+  assert.equal(absentResult.payment.captureId, undefined);
+});
+
+test('Recovery rejects a mismatched amount or authorization and refuses ambiguous multi-captures', async () => {
+  const refs = { ...agreement, payment: { orderId: 'ORDER123', authorizationId: 'AUTH123', status: 'CAPTURE_PENDING' } };
+  for (const [options, code] of [
+    [{ captureAmount: '1480.01' }, 'CAPTURE_AMOUNT_MISMATCH'],
+    [{ relatedAuthorizationId: 'OTHER_AUTH' }, 'PAYMENT_REFERENCE_MISMATCH'],
+    [{ captures: [{ id: 'CAPTURE123' }, { id: 'CAPTURE456' }] }, 'AMBIGUOUS_CAPTURE'],
+  ]) {
+    const mock = queuedFetch(recoveryPayloads(options));
+    await assert.rejects(createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }).reconcile({ agreement: refs }), { code });
+    assert.ok(mock.calls.slice(1).every(call => call.method === 'GET'));
+  }
+});
+
+test('A failed recovery GET stops without an uncertain capture POST or a false completed result', async () => {
+  const mock = queuedFetch([json({ access_token: 'token', expires_in: 3600 }),
+    json({ id: 'AUTH123', status: 'CAPTURED', amount: { currency_code: 'EUR', value: '1480.00' } }),
+    json({ name: 'INTERNAL_SERVER_ERROR' }, 500)]);
+  const refs = { ...agreement, payment: { orderId: 'ORDER123', authorizationId: 'AUTH123', status: 'CAPTURE_PENDING' } };
+  await assert.rejects(createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }).reconcile({ agreement: refs }), { code: 'PROVIDER_REJECTED' });
+  assert.ok(mock.calls.slice(1).every(call => call.method === 'GET'));
+});
+
+test('A lost authorization response can be read from the existing order without authorizing again', async () => {
+  const mock = queuedFetch([json({ access_token: 'token', expires_in: 3600 }), json({ id: 'ORDER123', status: 'COMPLETED', intent: 'AUTHORIZE',
+    purchase_units: [{ reference_id: agreement.id, payments: { authorizations: [{ id: 'AUTH123', status: 'CREATED', amount: { currency_code: 'EUR', value: '1480.00' } }] } }] })]);
+  const result = await createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }).reconcile({ agreement: { ...agreement, payment: { orderId: 'ORDER123', status: 'AUTHORIZATION_REQUESTED' } } });
+  assert.equal(result.payment.authorizationId, 'AUTH123');
+  assert.equal(result.payment.status, 'CREATED');
+  assert.equal(mock.calls[1].method, 'GET');
+});
+
+test('Domain capture recovery consumes realistic Sandbox payloads and never repeats the uncertain capture POST', async () => {
+  const recovery = recoveryPayloads();
+  const mock = queuedFetch([
+    recovery[0],
+    json({ id: 'ORDER123', status: 'PAYER_ACTION_REQUIRED' }),
+    json({ id: 'ORDER123', status: 'COMPLETED', purchase_units: [{ payments: { authorizations: [{ id: 'AUTH123', status: 'CREATED', amount: { currency_code: 'EUR', value: '1480.00' } }] } }] }),
+    () => { throw new Error('The capture response was lost after processing'); },
+    recovery[1],
+    // The test agreement has a generated ID, so omit the optional reference_id here.
+    json({ id: 'ORDER123', status: 'COMPLETED', intent: 'AUTHORIZE', purchase_units: [{ amount: { currency_code: 'EUR', value: '1480.00' }, payments: {
+      authorizations: [{ id: 'AUTH123', status: 'CAPTURED', amount: { currency_code: 'EUR', value: '1480.00' } }],
+      captures: [{ id: 'CAPTURE123', status: 'COMPLETED', amount: { currency_code: 'EUR', value: '1480.00' }, final_capture: true }],
+    } }] }),
+    recovery[3],
+  ]);
+  const store = createStore(':memory:');
+  try {
+    const core = createCore({ store, paymentAdapter: createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }), evidenceProvider: async () => ({
+      observedAt: new Date().toISOString(), cloudPercent: 5, windKph: 10, humidityPercent: 40, sources: [{ name: 'Test summit sensor' }, { name: 'Test forecast' }],
+    }) });
+    const agreed = await core.negotiate({ intent: 'Private astronomy experience with 20 minute flexibility', budgetMinor: 150000 });
+    await core.consent(agreed.id, { agreementHash: agreed.hash });
+    await core.createOrder(agreed.id);
+    await core.authorize(agreed.id, { agreementHash: agreed.hash });
+    await core.evaluate(agreed.id, { scenario: 'clear' });
+    const captured = await core.execute(agreed.id);
+    assert.equal(captured.status, 'CAPTURED');
+    assert.equal(captured.payment.captureId, 'CAPTURE123');
+    assert.ok(captured.events.some(event => event.type === 'CAPTURE_RECOVERED'));
+    await core.execute(agreed.id);
+    assert.equal(mock.calls.filter(call => call.method === 'POST' && call.url.endsWith('/authorizations/AUTH123/capture')).length, 1);
+  } finally { store.close(); }
 });
 
 test('Sandbox reuses a stable provider request ID when retrying an operation', async () => {

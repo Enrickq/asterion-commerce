@@ -34,6 +34,15 @@ No enviar contraseñas, códigos de verificación ni claves API por el chat. Gua
 
 Ninguna de estas operaciones utiliza dinero real. El código solo admite modo demo o PayPal Sandbox.
 
+Para aislar las pruebas locales se ha preparado un perfil privado `.env.sandbox`, excluido de Git. Usa puerto 8788, origen de retorno `http://localhost:8788`, datos bajo `data/paypal-sandbox` y Autopilot Sandbox desactivado. Ese archivo no contiene credenciales hasta copiarlas desde una app de pruebas del titular. Arranque, una vez configurado:
+
+```powershell
+node --env-file=.env.sandbox scripts/preflight.mjs
+node --env-file=.env.sandbox server/index.mjs
+```
+
+Abrir `http://localhost:8788` y mantener ese mismo origen durante todo el checkout. La demo pública de Render mantiene su configuración simulada independiente.
+
 ## Modelo real y meteorología real
 
 Para Anthropic: configurar `AGENT_MODE=anthropic`, `ANTHROPIC_API_KEY` y un `ANTHROPIC_MODEL` disponible en esa cuenta. Una suscripción de chat no demuestra acceso API. Los proveedores pueden cobrar llamadas; revisar la facturación propia antes de ejecutar.

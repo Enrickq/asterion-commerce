@@ -216,6 +216,10 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
   const guardAutopilot = (agreement, context) => {
     if (['ARMED', 'RUNNING'].includes(agreement.autopilot?.status) && context?.autopilot !== true) fail(409, 'AUTOPILOT_ACTIVE', 'La ejecución autónoma ya controla este acuerdo. Consulta su progreso.');
   };
+  const isVoidPending = agreement => ['VOID_REQUESTED', 'VOID_PENDING'].includes(agreement.payment.status) || agreement.status === 'VOID_PENDING';
+  const guardVoidPending = agreement => {
+    if (isVoidPending(agreement)) fail(409, 'RECONCILE_REQUIRED', 'La anulación está pendiente de confirmación. Reconcilia su estado; no se reevaluará ni se enviará otra operación de pago.');
+  };
   const adapterCall = async (method, arguments_) => {
     if (typeof paymentAdapter[method] !== 'function') fail(503, 'CONNECTOR_UNAVAILABLE', 'La operación de pago no está disponible.');
     return publicData(await paymentAdapter[method](arguments_));
@@ -243,10 +247,17 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
     }
     const incoming = String(payment.status ?? '').toUpperCase();
     const final = ['COMPLETED', 'VOIDED'].includes(agreement.payment.status);
+    const voidPending = isVoidPending(agreement);
     if (incoming === 'COMPLETED' && agreement.payment.captureId) {
       agreement.payment.status = 'COMPLETED'; agreement.status = 'CAPTURED';
     } else if (!final && incoming === 'VOIDED') {
       agreement.payment.status = 'VOIDED'; agreement.status = 'VOIDED';
+      agreement.payment.voidedAt ??= stamp();
+      agreement.payment.lastError = null;
+    } else if (!final && voidPending) {
+      // CREATED only says that an authorization still exists. It does not prove
+      // that an uncertain cancellation failed or permit changing its decision to capture.
+      agreement.payment.status = 'VOID_REQUESTED'; agreement.status = 'VOID_PENDING';
     } else if (!final && ['AUTHORIZED', 'CREATED'].includes(incoming) && agreement.payment.authorizationId && !agreement.operations.capture) {
       agreement.payment.status = 'AUTHORIZED'; agreement.status = 'AUTHORIZED';
     } else if (!final && ['DECLINED', 'DENIED', 'FAILED'].includes(incoming)) {
@@ -262,7 +273,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
   const core = {
     provider,
     status() {
-      return { ok: true, name: 'ASTERION', mode: provider, paymentProvider: provider, paymentMode: provider, sandboxOnly: true, storage: 'sqlite', time: stamp(), agreements: store.list().length };
+      return { ok: true, name: 'ASTERION', mode: provider, paymentProvider: provider, paymentMode: provider, sandboxOnly: true, sandboxAutopilotEnabled: provider === 'paypal-sandbox' && allowSandboxAutopilot === true, storage: 'sqlite', time: stamp(), agreements: store.list().length };
     },
     list(ownerId) { return store.list(ownerId).map(agreement => publicData(agreement)); },
     get(id) { return publicData(get(id)); },
@@ -399,6 +410,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
         const agreement = get(id);
         assertConsent(agreement); ensureProvider(agreement);
         guardAutopilot(agreement, context);
+        guardVoidPending(agreement);
         if (!agreement.payment.authorizationId || ['COMPLETED', 'VOIDED', 'CAPTURE_PENDING', 'CAPTURE_REQUESTED'].includes(agreement.payment.status)) fail(409, 'AUTHORIZATION_REQUIRED', 'Se requiere una autorización activa sin capturar.');
         const scenario = input.scenario ?? 'clear';
         if (!['clear', 'cloudy', 'stale', 'conflict', 'live'].includes(scenario)) fail(400, 'INVALID_SCENARIO', 'Escenario meteorológico desconocido.');
@@ -420,6 +432,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
         assertConsent(agreement); ensureProvider(agreement);
         guardAutopilot(agreement, context);
         if (['COMPLETED', 'VOIDED'].includes(agreement.payment.status)) return publicData(agreement);
+        guardVoidPending(agreement);
         if (['CAPTURE_PENDING', 'CAPTURE_REQUESTED'].includes(agreement.payment.status)) fail(409, 'RECONCILE_REQUIRED', 'La captura está pendiente. Reconcilia el estado; no se enviará otro cobro.');
         if (!agreement.payment.authorizationId) fail(409, 'AUTHORIZATION_REQUIRED', 'Autoriza el pago antes de ejecutarlo.');
         if (!agreement.evaluation) fail(409, 'EVIDENCE_REQUIRED', 'Evalúa primero la evidencia meteorológica.');
@@ -460,6 +473,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
           // Ambiguous capture responses remain pending until reconciliation; never mark failed and charge again.
           agreement.payment.lastError = errorInfo(error);
           if (capture) { agreement.payment.status = 'CAPTURE_PENDING'; agreement.status = 'CAPTURE_PENDING'; }
+          else { agreement.payment.status = 'VOID_REQUESTED'; agreement.status = 'VOID_PENDING'; }
           appendEvent(agreement, capture ? 'CAPTURE_UNCONFIRMED' : 'VOID_UNCONFIRMED', 'La respuesta del proveedor es incierta. Es necesario reconciliar el estado.', stamp(), errorInfo(error));
           agreement = save(agreement);
           if (capture) {

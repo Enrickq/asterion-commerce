@@ -19,6 +19,58 @@ function agreementId(agreement) {
   return agreement.id;
 }
 
+const AUTHORIZATION_STATUSES = new Set(['CREATED', 'CAPTURED', 'DENIED', 'PARTIALLY_CAPTURED', 'VOIDED', 'PENDING']);
+const CAPTURE_STATUSES = new Set(['COMPLETED', 'DECLINED', 'DENIED', 'PARTIALLY_REFUNDED', 'PENDING', 'REFUNDED', 'FAILED']);
+
+function providerId(value, expected) {
+  if (typeof value !== 'string' || !/^[A-Za-z0-9_-]{3,150}$/.test(value)) throw connectorError('INVALID_PROVIDER_RESPONSE', 'PayPal Sandbox devolvió una referencia no válida.');
+  if (expected && value !== expected) throw connectorError('PAYMENT_REFERENCE_MISMATCH', 'La referencia de PayPal no coincide con el acuerdo.');
+  return value;
+}
+
+function verifiedAmount(amount, expectedMinor, code = 'PAYMENT_AMOUNT_MISMATCH') {
+  if (amount?.currency_code !== 'EUR' || typeof amount.value !== 'string' || !/^(?:0|[1-9]\d{0,8})(?:\.\d{1,2})?$/.test(amount.value)) {
+    throw connectorError(code, 'PayPal no confirmó un importe válido en EUR.');
+  }
+  const [whole, fraction = ''] = amount.value.split('.');
+  const minor = Number(whole) * 100 + Number(fraction.padEnd(2, '0'));
+  if (!Number.isSafeInteger(minor) || minor <= 0 || minor > 100_000_000 || (expectedMinor !== undefined && minor !== expectedMinor)) {
+    throw connectorError(code, 'El importe de PayPal no coincide con el importe acordado.');
+  }
+  return minor;
+}
+
+function verifiedAuthorization(authorization, agreement, expectedId) {
+  const authorizationId = providerId(authorization?.id, expectedId);
+  if (!AUTHORIZATION_STATUSES.has(authorization.status)) throw connectorError('INVALID_PROVIDER_RESPONSE', 'PayPal no confirmó un estado de autorización válido.');
+  const amountMinor = verifiedAmount(authorization.amount, agreement?.totalMinor, 'AUTHORIZATION_AMOUNT_MISMATCH');
+  if (authorization.expiration_time !== undefined && !Number.isFinite(Date.parse(authorization.expiration_time))) throw connectorError('INVALID_PROVIDER_RESPONSE', 'PayPal devolvió una fecha de expiración no válida.');
+  return { authorizationId, status: authorization.status, authorizationStatus: authorization.status, amountMinor, currency: 'EUR',
+    ...(authorization.expiration_time && { expirationTime: authorization.expiration_time, authorizationExpiresAt: authorization.expiration_time }) };
+}
+
+function verifiedCapture(capture, agreement, refs, expectedId) {
+  const captureId = providerId(capture?.id, expectedId);
+  if (!CAPTURE_STATUSES.has(capture.status)) throw connectorError('INVALID_PROVIDER_RESPONSE', 'PayPal no confirmó un estado de captura válido.');
+  const amountMinor = verifiedAmount(capture.amount, agreement?.totalMinor, 'CAPTURE_AMOUNT_MISMATCH');
+  const related = capture.supplementary_data?.related_ids ?? {};
+  if ((refs.orderId && related.order_id && related.order_id !== refs.orderId) || (refs.authorizationId && related.authorization_id && related.authorization_id !== refs.authorizationId)) {
+    throw connectorError('PAYMENT_REFERENCE_MISMATCH', 'La captura de PayPal pertenece a otra orden o autorización.');
+  }
+  return { captureId, status: capture.status, captureStatus: capture.status, amountMinor, currency: 'EUR',
+    ...(refs.orderId && { orderId: refs.orderId }), ...(refs.authorizationId && { authorizationId: refs.authorizationId }) };
+}
+
+function verifiedUnit(order, orderId, agreement) {
+  providerId(order?.id, orderId);
+  if (order.intent !== undefined && order.intent !== 'AUTHORIZE') throw connectorError('PAYMENT_REFERENCE_MISMATCH', 'La orden no corresponde al flujo de autorización acordado.');
+  if (!Array.isArray(order.purchase_units) || order.purchase_units.length !== 1) throw connectorError('INVALID_PROVIDER_RESPONSE', 'Se requiere una única unidad de compra en la orden PayPal.');
+  const unit = order.purchase_units[0];
+  if (agreement && unit.reference_id !== undefined && unit.reference_id !== agreement.id) throw connectorError('PAYMENT_REFERENCE_MISMATCH', 'La unidad de compra no corresponde al acuerdo.');
+  if (unit.amount !== undefined) verifiedAmount(unit.amount, agreement?.totalMinor);
+  return unit;
+}
+
 function paymentRefs(agreement) {
   return { ...(agreement?.payments || {}), ...(agreement?.payment || {}),
     orderId: agreement?.payment?.orderId || agreement?.payments?.orderId || agreement?.orderId,
@@ -113,15 +165,18 @@ export function createPaymentAdapter(env = process.env, options = {}) {
     async authorizeOrder(args) {
       const orderId = args.orderId;
       const encoded = requireId(orderId, 'Pedido');
+      if (args.agreement) moneyValue(args.agreement.totalMinor, args.agreement.currency || 'EUR');
       const key = requestKey('authorize', args, orderId);
       if (kind === 'demo') return demoOnce(key, () => remember(demoId('AUTH', key), {
         orderId, authorizationId: demoId('AUTH', key), status: 'CREATED', simulated: true, provider: kind,
       }));
       const data = await api(`/v2/checkout/orders/${encoded}/authorize`, { method: 'POST', body: {}, requestId: key });
-      const authorization = data.purchase_units?.[0]?.payments?.authorizations?.[0];
-      if (!authorization?.id) throw connectorError('PAYPAL_AUTHORIZATION_MISSING', 'PayPal Sandbox no confirmó una autorización.');
-      return { orderId, authorizationId: authorization.id, status: authorization.status, simulated: false, provider: kind,
-        ...(authorization.expiration_time && { expirationTime: authorization.expiration_time }) };
+      const unit = verifiedUnit(data, orderId, args.agreement);
+      const authorizations = unit.payments?.authorizations;
+      if (!Array.isArray(authorizations) || authorizations.length !== 1) throw connectorError('PAYPAL_AUTHORIZATION_MISSING', 'PayPal Sandbox no confirmó una única autorización.');
+      // Order.status can be COMPLETED while authorization.status is only CREATED/PENDING.
+      // Preserve the authorization's actual status; the domain service decides readiness.
+      return { orderId, ...verifiedAuthorization(authorizations[0], args.agreement), simulated: false, provider: kind };
     },
     async captureAuthorization(args) {
       const encoded = requireId(args.authorizationId, 'Autorización');
@@ -133,8 +188,7 @@ export function createPaymentAdapter(env = process.env, options = {}) {
       }));
       const data = await api(`/v2/payments/authorizations/${encoded}/capture`, { method: 'POST', requestId: key,
         body: { amount: { currency_code: currency, value }, final_capture: true } });
-      if (!data.id || !data.status) throw connectorError('INVALID_PROVIDER_RESPONSE', 'PayPal Sandbox no confirmó el estado de captura.');
-      return { captureId: data.id, status: data.status, authorizationId: args.authorizationId, simulated: false, provider: kind };
+      return { ...verifiedCapture(data, { totalMinor: args.amountMinor }, { ...paymentRefs(args.agreement), authorizationId: args.authorizationId }), simulated: false, provider: kind };
     },
     async voidAuthorization(args) {
       const encoded = requireId(args.authorizationId, 'Autorización');
@@ -170,9 +224,7 @@ export function createPaymentAdapter(env = process.env, options = {}) {
       if (!captureId) throw connectorError('CAPTURE_REQUIRED', 'El reparto necesita una captura confirmada.', 409);
       const capture = await api(`/v2/payments/captures/${requireId(captureId, 'Captura')}`);
       if (capture.status !== 'COMPLETED') throw connectorError('CAPTURE_NOT_COMPLETED', 'La captura sigue pendiente; no se pueden enviar pagos.', 409);
-      if (capture.amount?.currency_code !== (agreement.currency || 'EUR') || capture.amount?.value !== moneyValue(agreement.totalMinor, agreement.currency || 'EUR')) {
-        throw connectorError('CAPTURE_AMOUNT_MISMATCH', 'La captura no coincide con el importe del acuerdo.', 409);
-      }
+      verifiedCapture(capture, agreement, paymentRefs(agreement), captureId);
       const data = await api('/v1/payments/payouts', { method: 'POST', requestId: key,
         body: { sender_batch_header: { sender_batch_id: batchId, email_subject: 'Liquidación de experiencia ASTERION' }, items } });
       if (!data.batch_header?.payout_batch_id) throw connectorError('INVALID_PROVIDER_RESPONSE', 'PayPal Sandbox no devolvió un lote de pagos.');
@@ -180,6 +232,7 @@ export function createPaymentAdapter(env = process.env, options = {}) {
         items: allocations.map((a) => ({ allocationId: a.id, senderItemId: itemId(a), status: 'PENDING', amountMinor: a.amountMinor })) };
     },
     async reconcile({ agreement }) {
+      moneyValue(agreement?.totalMinor, agreement?.currency || 'EUR');
       const refs = paymentRefs(agreement);
       const result = { provider: kind, simulated: kind === 'demo' };
       if (kind === 'demo') {
@@ -193,10 +246,37 @@ export function createPaymentAdapter(env = process.env, options = {}) {
       }
       if (refs.captureId) {
         const capture = await api(`/v2/payments/captures/${requireId(refs.captureId, 'Captura')}`);
-        result.payment = { captureId: capture.id, status: capture.status };
+        result.payment = verifiedCapture(capture, agreement, refs, refs.captureId);
       } else if (refs.authorizationId) {
         const authorization = await api(`/v2/payments/authorizations/${requireId(refs.authorizationId, 'Autorización')}`);
-        result.payment = { authorizationId: authorization.id, status: authorization.status };
+        result.payment = verifiedAuthorization(authorization, agreement, refs.authorizationId);
+      }
+      const unknownCapture = !refs.captureId && (agreement.operations?.capture || ['CAPTURE_REQUESTED', 'CAPTURE_PENDING'].includes(agreement.payment?.status)
+        || ['CAPTURED', 'PARTIALLY_CAPTURED'].includes(result.payment?.status));
+      if (refs.orderId && (!refs.authorizationId || unknownCapture)) {
+        const order = await api(`/v2/checkout/orders/${requireId(refs.orderId, 'Pedido')}`);
+        const unit = verifiedUnit(order, refs.orderId, agreement);
+        const authorizations = unit.payments?.authorizations ?? [];
+        if (!Array.isArray(authorizations)) throw connectorError('INVALID_PROVIDER_RESPONSE', 'PayPal devolvió autorizaciones no válidas.');
+        if (!refs.authorizationId && authorizations.length === 1) result.payment = verifiedAuthorization(authorizations[0], agreement);
+        const authorizationId = refs.authorizationId || result.payment?.authorizationId;
+        const captures = unit.payments?.captures ?? [];
+        if (!Array.isArray(captures) || captures.length > 1) throw connectorError('AMBIGUOUS_CAPTURE', 'La orden contiene varias capturas y requiere revisión; no se repetirá el cobro.');
+        if (captures.length === 1) {
+          const candidate = captures[0];
+          providerId(candidate?.id);
+          verifiedAmount(candidate.amount, agreement.totalMinor, 'CAPTURE_AMOUNT_MISMATCH');
+          const capture = await api(`/v2/payments/captures/${requireId(candidate.id, 'Captura')}`);
+          const related = capture.supplementary_data?.related_ids ?? {};
+          const oneKnownAuthorization = authorizations.length === 1 && authorizations[0]?.id === authorizationId;
+          // The capture must belong to this order and to its known authorization.
+          // Related IDs prove the link; a single authorization in the known order also binds it.
+          if (!authorizationId || (!oneKnownAuthorization && related.authorization_id !== authorizationId)) throw connectorError('UNVERIFIED_CAPTURE', 'No se pudo vincular la captura a la autorización acordada.');
+          result.payment = verifiedCapture(capture, agreement, { orderId: refs.orderId, authorizationId }, candidate.id);
+        } else if (unknownCapture) {
+          // CAPTURED on an authorization alone is not a completed capture receipt.
+          result.payment = { ...result.payment, status: 'PENDING', recoveryPending: true };
+        }
       }
       if (refs.batchId) {
         const payouts = await api(`/v1/payments/payouts/${requireId(refs.batchId, 'Lote')}?page_size=1000`);

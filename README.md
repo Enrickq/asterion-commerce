@@ -73,7 +73,7 @@ The definitive implementation notes and account requirements are in [INTEGRATION
 
 ## Deployment
 
-The [public demo](https://asterion-mj13.onrender.com/) runs on Render Free with auto-deploy disabled. The deployed application commit is `c7d2884`; later documentation commits do not change the running code. Deployment and both autonomous outcomes were verified on October 22, 2026, Canary Islands time.
+The [public demo](https://asterion-mj13.onrender.com/) runs on Render Free with auto-deploy disabled. The initial public verification used application commit `c7d2884`. Deployment and both autonomous outcomes were verified on October 22, 2026, Canary Islands time. Later verification records distinguish application changes from documentation updates.
 
 [render.yaml](render.yaml) prepares a free public demo with `PUBLIC_DEMO=true`, simulated payments and SQLite under `/tmp/asterion`. Guest sessions use signed HttpOnly cookies; agreements and receipts are scoped to that browser's session. The server blocks PayPal Sandbox payments and Kernel launches in public-demo mode.
 

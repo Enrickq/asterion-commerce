@@ -70,6 +70,10 @@ Demonstrate create → buyer approval → authorize → evidence evaluation → 
 
 In local demo mode the customer can arm Autopilot after authorization. A SQLite job executes three seconds later without manual evaluate, execute or payout requests. Private Sandbox automation additionally requires `ALLOW_SANDBOX_AUTOPILOT=true` and an arm payload containing `confirmSandboxAutopilot: true`, `agreementHash` and `scenario`. Keep this disabled until the manual Sandbox flow is verified. Public demo mode does not permit Sandbox payments.
 
+The private Sandbox interface only displays its Autopilot control when the server reports that explicit opt-in. Pressing it sends the exact agreement hash and Sandbox confirmation. It remains disabled by default. Run manual capture and void checks before enabling it, and configure test payout recipients before expecting full settlement.
+
+If a capture response is lost, reconciliation performs read-only provider queries against the known authorization and order, then validates the discovered capture's amount, currency and references. Authorization status `CAPTURED` alone does not prove receipt of the full agreed amount. Multiple captures, conflicting references or incomplete responses remain unresolved and block disbursement. The application never repeats an uncertain capture POST during reconciliation. See [Orders GET](https://developer.paypal.com/api/orders/v2/orders-get/) and [Capture GET](https://developer.paypal.com/api/payments/v2/captures-get/).
+
 Webhooks require an externally reachable HTTPS endpoint and the matching app's webhook ID. Validate configured event handling against the implementation and [PayPal webhook documentation](https://developer.paypal.com/api/rest/webhooks/) before filming. Local fixture events do not prove webhook delivery.
 
 When testing through Vite, set `PUBLIC_BASE_URL=http://localhost:5173` so buyer return URLs open the development frontend. For a production build served by Node, use its origin instead. This origin is public information, not a credential.
