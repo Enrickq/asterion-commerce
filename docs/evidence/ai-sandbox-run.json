@@ -1,0 +1,106 @@
+{
+  "environment": "paypal-sandbox",
+  "realMoney": false,
+  "agentMode": "gemini",
+  "weatherMode": "fixtures",
+  "modelEvidence": "gemini-verification.json",
+  "applicationBaseCommit": "6003fd518fd4a10f2b0c69cba63158a028445f80",
+  "appliedChanges": "Payout reconciliation validates individual amounts, currency, allocation and batch references.",
+  "verificationMethod": "Private application run: three actual Gemini supplier quotes, buyer-approved Sandbox order and autonomous capture/Payouts. Authenticated provider GET verification. Sanitized local evidence summary, not a signed provider attestation.",
+  "runs": [
+    {
+      "scenario": "clear",
+      "execution": "autonomous",
+      "verifiedAt": "2026-10-22T23:17:05.529Z",
+      "agreementId": "90136dcb-b2ce-4c9e-bb4d-728f7a9a5283",
+      "agreementStatus": "SETTLED",
+      "agreementHash": "f355a35e85a9d8a24eb939dc0b2645504771d9dafe8691fc5128d99567362f62",
+      "budgetMinor": 170000,
+      "totalMinor": 165000,
+      "currency": "EUR",
+      "allocations": [
+        {
+          "id": "guide",
+          "amountMinor": 42500,
+          "currency": "EUR"
+        },
+        {
+          "id": "telescope",
+          "amountMinor": 62000,
+          "currency": "EUR"
+        },
+        {
+          "id": "transport",
+          "amountMinor": 42500,
+          "currency": "EUR"
+        },
+        {
+          "id": "organizer",
+          "amountMinor": 18000,
+          "currency": "EUR"
+        }
+      ],
+      "orderId": "6JT012996C584050G",
+      "authorizationId": "0LC90935H9885203J",
+      "captureId": "7VR1969115331232D",
+      "providerPayment": {
+        "captureId": "7VR1969115331232D",
+        "status": "COMPLETED",
+        "captureStatus": "COMPLETED",
+        "amountMinor": 165000,
+        "currency": "EUR",
+        "orderId": "6JT012996C584050G",
+        "authorizationId": "0LC90935H9885203J"
+      },
+      "payouts": {
+        "batchId": "RUM3WK7FZNHFG",
+        "status": "SUCCESS",
+        "items": [
+          {
+            "allocationId": "guide",
+            "payoutItemId": "Z5XYNSBRDEFWJ",
+            "senderItemId": "astra-ecab08a2d113ae89cc9e079849744c",
+            "status": "SUCCESS",
+            "amountMinor": 42500,
+            "currency": "EUR",
+            "configuredRecipientMatched": true
+          },
+          {
+            "allocationId": "telescope",
+            "payoutItemId": "HTQYEAMLU3V8G",
+            "senderItemId": "astra-56ecde5b462597f00bfc4c84e58bae",
+            "status": "SUCCESS",
+            "amountMinor": 62000,
+            "currency": "EUR",
+            "configuredRecipientMatched": true
+          },
+          {
+            "allocationId": "transport",
+            "payoutItemId": "5YBBRJJRBF4QC",
+            "senderItemId": "astra-fe585cf14a17b9e61c917e60760aec",
+            "status": "SUCCESS",
+            "amountMinor": 42500,
+            "currency": "EUR",
+            "configuredRecipientMatched": true
+          }
+        ]
+      },
+      "autopilot": {
+        "status": "COMPLETED",
+        "armedAt": "2026-10-22T23:16:06.117Z",
+        "completedAt": "2026-10-22T23:16:40.839Z",
+        "attempts": 9,
+        "outcome": "SETTLED"
+      },
+      "agreementHashValid": true,
+      "eventChainValid": true,
+      "payoutItemsVerifiedAt": "2026-10-22T23:17:39.900Z"
+    }
+  ],
+  "unverified": [
+    "Real inventory or bookings",
+    "Live weather",
+    "Webhook delivery",
+    "Production payments"
+  ]
+}

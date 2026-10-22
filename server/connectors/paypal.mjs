@@ -94,6 +94,43 @@ function payoutAllocations(agreement) {
   return allocations.filter((a) => !['platform', 'platform-fee', 'fee', 'organizer'].includes(a.id) && !['platform', 'organizer'].includes(a.role) && !['platform', 'organizer'].includes(a.kind) && !a.retained);
 }
 
+function verifiedPayoutBatch(payouts, agreement, expectedBatchId) {
+  const batchId = providerId(payouts?.batch_header?.payout_batch_id);
+  if (batchId !== expectedBatchId) throw connectorError('PAYOUT_BATCH_MISMATCH', 'El lote devuelto por PayPal no coincide con el lote conocido.');
+  const senderBatchId = payouts.batch_header.sender_batch_header?.sender_batch_id;
+  if (senderBatchId !== undefined && senderBatchId !== stableRequestId('batch', agreement.id)) throw connectorError('PAYOUT_BATCH_MISMATCH', 'La referencia del remitente no corresponde al acuerdo.');
+  const status = payouts.batch_header.batch_status;
+  if (typeof status !== 'string' || !/^[A-Z_]{1,50}$/.test(status)) throw connectorError('INVALID_PROVIDER_RESPONSE', 'PayPal no devolvió un estado de lote válido.');
+  const allocations = payoutAllocations(agreement);
+  const expectedItems = new Map(allocations.map(allocation => [stableRequestId('item', `${agreement.id}:${allocation.id}`), allocation]));
+  if (expectedItems.size !== 3) throw connectorError('INVALID_ALLOCATIONS', 'La reconciliación de esta demo requiere tres asignaciones de proveedor.', 400);
+  const items = payouts.items === undefined ? [] : payouts.items;
+  if (!Array.isArray(items) || items.length > 3 || (payouts.total_items !== undefined && (!Number.isInteger(payouts.total_items) || payouts.total_items > 3 || payouts.total_items < items.length))
+      || (payouts.total_pages !== undefined && (!Number.isInteger(payouts.total_pages) || payouts.total_pages < 0 || payouts.total_pages > 1))
+      || (payouts.links !== undefined && !Array.isArray(payouts.links)) || payouts.links?.some(link => link?.rel === 'next')) {
+    throw connectorError('INVALID_PAYOUT_BATCH', 'El lote contiene más pagos de los esperados o requiere una página adicional.');
+  }
+  const seenSenderIds = new Set();
+  const seenPayoutIds = new Set();
+  const verifiedItems = items.map(item => {
+    const senderItemId = item?.payout_item?.sender_item_id;
+    const allocation = expectedItems.get(senderItemId);
+    if (!allocation) throw connectorError('PAYOUT_ITEM_MISMATCH', 'Un pago del lote no corresponde a una asignación esperada.');
+    const payoutItemId = providerId(item.payout_item_id);
+    if (seenSenderIds.has(senderItemId) || seenPayoutIds.has(payoutItemId)) throw connectorError('DUPLICATE_PAYOUT_ITEM', 'El lote contiene referencias de pago duplicadas.');
+    seenSenderIds.add(senderItemId);
+    seenPayoutIds.add(payoutItemId);
+    if (item.payout_batch_id !== undefined && item.payout_batch_id !== expectedBatchId) throw connectorError('PAYOUT_BATCH_MISMATCH', 'Un pago pertenece a otro lote de PayPal.');
+    const amount = item.payout_item.amount;
+    const amountMinor = verifiedAmount({ currency_code: amount?.currency, value: amount?.value }, allocation.amountMinor, 'PAYOUT_AMOUNT_MISMATCH');
+    if (typeof item.transaction_status !== 'string' || !/^[A-Z_]{1,50}$/.test(item.transaction_status)) throw connectorError('INVALID_PROVIDER_RESPONSE', 'PayPal no devolvió un estado individual válido.');
+    return { payoutItemId, senderItemId, allocationId: allocation.id, status: item.transaction_status, amountMinor, currency: 'EUR' };
+  });
+  // In-progress batches may expose fewer items. The domain service requires all
+  // three independently verified successes before it can mark the agreement SETTLED.
+  return { batchId, status, items: verifiedItems };
+}
+
 export function createPaymentAdapter(env = process.env, options = {}) {
   const kind = env.PAYMENTS_MODE || env.PAYPAL_MODE || 'demo';
   if (!['demo', 'paypal-sandbox'].includes(kind)) throw connectorError('UNSUPPORTED_PAYMENT_MODE', 'Solo se permite demo o paypal-sandbox.', 500);
@@ -280,10 +317,7 @@ export function createPaymentAdapter(env = process.env, options = {}) {
       }
       if (refs.batchId) {
         const payouts = await api(`/v1/payments/payouts/${requireId(refs.batchId, 'Lote')}?page_size=1000`);
-        result.payouts = { batchId: payouts.batch_header?.payout_batch_id || refs.batchId, status: payouts.batch_header?.batch_status,
-          items: (payouts.items || []).map((item) => ({ payoutItemId: item.payout_item_id, senderItemId: item.payout_item?.sender_item_id,
-            allocationId: agreement.allocations.find((a) => stableRequestId('item', `${agreement.id}:${a.id}`) === item.payout_item?.sender_item_id)?.id,
-            status: item.transaction_status })) };
+        result.payouts = verifiedPayoutBatch(payouts, agreement, refs.batchId);
       }
       return result;
     },

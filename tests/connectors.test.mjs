@@ -7,6 +7,7 @@ import { createKernelAdapter } from '../server/connectors/kernel.mjs';
 import { getIntegrationStatus } from '../server/connectors/integrations.mjs';
 import { createCore } from '../server/core.mjs';
 import { createStore } from '../server/store.mjs';
+import { stableRequestId } from '../server/connectors/shared.mjs';
 
 const agreement = {
   id: 'agreement-test-1', totalMinor: 148_000, currency: 'EUR',
@@ -236,6 +237,121 @@ test('Sandbox payout verifies completed capture and omits the retained platform 
   assert.equal(body.items.reduce((sum, i) => sum + Math.round(Number(i.amount.value) * 100), 0), 130_000);
   assert.equal(new Set(body.items.map((i) => i.sender_item_id)).size, 3);
   assert.match(body.sender_batch_header.sender_batch_id, /^astra-/);
+});
+
+function payoutBatchPayload(sourceAgreement = agreement) {
+  return { batch_header: { payout_batch_id: 'BATCH123', batch_status: 'SUCCESS' }, total_items: 3, total_pages: 1,
+    items: sourceAgreement.allocations.filter(allocation => allocation.id !== 'organizer').map((allocation, index) => ({
+      payout_item_id: `PAYOUTITEM${index + 1}`, payout_batch_id: 'BATCH123', transaction_status: 'SUCCESS',
+      payout_item: { sender_item_id: stableRequestId('item', `${sourceAgreement.id}:${allocation.id}`),
+        amount: { currency: 'EUR', value: (allocation.amountMinor / 100).toFixed(2) } },
+    })) };
+}
+
+function payoutReconcileMock(payload) {
+  return queuedFetch([json({ access_token: 'private-payout-token', expires_in: 3600 }),
+    json({ id: 'CAPTURE123', status: 'COMPLETED', amount: { currency_code: 'EUR', value: '1480.00' } }), json(payload)]);
+}
+const payoutAgreement = () => ({ ...agreement, payment: { captureId: 'CAPTURE123', status: 'COMPLETED', payouts: { batchId: 'BATCH123' } } });
+
+test('Payout reconciliation binds all recipients to expected sender IDs and preserves verified EUR amounts', async () => {
+  const mock = payoutReconcileMock(payoutBatchPayload());
+  const result = await createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }).reconcile({ agreement: payoutAgreement() });
+  assert.equal(result.payouts.batchId, 'BATCH123');
+  assert.deepEqual(result.payouts.items.map(item => [item.allocationId, item.amountMinor, item.currency, item.status]), [
+    ['guide', 40000, 'EUR', 'SUCCESS'], ['telescope', 50000, 'EUR', 'SUCCESS'], ['transport', 40000, 'EUR', 'SUCCESS'],
+  ]);
+  assert.equal(JSON.stringify(result).includes('private-payout-token'), false);
+  assert.ok(mock.calls.slice(1).every(call => call.method === 'GET'));
+});
+
+test('Payout reconciliation rejects foreign batches, recipients and duplicate provider or sender IDs', async () => {
+  const cases = [
+    [payload => { payload.batch_header.payout_batch_id = 'OTHERBATCH'; }, 'PAYOUT_BATCH_MISMATCH'],
+    [payload => { payload.batch_header.sender_batch_header = { sender_batch_id: 'another-agreement-batch' }; }, 'PAYOUT_BATCH_MISMATCH'],
+    [payload => { payload.items[0].payout_batch_id = 'OTHERBATCH'; }, 'PAYOUT_BATCH_MISMATCH'],
+    [payload => { payload.items[0].payout_item.sender_item_id = stableRequestId('item', 'another-agreement:guide'); }, 'PAYOUT_ITEM_MISMATCH'],
+    [payload => { payload.items[0].payout_item.sender_item_id = stableRequestId('item', `${agreement.id}:organizer`); }, 'PAYOUT_ITEM_MISMATCH'],
+    [payload => { payload.items[1].payout_item.sender_item_id = payload.items[0].payout_item.sender_item_id; }, 'DUPLICATE_PAYOUT_ITEM'],
+    [payload => { payload.items[1].payout_item_id = payload.items[0].payout_item_id; }, 'DUPLICATE_PAYOUT_ITEM'],
+    [payload => { payload.items[0].payout_item_id = 'https://untrusted.example/item'; }, 'INVALID_PROVIDER_RESPONSE'],
+  ];
+  for (const [mutate, code] of cases) {
+    const payload = payoutBatchPayload();
+    mutate(payload);
+    const mock = payoutReconcileMock(payload);
+    await assert.rejects(createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }).reconcile({ agreement: payoutAgreement() }), { code });
+    assert.ok(mock.calls.slice(1).every(call => call.method === 'GET'));
+  }
+});
+
+test('Payout reconciliation rejects wrong currency, changed amounts and missing amount evidence', async () => {
+  for (const mutate of [
+    payload => { payload.items[0].payout_item.amount.value = '399.99'; },
+    payload => { payload.items[0].payout_item.amount.currency = 'USD'; },
+    payload => { payload.items[0].payout_item.amount.value = '400.001'; },
+    payload => { delete payload.items[0].payout_item.amount; },
+  ]) {
+    const payload = payoutBatchPayload();
+    mutate(payload);
+    const mock = payoutReconcileMock(payload);
+    await assert.rejects(createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }).reconcile({ agreement: payoutAgreement() }), { code: 'PAYOUT_AMOUNT_MISMATCH' });
+  }
+});
+
+test('Payout reconciliation rejects extra or hidden items instead of trusting a success batch header', async () => {
+  for (const mutate of [
+    payload => { payload.items.push(structuredClone(payload.items[0])); },
+    payload => { payload.total_items = 4; },
+    payload => { payload.total_pages = 2; },
+    payload => { payload.links = [{ rel: 'next', href: 'https://api-m.sandbox.paypal.com/next' }]; },
+  ]) {
+    const payload = payoutBatchPayload();
+    mutate(payload);
+    const mock = payoutReconcileMock(payload);
+    await assert.rejects(createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }).reconcile({ agreement: payoutAgreement() }), { code: 'INVALID_PAYOUT_BATCH' });
+  }
+});
+
+test('Partial payout batch stays pending in the domain until all three validated item successes arrive', async () => {
+  let agreed;
+  const mock = queuedFetch([json({ access_token: 'token', expires_in: 3600 }),
+    json({ id: 'CAPTURE123', status: 'COMPLETED', amount: { currency_code: 'EUR', value: '1480.00' } }),
+    () => { const payload = payoutBatchPayload(agreed); payload.items = []; payload.batch_header.batch_status = 'PROCESSING'; return json(payload); },
+    json({ id: 'CAPTURE123', status: 'COMPLETED', amount: { currency_code: 'EUR', value: '1480.00' } }),
+    () => { const payload = payoutBatchPayload(agreed); payload.items = payload.items.slice(0, 2); return json(payload); },
+    json({ id: 'CAPTURE123', status: 'COMPLETED', amount: { currency_code: 'EUR', value: '1480.00' } }),
+    () => { const payload = payoutBatchPayload(agreed); payload.items[1].transaction_status = 'FAILED'; return json(payload); },
+    json({ id: 'CAPTURE123', status: 'COMPLETED', amount: { currency_code: 'EUR', value: '1480.00' } }),
+    () => json(payoutBatchPayload(agreed)),
+  ]);
+  const sandbox = createPaymentAdapter(sandboxEnv, { fetch: mock.fetch });
+  const store = createStore(':memory:');
+  try {
+    const core = createCore({ store, paymentAdapter: {
+      mode: 'paypal-sandbox', createOrder: async () => ({ orderId: 'ORDER123' }), authorize: async () => ({ authorizationId: 'AUTH123', status: 'CREATED' }),
+      capture: async () => ({ captureId: 'CAPTURE123', status: 'COMPLETED' }), payouts: async () => ({ batchId: 'BATCH123', status: 'PENDING', items: [] }), reconcile: args => sandbox.reconcile(args),
+    }, evidenceProvider: async () => ({ observedAt: new Date().toISOString(), cloudPercent: 5, windKph: 10, humidityPercent: 40, sources: [{ name: 'Test summit' }, { name: 'Test forecast' }] }) });
+    agreed = await core.negotiate({ intent: 'Private astronomy experience with scheduling flexibility', budgetMinor: 150000 });
+    await core.consent(agreed.id, { agreementHash: agreed.hash });
+    await core.createOrder(agreed.id);
+    await core.authorize(agreed.id, { agreementHash: agreed.hash });
+    await core.evaluate(agreed.id, { scenario: 'clear' });
+    await core.execute(agreed.id);
+    await core.payouts(agreed.id);
+    const empty = await core.reconcile(agreed.id);
+    assert.equal(empty.status, 'PAYOUTS_PENDING');
+    assert.equal(empty.payment.payouts.items.length, 0);
+    const partial = await core.reconcile(agreed.id);
+    assert.equal(partial.status, 'PAYOUTS_PENDING');
+    assert.equal(partial.payment.payouts.items.length, 2);
+    const failedItem = await core.reconcile(agreed.id);
+    assert.equal(failedItem.status, 'PAYOUTS_PENDING');
+    assert.equal(failedItem.payment.payouts.items[1].status, 'FAILED');
+    const complete = await core.reconcile(agreed.id);
+    assert.equal(complete.status, 'SETTLED');
+    assert.equal(complete.payment.payouts.items.length, 3);
+  } finally { store.close(); }
 });
 
 test('No payout is submitted while the capture is pending', async () => {

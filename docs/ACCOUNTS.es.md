@@ -2,7 +2,7 @@
 
 La demo local no necesita ninguna cuenta. Ya se puede probar con los modos `demo`, `deterministic` y `fixtures` de `.env.example`. Crear cuentas de proveedores no equivale a tener sus integraciones verificadas.
 
-GitHub y Render ya están configurados para esta entrega: [repositorio público](https://github.com/Enrickq/asterion-commerce) y [demo publicada](https://asterion-mj13.onrender.com/). La demo gratuita utiliza pagos, agentes y meteorología simulados. PayPal Sandbox ya tiene una app privada configurada y pruebas reales de autorización, captura, anulación y tres Payouts verificadas por su API. Un mandato posterior completó captura y Payouts mediante Autopilot. El clima externo y una negociación completa con modelo siguen pendientes; ver [evidencia](evidence/paypal-sandbox.json).
+GitHub y Render ya están configurados para esta entrega: [repositorio público](https://github.com/Enrickq/asterion-commerce) y [demo publicada](https://asterion-mj13.onrender.com/). La demo gratuita utiliza pagos, agentes y meteorología simulados. PayPal Sandbox ya tiene una app privada configurada y pruebas reales de autorización, captura, anulación y tres Payouts verificadas por su API. Se verificaron ambos resultados mediante Autopilot. Gemini también completó tres ofertas reales y un acuerdo privado por 1.650 EUR. El clima externo y la entrega de webhooks siguen pendientes; ver [evidencia PayPal](evidence/paypal-sandbox.json) y [Gemini](evidence/gemini-verification.json).
 
 ## Lo mínimo que debe completar el titular
 

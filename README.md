@@ -10,7 +10,9 @@ ASTERION is a working prototype for conditional agentic commerce. A buyer agent 
 
 The product question is simple: **can an agent explain why money should move, and prove why it did not move when conditions failed?**
 
-The default experience runs locally without accounts or API keys. It uses reproducible negotiation, weather fixtures and simulated payments, clearly identified as demo data. **Actual PayPal Sandbox authorization, capture, separate supplier Payouts and a cloudy-condition void were verified on October 22, 2026** in a private local environment. A further approved mandate completed capture and all three Payouts autonomously. See the [sanitized provider evidence](docs/evidence/paypal-sandbox.json). Live weather, complete model negotiation and webhook delivery remain unverified.
+The default experience runs locally without accounts or API keys. It uses reproducible negotiation, weather fixtures and simulated payments, clearly identified as demo data. **Actual PayPal Sandbox authorization, capture, separate supplier Payouts and a cloudy-condition void were verified on October 22, 2026** in a private local environment. Further approved mandates completed both outcomes autonomously. See the [sanitized provider evidence](docs/evidence/paypal-sandbox.json). On October 23, Canary Islands time, **three actual Gemini supplier calls produced a €1,650 agreement within a €1,700 mandate**; see [model evidence](docs/evidence/gemini-verification.json). Live weather and webhook delivery remain unverified.
+
+The same Gemini-negotiated agreement subsequently completed buyer-approved PayPal Sandbox authorization, autonomous capture and three validated supplier payments. [Integrated AI → Sandbox evidence](docs/evidence/ai-sandbox-run.json) records the €1,650 capture and €425/€620/€425 Payouts. The public hosted demo retains simulated payments and deterministic agents.
 
 ## Run locally
 
@@ -62,7 +64,7 @@ An authorization is not an escrow service. Voiding an authorization is not refun
 | Local agent negotiation | Reproducible deterministic execution | No foundation model used in default mode |
 | PayPal | Sandbox-only order, authorization, capture/void and Payouts adapter | Actual capture, void and three individual Payouts verified; autonomous clear and cloudy outcomes verified; webhooks pending |
 | Anthropic | Optional model adapter | Requires API key and explicit model choice |
-| Google Gemini | Optional model adapter with three isolated supplier contexts | Two actual guide quotes verified; complete negotiation blocked by provider failures; [evidence](docs/evidence/gemini-verification.json) |
+| Google Gemini | Optional model adapter with three isolated supplier contexts | Complete private negotiation verified with `gemini-3.1-flash-lite`; [evidence](docs/evidence/gemini-verification.json) |
 | AEMET | Optional observation adapter | Requires API key and station ID; incomplete evidence fails closed |
 | Render | Free public demo deployed in Frankfurt | Hosted Autopilot clear/cloudy flows verified; [verification record](docs/VERIFICATION.es.md) |
 | APIMatic | PayPal Context Plugin installed and used for implementation review | Development aid; [evidence](docs/APIMATIC-CONTEXT.md), no generated SDK or runtime integration claim |
@@ -71,11 +73,11 @@ An authorization is not an escrow service. Voiding an authorization is not refun
 
 The definitive implementation notes and account requirements are in [INTEGRATIONS](docs/INTEGRATIONS.md) and [ACCOUNTS.es](docs/ACCOUNTS.es.md). A planned integration does not qualify as a completed sponsor submission.
 
-![Private PayPal Sandbox supplier payment results](docs/assets/asterion-sandbox-settled.png)
+![Gemini agreement settled through private PayPal Sandbox](docs/assets/asterion-ai-sandbox-settled.png)
 
 ## Deployment
 
-The [public demo](https://asterion-mj13.onrender.com/) runs on Render Free with auto-deploy disabled. Application commit `2060605` and both simulated autonomous outcomes were verified on October 22, 2026, Canary Islands time. Private Sandbox verification uses the same application code with separate local credentials and data. Later verification records distinguish application changes from documentation updates.
+The [public demo](https://asterion-mj13.onrender.com/) runs on Render Free with auto-deploy disabled. Application commit `6003fd5` and both simulated autonomous outcomes were verified on October 23, 2026, Canary Islands time. Private Sandbox runs use separate local credentials and data; their evidence records retain their historical application baseline. Verification records distinguish application revisions from documentation updates.
 
 [render.yaml](render.yaml) prepares a free public demo with `PUBLIC_DEMO=true`, simulated payments and SQLite under `/tmp/asterion`. Guest sessions use signed HttpOnly cookies; agreements and receipts are scoped to that browser's session. The server blocks PayPal Sandbox payments and Kernel launches in public-demo mode.
 

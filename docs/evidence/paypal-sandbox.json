@@ -29,27 +29,38 @@
         "status": "SUCCESS",
         "items": [
           {
+            "allocationId": "guide",
             "payoutItemId": "EFD77TTXHEWVL",
             "senderItemId": "astra-ed124687b8c18bcd9fdf1ab2af1322",
-            "allocationId": "guide",
-            "status": "SUCCESS"
+            "status": "SUCCESS",
+            "amountMinor": 40000,
+            "currency": "EUR",
+            "configuredRecipientMatched": true
           },
           {
+            "allocationId": "telescope",
             "payoutItemId": "U64R9N3MJS79W",
             "senderItemId": "astra-ccf5f6c5644c7707c1c76a73dd68a3",
-            "allocationId": "telescope",
-            "status": "SUCCESS"
+            "status": "SUCCESS",
+            "amountMinor": 50000,
+            "currency": "EUR",
+            "configuredRecipientMatched": true
           },
           {
+            "allocationId": "transport",
             "payoutItemId": "RDZ9GDQ4R6PML",
             "senderItemId": "astra-7e495ce9693954b8bc82cdaf83b1d7",
-            "allocationId": "transport",
-            "status": "SUCCESS"
+            "status": "SUCCESS",
+            "amountMinor": 40000,
+            "currency": "EUR",
+            "configuredRecipientMatched": true
           }
         ]
       },
       "agreementHashValid": true,
-      "eventChainValid": true
+      "eventChainValid": true,
+      "payoutItemsVerifiedAt": "2026-10-22T23:11:18.887Z",
+      "captureVerifiedAt": "2026-10-22T09:48:45.473Z"
     },
     {
       "scenario": "cloudy",
@@ -95,22 +106,31 @@
         "status": "SUCCESS",
         "items": [
           {
+            "allocationId": "guide",
             "payoutItemId": "EPZV6AWRMC6LS",
             "senderItemId": "astra-b23551cc5ddb2e5a3daf4bc0d70f09",
-            "allocationId": "guide",
-            "status": "SUCCESS"
+            "status": "SUCCESS",
+            "amountMinor": 40000,
+            "currency": "EUR",
+            "configuredRecipientMatched": true
           },
           {
+            "allocationId": "telescope",
             "payoutItemId": "ZLFCL3KFXR9US",
             "senderItemId": "astra-49334c078c04a6ad73c404b4615d35",
-            "allocationId": "telescope",
-            "status": "SUCCESS"
+            "status": "SUCCESS",
+            "amountMinor": 50000,
+            "currency": "EUR",
+            "configuredRecipientMatched": true
           },
           {
+            "allocationId": "transport",
             "payoutItemId": "3DUHXMTC3SHJS",
             "senderItemId": "astra-c0398d9017fced16ab97613bd518fc",
-            "allocationId": "transport",
-            "status": "SUCCESS"
+            "status": "SUCCESS",
+            "amountMinor": 40000,
+            "currency": "EUR",
+            "configuredRecipientMatched": true
           }
         ]
       },
@@ -122,7 +142,8 @@
         "outcome": "SETTLED"
       },
       "agreementHashValid": true,
-      "eventChainValid": true
+      "eventChainValid": true,
+      "payoutItemsVerifiedAt": "2026-10-22T23:11:19.317Z"
     },
     {
       "scenario": "cloudy",

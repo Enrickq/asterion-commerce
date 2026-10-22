@@ -1,12 +1,12 @@
 {
-  "verifiedAt": "2026-10-22T16:26:14.060Z",
+  "verifiedAt": "2026-10-22T23:15:39.462Z",
   "billingTierObservedInDashboard": "Free Tier",
   "billingEnabledByThisWork": false,
-  "completeSupplierNegotiationVerified": false,
+  "completeSupplierNegotiationVerified": true,
   "verificationMethod": "Private application requests observed by a local fetch wrapper. Only response metadata and hashes retained; not a signed provider attestation.",
   "counts": {
-    "requests": 13,
-    "http200": 2,
+    "requests": 16,
+    "http200": 5,
     "http503": 9,
     "http404": 1,
     "transportFailures": 1
@@ -61,7 +61,119 @@
         "serviceTier": "standard"
       },
       "responseSha256": "a71f20263baaee765e52533128d556d0a2917b4039649fc7e2ac0bbf0e74af93"
+    },
+    {
+      "requestedAt": "2026-10-22T23:10:42.571Z",
+      "model": "gemini-3.1-flash-lite",
+      "modelVersion": "gemini-3.1-flash-lite",
+      "finishReason": "STOP",
+      "functionCalls": [
+        {
+          "name": "quote",
+          "amountMinor": 42500
+        }
+      ],
+      "usage": {
+        "promptTokenCount": 257,
+        "candidatesTokenCount": 55,
+        "totalTokenCount": 312,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 257
+          }
+        ],
+        "serviceTier": "standard"
+      },
+      "responseSha256": "f7206a9a44a9eaf98d68e66e57072f947f2541feda5b54f4effdeb6692c8cec0"
+    },
+    {
+      "requestedAt": "2026-10-22T23:11:06.686Z",
+      "model": "gemini-3.1-flash-lite",
+      "modelVersion": "gemini-3.1-flash-lite",
+      "finishReason": "STOP",
+      "functionCalls": [
+        {
+          "name": "quote",
+          "amountMinor": 62000
+        }
+      ],
+      "usage": {
+        "promptTokenCount": 257,
+        "candidatesTokenCount": 62,
+        "totalTokenCount": 319,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 257
+          }
+        ],
+        "serviceTier": "standard"
+      },
+      "responseSha256": "a9e605796470d12fb1ed469b0b3381b74ebad7d4a0ba81931719a9449be36c44"
+    },
+    {
+      "requestedAt": "2026-10-22T23:11:34.902Z",
+      "model": "gemini-3.1-flash-lite",
+      "modelVersion": "gemini-3.1-flash-lite",
+      "finishReason": "STOP",
+      "functionCalls": [
+        {
+          "name": "quote",
+          "amountMinor": 42500
+        }
+      ],
+      "usage": {
+        "promptTokenCount": 255,
+        "candidatesTokenCount": 62,
+        "totalTokenCount": 317,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 255
+          }
+        ],
+        "serviceTier": "standard"
+      },
+      "responseSha256": "feea9ab50132dd8059cd1e83ed2475c202063254d4953f12da5bca933119fa2a"
     }
   ],
-  "outcome": "Isolated guide quotes were returned by Gemini, but no complete three-supplier negotiation succeeded. Service errors stopped negotiation before any agreement or payment was created. Models listed by the API are not thereby proven to support a successful inference."
+  "successfulNegotiation": {
+    "verifiedAt": "2026-10-22T23:11:36.998Z",
+    "canaryDate": "2026-10-23",
+    "model": "gemini-3.1-flash-lite",
+    "requests": 3,
+    "allHttp200": true,
+    "inferenceWallTimeMs": 54427,
+    "agreementId": "90136dcb-b2ce-4c9e-bb4d-728f7a9a5283",
+    "agreementHash": "f355a35e85a9d8a24eb939dc0b2645504771d9dafe8691fc5128d99567362f62",
+    "budgetMinor": 170000,
+    "totalMinor": 165000,
+    "currency": "EUR",
+    "allocations": [
+      {
+        "id": "guide",
+        "amountMinor": 42500,
+        "currency": "EUR"
+      },
+      {
+        "id": "telescope",
+        "amountMinor": 62000,
+        "currency": "EUR"
+      },
+      {
+        "id": "transport",
+        "amountMinor": 42500,
+        "currency": "EUR"
+      },
+      {
+        "id": "organizer",
+        "amountMinor": 18000,
+        "currency": "EUR"
+      }
+    ],
+    "agreementHashValid": true,
+    "eventChainValid": true
+  },
+  "outcome": "A subsequent private run completed all three supplier quote requests and persisted a Gemini-negotiated agreement. Earlier service failures stopped before creating an agreement or payment. Supplier inventory remains simulated; explanatory model text does not alter the fixed service catalog or payment policy."
 }

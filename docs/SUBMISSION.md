@@ -20,7 +20,7 @@ Our first story is a private stargazing experience in La Palma: a guide, portabl
 
 The buyer's mandate becomes a negotiated agreement. Supplier offers and allocations appear in an AG Grid operations view. A deterministic policy evaluates evidence and drives separate authorization, capture and void stages. An audit receipt explains the decision and distinguishes local demo events from payment-provider responses. Supplier disbursements follow capture as separate operations.
 
-The repository includes a reproducible local mode without accounts, alongside PayPal Sandbox, Google Gemini, Anthropic and AEMET adapters. Actual PayPal Sandbox buyer approval, authorization, a €1,480 capture, three separate supplier Payouts and a cloudy-condition void were verified privately on October 22, 2026. A further approved mandate completed capture and all three Payouts autonomously. The public demonstration uses deterministic agents, labeled weather fixtures and simulated payment transitions. Complete model negotiation, live weather and webhook delivery remain unverified.
+The repository includes a reproducible local mode without accounts, alongside PayPal Sandbox, Google Gemini, Anthropic and AEMET adapters. Private Sandbox capture, separate supplier Payouts and cloudy-condition voids were verified manually and autonomously. On October 23, Canary Islands time, three actual Gemini supplier calls produced a €1,650 agreement within a €1,700 mandate. That same buyer-approved agreement completed Sandbox capture and three Payouts autonomously. The public demonstration retains deterministic agents and simulated payments. Inventory, weather and booking availability remain simulated; live weather and webhook delivery are unverified.
 
 ## How we built it
 
@@ -42,8 +42,9 @@ The hard part is preserving distinctions that a chat interface can hide: a forec
 - Separate adapters for optional external services, with no credentials required for the default demo.
 - Actual private PayPal Sandbox authorization, conditional capture and three individually successful Payouts, plus a separate failed-condition authorization void; provider statuses verified through authenticated API queries.
 - An additional approved Sandbox mandate completed capture and three supplier payments autonomously after arming.
+- Three actual Gemini supplier quotes produced a persisted agreement that subsequently completed autonomous PayPal Sandbox capture and three individually validated supplier payments.
 
-The [sanitized PayPal evidence](evidence/paypal-sandbox.json) separates actual provider results from simulated agents and weather. A complete model negotiation and webhook delivery require their own verification before adding them to the video.
+The [integrated AI → Sandbox evidence](evidence/ai-sandbox-run.json), [model request metadata](evidence/gemini-verification.json) and [baseline PayPal outcomes](evidence/paypal-sandbox.json) separate actual provider results from simulated inventory and weather. Webhook delivery still requires verification.
 
 ## What we learned
 
@@ -51,7 +52,7 @@ Useful agent autonomy requires an explicit mandate and a deterministic boundary 
 
 ## What's next
 
-Complete model and oracle verification, then pilot with an actual operator and permitted site. Add authenticated operator access, durable orchestration and complete location-specific evidence. Deploy supplier agents independently and expand to other coordinated purchases with measurable fulfillment conditions.
+Complete the real oracle and operator integrations, then pilot with an actual operator and permitted site. Add authenticated operator access, durable orchestration and complete location-specific evidence. Deploy supplier agents independently and expand to other coordinated purchases with measurable fulfillment conditions.
 
 ## Built with
 
@@ -63,7 +64,7 @@ Node.js 24, React, Vite, SQLite, AG Grid Community. Optional implemented adapter
 - Public demo: https://asterion-mj13.onrender.com/; hosted flows verified, see [record](VERIFICATION.es.md).
 - Video URL and final runtime: **pending**.
 - Actual PayPal Sandbox authorization/capture/void and three individual Payouts: **verified**, [sanitized record](evidence/paypal-sandbox.json). Autonomous clear and cloudy Sandbox outcomes: **verified**. Webhook delivery: **pending**.
-- Actual model inference: **partially verified**, [two isolated Gemini guide quotes](evidence/gemini-verification.json). Complete three-supplier AI negotiation: **pending**.
+- Complete three-supplier Gemini negotiation and subsequent autonomous Sandbox settlement: **verified**, [integrated record](evidence/ai-sandbox-run.json).
 - Completed sponsor integrations and proof of meaningful use: **pending**.
 - Final eligibility, submission requirements, prize compatibility and deadline timezone checked against the current [official event page](https://paypalaihackathon.devpost.com/): **pending**.
 

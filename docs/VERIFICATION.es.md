@@ -44,12 +44,12 @@ La configuración privada `.env.sandbox` está excluida de Git y usa datos y pue
 
 Se verificó OAuth contra `https://api-m.sandbox.paypal.com`, sin registrar el token. Un comprador ficticio aprobó dos órdenes mediante el checkout oficial Sandbox. La aplicación solicitó sus autorizaciones al servidor PayPal.
 
-| Recorrido privado | Resultado de la API PayPal | Importe | Verificación UTC |
+| Recorrido privado | Resultado de la API PayPal | Importe | Primera verificación UTC |
 | --- | --- | --- | --- |
 | Cielo válido de prueba → captura | Captura `COMPLETED` | 1.480 EUR | 22/10/2026 09:48:45 |
 | Nubes de prueba → anulación | Autorización `VOIDED`, sin capture ID | 1.480 EUR autorizados; sin captura | 22/10/2026 16:06:10 |
 
-La comprobación posterior usó consultas autenticadas GET del adaptador para contrastar el estado, importe y referencias del proveedor. Ambos recibos conservaron el hash del acuerdo y la cadena de eventos válidos. El [resumen saneado](evidence/paypal-sandbox.json) conserva identificadores ficticios y marcas de tiempo, sin credenciales, tokens, direcciones de correo ni identificadores de sesión.
+La comprobación posterior usó consultas autenticadas GET del adaptador para contrastar el estado, importe y referencias del proveedor. Ambos recibos conservaron el hash del acuerdo y la cadena de eventos válidos. El [resumen saneado](evidence/paypal-sandbox.json) conserva referencias de transacciones Sandbox emitidas por PayPal, con cuentas ficticias, sin credenciales, tokens, direcciones de correo ni identificadores de sesión. `captureVerifiedAt` registra la primera comprobación de captura; `verifiedAt` y `payoutItemsVerifiedAt` registran comprobaciones posteriores del acuerdo y sus desembolsos, por eso sus horas difieren.
 
 Después de la captura manual se creó el lote `BAC4GMDTDQGR2`. Las consultas GET confirmaron `SUCCESS` para cada proveedor: guía 400 EUR, telescopio 500 EUR y transporte 400 EUR. El acuerdo pasó a `SETTLED`. El organizador mantuvo el resto bruto de 180 EUR antes de comisiones e impuestos; los Payouts utilizan su saldo disponible, no un split atómico de la captura.
 
@@ -59,8 +59,14 @@ Un cuarto mandato aprobado probó Autopilot con nubes. El servidor anuló la aut
 
 Estas pruebas utilizan dinero ficticio. La negociación y el clima de los cuatro acuerdos permanecen en modo determinista y fixtures. No prueban meteorología real, una negociación completa con modelo ni entrega de webhooks. La demo pública conserva sus pagos simulados.
 
-## Verificación parcial de Gemini
+## Verificación de Gemini y liquidación del mismo acuerdo
 
-Se creó una clave privada con autorización del titular y se verificó en AI Studio el nivel gratuito y las cuotas de los modelos. La consulta REST de modelos funcionó. De 13 solicitudes de inferencia en comprobaciones acotadas, dos devolvieron HTTP 200 con una llamada `quote` válida para el guía. Nueve devolvieron 503, una 404 y otra agotó el tiempo de respuesta. Ninguna negociación reunió las tres ofertas; no se creó un acuerdo ni un pago a partir de esos intentos. El [resumen saneado](evidence/gemini-verification.json) incluye versión del modelo, consumo de tokens y hashes de las respuestas correctas.
+Se creó una clave privada con autorización del titular y se verificó en AI Studio el nivel gratuito y las cuotas de los modelos. Los primeros 13 intentos produjeron dos respuestas HTTP 200 aisladas, nueve errores 503, un 404 y un timeout. Esos intentos no crearon ningún acuerdo ni pago. La integración solicita ahora las ofertas secuencialmente, permite una sola repetición ante 503 y da a Gemini un límite de respuesta de 45 segundos. No repite errores de cuota o autenticación ni sustituye ofertas fallidas por precios locales. Las llamadas financieras conservan su límite de 15 segundos.
 
-La integración ahora solicita las ofertas secuencialmente y reintenta una sola vez los errores Gemini 503. No reintenta errores de cuota o autenticación ni sustituye ofertas fallidas por precios locales. El límite de respuesta Gemini es 45 segundos; las operaciones financieras conservan 15 segundos. **66 pruebas locales**, compilación, preflight y smoke pasan con este cambio. La configuración privada vuelve a negociación determinista hasta completar la prueba externa. No se activó facturación de Google.
+Una nueva ejecución del **23 de octubre de 2026, hora de Canarias**, completó tres llamadas reales de `gemini-3.1-flash-lite`, todas HTTP 200 y con una única llamada `quote` válida por proveedor. Las ofertas fueron guía 425 EUR, telescopio 620 EUR y transporte 425 EUR. Con 180 EUR de coordinación, el acuerdo sumó 1.650 EUR dentro de un mandato de 1.700 EUR. La inferencia de esta ejecución tardó aproximadamente 55 segundos. El [registro saneado de Gemini](evidence/gemini-verification.json) conserva modelo, tokens, hashes de respuestas y vínculo al acuerdo.
+
+Ese mismo acuerdo se aprobó mediante checkout Sandbox y se autorizó por 1.650 EUR. Tras armar Autopilot, el servidor evaluó el fixture claro, capturó el importe y completó tres Payouts. Consultas GET confirmaron captura `COMPLETED`, pagos individuales `SUCCESS`, importes EUR exactos y destinatarios configurados coincidentes. El acuerdo y el trabajo terminaron `SETTLED` y `COMPLETED`, con hash y cadena válidos. Ver [evidencia integrada](evidence/ai-sandbox-run.json).
+
+La revisión añade validación de lote, asignación, moneda e importe por Payout y rechaza duplicados o referencias ajenas. Los lotes parciales conservan estado pendiente. **71 pruebas locales pasan** con esta revisión; las consultas externas también verificaron los lotes históricos con el nuevo adaptador. La configuración privada vuelve a negociación determinista para nuevas misiones, sin alterar la procedencia Gemini del acuerdo ya guardado. No se activó facturación de Google.
+
+El catálogo, el inventario y el clima siguen siendo de prueba. Las explicaciones del modelo no pueden modificar el catálogo de servicios, las asignaciones validadas ni la política financiera. Esta ejecución no demuestra una reserva real, meteorología externa, entrega de webhooks o uso de dinero real.

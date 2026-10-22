@@ -25,6 +25,12 @@ El 22 de octubre de 2026 se verificaron cuatro acuerdos privados: captura y tres
 
 Cambiar la frase de 1:04 por: «Esto es PayPal Sandbox: fondos de prueba y una aprobación real en el entorno de pruebas». Mostrar el dominio de Sandbox durante la aprobación y el ID de autorización retornado por PayPal. Después de capturar o anular, contrastar el resultado en la cuenta Sandbox y en el recibo del sistema. No llamar a fondos Sandbox dinero real.
 
+## Variante integrada con Gemini verificada
+
+El 23 de octubre, hora de Canarias, tres llamadas reales de Gemini negociaron un paquete de **1.650 EUR dentro de 1.700 EUR**: guía 425, telescopio 620, transporte 425 y coordinación 180. Ese mismo acuerdo terminó liquidado por Autopilot en PayPal Sandbox, con captura y tres Payouts confirmados. Ver [evidencia integrada](evidence/ai-sandbox-run.json).
+
+Para grabar esta variante, usar esos importes y explicar que el catálogo y el clima siguen simulados. La inferencia tardó unos 55 segundos en la ejecución verificada: si se edita la espera, rotular el tiempo transcurrido. No presentar el descuento fijo de la demo determinista como resultado del modelo. El vídeo continúa pendiente de grabación.
+
 Si los payouts aún no se han probado externamente, explicar que las asignaciones son el ledger de proveedores y que su envío está pendiente de verificación. Mostrar `PENDING` como pendiente; no convertirlo en éxito para el vídeo.
 
 ## Límites que refuerzan el relato
