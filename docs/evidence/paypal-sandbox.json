@@ -1,0 +1,161 @@
+{
+  "environment": "paypal-sandbox",
+  "applicationBaseCommit": "20606056ba21d0d4644516842021106508cd61a1",
+  "verificationMethod": "Private local application runs followed by authenticated read-only PayPal Sandbox REST queries. Sanitized summary of local evidence; not a digitally signed PayPal attestation.",
+  "realMoney": false,
+  "agentMode": "deterministic",
+  "weatherMode": "fixtures",
+  "runs": [
+    {
+      "scenario": "clear",
+      "execution": "manual",
+      "verifiedAt": "2026-10-22T16:12:12.426Z",
+      "agreementId": "3b9b8cd9-9e1c-40f9-840b-fce308f5bd46",
+      "agreementStatus": "SETTLED",
+      "orderId": "9534121033193470S",
+      "authorizationId": "7GX24156KU941092T",
+      "captureId": "33655806BE450551V",
+      "providerPayment": {
+        "captureId": "33655806BE450551V",
+        "status": "COMPLETED",
+        "captureStatus": "COMPLETED",
+        "amountMinor": 148000,
+        "currency": "EUR",
+        "orderId": "9534121033193470S",
+        "authorizationId": "7GX24156KU941092T"
+      },
+      "payouts": {
+        "batchId": "BAC4GMDTDQGR2",
+        "status": "SUCCESS",
+        "items": [
+          {
+            "payoutItemId": "EFD77TTXHEWVL",
+            "senderItemId": "astra-ed124687b8c18bcd9fdf1ab2af1322",
+            "allocationId": "guide",
+            "status": "SUCCESS"
+          },
+          {
+            "payoutItemId": "U64R9N3MJS79W",
+            "senderItemId": "astra-ccf5f6c5644c7707c1c76a73dd68a3",
+            "allocationId": "telescope",
+            "status": "SUCCESS"
+          },
+          {
+            "payoutItemId": "RDZ9GDQ4R6PML",
+            "senderItemId": "astra-7e495ce9693954b8bc82cdaf83b1d7",
+            "allocationId": "transport",
+            "status": "SUCCESS"
+          }
+        ]
+      },
+      "agreementHashValid": true,
+      "eventChainValid": true
+    },
+    {
+      "scenario": "cloudy",
+      "execution": "manual",
+      "verifiedAt": "2026-10-22T16:06:10.081Z",
+      "agreementId": "74237502-bd8a-42e7-af99-362afe3327d7",
+      "agreementStatus": "VOIDED",
+      "orderId": "6UJ75965DU995673V",
+      "authorizationId": "0J866873P48744439",
+      "captureId": null,
+      "providerPayment": {
+        "authorizationId": "0J866873P48744439",
+        "status": "VOIDED",
+        "authorizationStatus": "VOIDED",
+        "amountMinor": 148000,
+        "currency": "EUR",
+        "expirationTime": "2026-11-20T09:52:57Z",
+        "authorizationExpiresAt": "2026-11-20T09:52:57Z"
+      },
+      "agreementHashValid": true,
+      "eventChainValid": true
+    },
+    {
+      "scenario": "clear",
+      "execution": "autonomous",
+      "verifiedAt": "2026-10-22T16:16:14.425Z",
+      "agreementId": "10d819f2-1fe4-4cb0-86d5-3cfa76e47edf",
+      "agreementStatus": "SETTLED",
+      "orderId": "484579840T734164B",
+      "authorizationId": "5BX27902MU282521J",
+      "captureId": "0YE58205MA598371L",
+      "providerPayment": {
+        "captureId": "0YE58205MA598371L",
+        "status": "COMPLETED",
+        "captureStatus": "COMPLETED",
+        "amountMinor": 148000,
+        "currency": "EUR",
+        "orderId": "484579840T734164B",
+        "authorizationId": "5BX27902MU282521J"
+      },
+      "payouts": {
+        "batchId": "FYR2NSAASEYZJ",
+        "status": "SUCCESS",
+        "items": [
+          {
+            "payoutItemId": "EPZV6AWRMC6LS",
+            "senderItemId": "astra-b23551cc5ddb2e5a3daf4bc0d70f09",
+            "allocationId": "guide",
+            "status": "SUCCESS"
+          },
+          {
+            "payoutItemId": "ZLFCL3KFXR9US",
+            "senderItemId": "astra-49334c078c04a6ad73c404b4615d35",
+            "allocationId": "telescope",
+            "status": "SUCCESS"
+          },
+          {
+            "payoutItemId": "3DUHXMTC3SHJS",
+            "senderItemId": "astra-c0398d9017fced16ab97613bd518fc",
+            "allocationId": "transport",
+            "status": "SUCCESS"
+          }
+        ]
+      },
+      "autopilot": {
+        "status": "COMPLETED",
+        "armedAt": "2026-10-22T16:15:26.813Z",
+        "completedAt": "2026-10-22T16:15:58.489Z",
+        "attempts": 10,
+        "outcome": "SETTLED"
+      },
+      "agreementHashValid": true,
+      "eventChainValid": true
+    },
+    {
+      "scenario": "cloudy",
+      "execution": "autonomous",
+      "verifiedAt": "2026-10-22T16:27:33.072Z",
+      "agreementId": "d1296ff9-581c-4f8f-ac68-e94597af5462",
+      "agreementStatus": "VOIDED",
+      "orderId": "8C364270YK1525707",
+      "authorizationId": "0PM31646PY438751X",
+      "captureId": null,
+      "providerPayment": {
+        "authorizationId": "0PM31646PY438751X",
+        "status": "VOIDED",
+        "authorizationStatus": "VOIDED",
+        "amountMinor": 148000,
+        "currency": "EUR",
+        "expirationTime": "2026-11-20T16:26:41Z",
+        "authorizationExpiresAt": "2026-11-20T16:26:41Z"
+      },
+      "autopilot": {
+        "status": "COMPLETED",
+        "armedAt": "2026-10-22T16:27:08.641Z",
+        "completedAt": "2026-10-22T16:27:13.050Z",
+        "attempts": 1,
+        "outcome": "VOIDED"
+      },
+      "agreementHashValid": true,
+      "eventChainValid": true
+    }
+  ],
+  "unverified": [
+    "Live weather",
+    "Webhook delivery",
+    "Complete foundation-model negotiation"
+  ]
+}

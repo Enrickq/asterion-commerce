@@ -2,7 +2,7 @@
 
 La demo local no necesita ninguna cuenta. Ya se puede probar con los modos `demo`, `deterministic` y `fixtures` de `.env.example`. Crear cuentas de proveedores no equivale a tener sus integraciones verificadas.
 
-GitHub y Render ya están configurados para esta entrega: [repositorio público](https://github.com/Enrickq/asterion-commerce) y [demo publicada](https://asterion-mj13.onrender.com/). La demo gratuita utiliza pagos, agentes y meteorología simulados. PayPal Sandbox y un modelo real siguen pendientes de credenciales y pruebas externas.
+GitHub y Render ya están configurados para esta entrega: [repositorio público](https://github.com/Enrickq/asterion-commerce) y [demo publicada](https://asterion-mj13.onrender.com/). La demo gratuita utiliza pagos, agentes y meteorología simulados. PayPal Sandbox ya tiene una app privada configurada y pruebas reales de autorización, captura, anulación y tres Payouts verificadas por su API. Un mandato posterior completó captura y Payouts mediante Autopilot. El clima externo y una negociación completa con modelo siguen pendientes; ver [evidencia](evidence/paypal-sandbox.json).
 
 ## Lo mínimo que debe completar el titular
 
@@ -34,7 +34,7 @@ No enviar contraseñas, códigos de verificación ni claves API por el chat. Gua
 
 Ninguna de estas operaciones utiliza dinero real. El código solo admite modo demo o PayPal Sandbox.
 
-Para aislar las pruebas locales se ha preparado un perfil privado `.env.sandbox`, excluido de Git. Usa puerto 8788, origen de retorno `http://localhost:8788`, datos bajo `data/paypal-sandbox` y Autopilot Sandbox desactivado. Ese archivo no contiene credenciales hasta copiarlas desde una app de pruebas del titular. Arranque, una vez configurado:
+Para aislar las pruebas locales se ha configurado un perfil privado `.env.sandbox`, excluido de Git. Usa puerto 8788, origen de retorno `http://localhost:8788` y datos bajo `data/paypal-sandbox`. Autopilot Sandbox se habilitó tras verificar las rutas manuales y configurar tres destinatarios ficticios distintos. La plantilla lo mantiene desactivado por defecto. Las credenciales del titular se guardan únicamente en ese archivo local y no se incluyen en el repositorio. Cada nueva instalación necesita sus propias credenciales. Arranque, una vez configurado:
 
 ```powershell
 node --env-file=.env.sandbox scripts/preflight.mjs

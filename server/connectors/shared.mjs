@@ -19,10 +19,10 @@ export function moneyValue(amountMinor, currency = 'EUR') {
   return `${Math.floor(amountMinor / 100)}.${String(amountMinor % 100).padStart(2, '0')}`;
 }
 
-export async function fetchJson(fetchImpl, url, options = {}, provider = 'Proveedor') {
+export async function fetchJson(fetchImpl, url, options = {}, provider = 'Proveedor', timeoutMs = 15_000) {
   let response;
   try {
-    response = await fetchImpl(url, { ...options, redirect: 'error', signal: AbortSignal.timeout(15_000) });
+    response = await fetchImpl(url, { ...options, redirect: 'error', signal: AbortSignal.timeout(timeoutMs) });
   } catch {
     throw connectorError('PROVIDER_UNAVAILABLE', `${provider}: conexión no disponible o tiempo de espera agotado.`);
   }

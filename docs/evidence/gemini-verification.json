@@ -1,0 +1,67 @@
+{
+  "verifiedAt": "2026-10-22T16:26:14.060Z",
+  "billingTierObservedInDashboard": "Free Tier",
+  "billingEnabledByThisWork": false,
+  "completeSupplierNegotiationVerified": false,
+  "verificationMethod": "Private application requests observed by a local fetch wrapper. Only response metadata and hashes retained; not a signed provider attestation.",
+  "counts": {
+    "requests": 13,
+    "http200": 2,
+    "http503": 9,
+    "http404": 1,
+    "transportFailures": 1
+  },
+  "successfulResponses": [
+    {
+      "requestedAt": "2026-10-22T16:19:04.132Z",
+      "model": "gemini-3.1-flash-lite",
+      "modelVersion": "gemini-3.1-flash-lite",
+      "finishReason": "STOP",
+      "functionCalls": [
+        {
+          "name": "quote",
+          "amountMinor": 44500
+        }
+      ],
+      "usage": {
+        "promptTokenCount": 257,
+        "candidatesTokenCount": 63,
+        "totalTokenCount": 320,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 257
+          }
+        ],
+        "serviceTier": "standard"
+      },
+      "responseSha256": "c89bccd7e527dfc6537539eb12b4c7a514a1072c9afa38b9a351c7dd2a064a5f"
+    },
+    {
+      "requestedAt": "2026-10-22T16:20:41.114Z",
+      "model": "gemini-3.1-flash-lite",
+      "modelVersion": "gemini-3.1-flash-lite",
+      "finishReason": "STOP",
+      "functionCalls": [
+        {
+          "name": "quote",
+          "amountMinor": 42500
+        }
+      ],
+      "usage": {
+        "promptTokenCount": 257,
+        "candidatesTokenCount": 51,
+        "totalTokenCount": 308,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 257
+          }
+        ],
+        "serviceTier": "standard"
+      },
+      "responseSha256": "a71f20263baaee765e52533128d556d0a2917b4039649fc7e2ac0bbf0e74af93"
+    }
+  ],
+  "outcome": "Isolated guide quotes were returned by Gemini, but no complete three-supplier negotiation succeeded. Service errors stopped negotiation before any agreement or payment was created. Models listed by the API are not thereby proven to support a successful inference."
+}

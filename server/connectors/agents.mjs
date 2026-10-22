@@ -72,7 +72,7 @@ async function geminiQuote(supplier, args, env, fetchImpl) {
       toolConfig: { functionCallingConfig: { mode: 'ANY', allowedFunctionNames: ['quote'] } },
       generationConfig: { candidateCount: 1, maxOutputTokens: 1000 },
     }),
-  }, 'Google Gemini');
+  }, 'Google Gemini', 45_000);
   const candidate = data.candidates?.length === 1 ? data.candidates[0] : null;
   const functionCalls = candidate?.content?.parts?.filter((part) => part.functionCall).map((part) => part.functionCall) ?? [];
   if (candidate?.finishReason !== 'STOP' || functionCalls.length !== 1 || functionCalls[0].name !== 'quote') {
@@ -110,7 +110,23 @@ export async function negotiate({ intent = '', budgetMinor, participants = 2 }, 
   });
   add(0, 'Asterion · Buyer Agent', 'supplier-network', `A private experience for ${participants}, within ${moneyValue(budgetMinor)} EUR. I accept ${constraints.flexibilityMinutes} minutes of flexibility and cancellation before capture if the conditions fail.`, budgetMinor, 'intent');
   const quoteProvider = agentMode === 'anthropic' ? llmQuote : agentMode === 'gemini' ? geminiQuote : null;
-  const llmQuotes = quoteProvider ? await Promise.all(suppliers.map((s) => quoteProvider(s, { intent, participants, budgetMinor }, env, options.fetch || globalThis.fetch))) : null;
+  let llmQuotes = null;
+  if (quoteProvider) {
+    llmQuotes = [];
+    // Independent supplier contexts do not require a burst of concurrent requests.
+    // Stop after a failed supplier; only a transient Gemini 503 gets one retry.
+    for (const supplier of suppliers) {
+      for (let attempt = 0; ; attempt++) {
+        try {
+          llmQuotes.push(await quoteProvider(supplier, { intent, participants, budgetMinor }, env, options.fetch || globalThis.fetch));
+          break;
+        } catch (error) {
+          if (agentMode !== 'gemini' || attempt !== 0 || error.details?.httpStatus !== 503) throw error;
+          await new Promise(resolve => setTimeout(resolve, 350));
+        }
+      }
+    }
+  }
   const selected = [];
   for (const [index, supplier] of suppliers.entries()) {
     add(1, supplier.agent, 'Asterion · Buyer Agent', `${supplier.name}: initial offer ${moneyValue(supplier.ask)} EUR. ${supplier.preference}`, supplier.ask);

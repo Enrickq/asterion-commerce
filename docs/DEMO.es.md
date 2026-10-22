@@ -21,6 +21,8 @@ No depender de que esa noche haya buen tiempo. Las ramas meteorológicas de demo
 
 ## Variante verificada con PayPal Sandbox
 
+El 22 de octubre de 2026 se verificaron cuatro acuerdos privados: captura y tres Payouts manuales, anulación manual, liquidación clara mediante Autopilot y anulación nublada mediante Autopilot. La negociación y el clima de esos acuerdos son simulados. Ver [evidencia](evidence/paypal-sandbox.json). El vídeo todavía está pendiente de grabación.
+
 Cambiar la frase de 1:04 por: «Esto es PayPal Sandbox: fondos de prueba y una aprobación real en el entorno de pruebas». Mostrar el dominio de Sandbox durante la aprobación y el ID de autorización retornado por PayPal. Después de capturar o anular, contrastar el resultado en la cuenta Sandbox y en el recibo del sistema. No llamar a fondos Sandbox dinero real.
 
 Si los payouts aún no se han probado externamente, explicar que las asignaciones son el ledger de proveedores y que su envío está pendiente de verificación. Mostrar `PENDING` como pendiente; no convertirlo en éxito para el vídeo.
