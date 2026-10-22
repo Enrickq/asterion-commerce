@@ -60,7 +60,7 @@ Node.js 24, React, Vite, SQLite, AG Grid Community. Optional implemented adapter
 
 ## Evidence to add before submission
 
-- Public repository: https://github.com/Enrickq/asterion-commerce; deployed application commit: `20606056ba21d0d4644516842021106508cd61a1`.
+- Public repository: https://github.com/Enrickq/asterion-commerce; deployed application commit: `18370ca49e5f8c9dcc0a3899414c4da0835e323d`.
 - Public demo: https://asterion-mj13.onrender.com/; hosted flows verified, see [record](VERIFICATION.es.md).
 - Video URL and final runtime: **pending**.
 - Actual PayPal Sandbox authorization/capture/void and three individual Payouts: **verified**, [sanitized record](evidence/paypal-sandbox.json). Autonomous clear and cloudy Sandbox outcomes: **verified**. Webhook delivery: **pending**.

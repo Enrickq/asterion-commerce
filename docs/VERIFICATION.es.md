@@ -1,17 +1,17 @@
 # Verificación de la entrega pública
 
-Comprobación realizada el **22 de octubre de 2026**, hora de Canarias. Los registros técnicos conservan sus marcas de tiempo UTC.
+Verificación pública actualizada el **23 de octubre de 2026**, hora de Canarias. Las pruebas privadas abarcan el 22 y el 23 de octubre; los registros técnicos conservan sus marcas de tiempo UTC.
 
 - Demo: https://asterion-mj13.onrender.com/
 - Repositorio: https://github.com/Enrickq/asterion-commerce
-- Commit de aplicación desplegado: `20606056ba21d0d4644516842021106508cd61a1`.
-- CI: [ejecución completa en verde](https://github.com/Enrickq/asterion-commerce/actions/runs/39757019170).
+- Commit de aplicación desplegado: `18370ca49e5f8c9dcc0a3899414c4da0835e323d`.
+- CI: [ejecución completa en verde](https://github.com/Enrickq/asterion-commerce/actions/runs/39871251390).
 - Render: servicio `asterion`, región Frankfurt, plan **Free**, auto-deploy desactivado.
-- Despliegue `dep-dbctjmbncjis73djpej0`, estado confirmado **live**.
+- Despliegue `dep-dbd9l5nb9u1s738tlb1g`, estado confirmado **live**.
 
 ## Comprobaciones realizadas
 
-GitHub Actions instaló dependencias, ejecutó preflight, **64 pruebas**, compiló el frontend y completó el smoke del sistema. La verificación local obtuvo el mismo resultado. Las pruebas automatizadas de conectores utilizan mocks; las llamadas PayPal reales se documentan por separado a continuación.
+GitHub Actions instaló dependencias, ejecutó preflight, **71 pruebas**, compiló el frontend y completó el smoke del sistema. La verificación local obtuvo el mismo resultado. Las pruebas automatizadas de conectores utilizan mocks; las llamadas PayPal y Gemini reales se documentan por separado a continuación.
 
 En la URL pública, `/api/status` devolvió HTTP 200, `mode=demo`, `publicDemo=true`, almacenamiento SQLite y Render desplegado. El frontend de producción cargó y se probó en navegador.
 
@@ -26,7 +26,7 @@ Los dos recibos confirmaron `agreementHashValid=true` y `eventChainValid=true`. 
 
 ## Alcance de esta evidencia
 
-El servidor, la orquestación autónoma y AG Grid funcionan en Render. Los precios, el inventario, el clima y los pagos de esta demo pública son simulados y así se muestran en la interfaz. Las llamadas reales a PayPal Sandbox y Gemini se ejecutaron en un entorno local privado. Gemini devolvió ofertas aisladas, pero todavía no completó una negociación de tres proveedores. Anthropic, AEMET y Kernel continúan sin ejecución externa.
+El servidor, la orquestación autónoma y AG Grid funcionan en Render. Los precios, el inventario, el clima y los pagos de esta demo pública son simulados y así se muestran en la interfaz. En un entorno local privado, Gemini completó una negociación de tres proveedores y el mismo acuerdo terminó liquidado mediante PayPal Sandbox. Anthropic, AEMET y Kernel continúan sin ejecución externa.
 
 El plan gratuito usa SQLite temporal. Un reinicio, reemplazo o suspensión por inactividad puede eliminar acuerdos y claves de sesión. La persistencia local probada no convierte ese alojamiento gratuito en almacenamiento durable. No se han contratado recursos de pago.
 
@@ -36,7 +36,7 @@ La entrega del hackathon y el vídeo siguen pendientes. Este documento acredita 
 
 Una revisión posterior añadió recuperación de respuestas perdidas mediante GET de autorización, orden y captura, validación de importes y referencias del proveedor, y exposición del control privado de Autopilot únicamente tras el opt-in del servidor. El recorrido de autorización conserva por separado el estado de la orden y el de la autorización.
 
-**64 pruebas pasan** en esta revisión. Incluyen payloads Sandbox simulados con respuesta de captura perdida, autorización pendiente, importes incorrectos, referencias ajenas y capturas múltiples. La prueba de integración verifica que la recuperación registra `CAPTURE_RECOVERED` con un solo POST de captura. Una anulación incierta bloquea nuevas ejecuciones y reevaluaciones hasta reconciliarse, incluso tras reiniciar SQLite. Estas pruebas utilizan mocks y no acreditan llamadas externas de PayPal.
+**71 pruebas pasan** en la revisión actual. Incluyen payloads Sandbox simulados con respuesta de captura perdida, autorización pendiente, importes incorrectos, referencias ajenas y capturas múltiples. La prueba de integración verifica que la recuperación registra `CAPTURE_RECOVERED` con un solo POST de captura. Una anulación incierta bloquea nuevas ejecuciones y reevaluaciones hasta reconciliarse, incluso tras reiniciar SQLite. La revisión también valida referencias, importes y moneda por Payout. Estas pruebas utilizan mocks; las llamadas externas se acreditan por separado.
 
 La configuración privada `.env.sandbox` está excluida de Git y usa datos y puerto separados. Las credenciales se obtuvieron de la app «ASTERION Sandbox» con autorización del titular y solo se guardan en ese archivo privado. Autopilot Sandbox se habilitó después de las pruebas manuales y de configurar tres destinatarios ficticios distintos; la plantilla lo conserva desactivado por defecto.
 
