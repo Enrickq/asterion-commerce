@@ -233,6 +233,51 @@ function Spinner() {
   return <LoaderCircle className="spin" size={16} />;
 }
 
+function LiveForecastPreview() {
+  const [forecast, setForecast] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [failure, setFailure] = useState("");
+  const utc = (value) => value ? new Date(value).toLocaleString("en-GB", { timeZone: "UTC", dateStyle: "medium", timeStyle: "short" }) + " UTC" : "Not supplied";
+  async function readForecast() {
+    setLoading(true);
+    setFailure("");
+    try {
+      const result = await api("/weather/preview");
+      setForecast(result.preview);
+    } catch {
+      setForecast(null);
+      setFailure("The forecast provider is unavailable. No agreement or payment has changed.");
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <aside className="forecast-preview" aria-label="Real weather model preview">
+      <div className="forecast-preview-heading">
+        <strong><Globe2 size={14} /> Real forecast · planning only</strong>
+        <button className="text-button" onClick={readForecast} disabled={loading}>
+          {loading ? <Spinner /> : <RefreshCw size={13} />}
+          {loading ? "Reading…" : "Read forecast"}
+        </button>
+      </div>
+      <p>Explore a weather model for the Roque area. This preview does not change your agreement or authorize a charge.</p>
+      {failure && <p className="forecast-error" role="alert">{failure}</p>}
+      {forecast && (
+        <div aria-live="polite">
+          <dl className="forecast-values">
+            <div><dt>Cloud cover</dt><dd>{forecast.cloudPercent ?? "—"}%</dd></div>
+            <div><dt>Wind</dt><dd>{forecast.windKph ?? "—"} km/h</dd></div>
+            <div><dt>Humidity</dt><dd>{forecast.humidityPercent ?? "—"}%</dd></div>
+          </dl>
+          <p>Forecast valid: {utc(forecast.validAt)}<br />Model updated: {utc(forecast.issuedAt)}<br />Retrieved: {utc(forecast.fetchedAt)}</p>
+          <p className="forecast-limit"><ShieldCheck size={13} /> Forecast only. Local observations and independent evidence are still required for settlement.</p>
+          <p>Derived weather data by <a href="https://www.met.no/en" target="_blank" rel="noreferrer">MET Norway</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>. Wind converted from m/s to km/h. Cached to respect provider limits.</p>
+        </div>
+      )}
+    </aside>
+  );
+}
+
 function App() {
   const [system, setSystem] = useState(null);
   const [agreement, setAgreement] = useState(null);
@@ -1123,7 +1168,9 @@ function App() {
                         >
                           {check.passed ? <Check size={13} /> : <X size={13} />}
                           <span>
-                            {CHECK_LABELS[check.id] || check.label || check.id}
+                            {check.id === "sources"
+                              ? agreement?.evaluation?.evidenceMode === "simulated" ? "Demo sources" : "Adapter-declared source groups"
+                              : CHECK_LABELS[check.id] || check.label || check.id}
                           </span>
                           <small>
                             {check.id === "agreement"
@@ -1152,6 +1199,7 @@ function App() {
                     Scenario data is simulated and labelled. A forecast is not a
                     guarantee of future weather.
                   </p>
+                  <LiveForecastPreview />
                 </section>
 
                 <section className="panel payment-panel">

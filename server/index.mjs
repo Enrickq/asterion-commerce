@@ -154,13 +154,16 @@ function createRateLimiter() {
 }
 
 /** Exported for HTTP integration testing without opening the default port. */
-export function createHttpServer({ core, env = process.env, root = ROOT, integrationStatus, kernelSession, signingSecret } = {}) {
+export function createHttpServer({ core, env = process.env, root = ROOT, integrationStatus, kernelSession, signingSecret, weatherPreview } = {}) {
   if (!core) throw new TypeError('core es obligatorio.');
   const publicDemo = isEnabled(env.PUBLIC_DEMO);
   if (publicDemo && core.provider !== 'demo') throw new Error('PUBLIC_DEMO solo admite pagos simulados.');
   const getSession = sessionManager(signingSecret ?? env.SESSION_SECRET ?? randomBytes(48).toString('base64url'), env);
   const rateLimit = createRateLimiter();
   const getIntegrations = () => integrationStatus ? integrationStatus() : typeof integrations.getIntegrationStatus === 'function' ? integrations.getIntegrationStatus(env) : [];
+  // A read-only planning view. Its model output never replaces an agreement's
+  // approved evidence or invokes a payment operation. The adapter caches requests.
+  const forecast = weatherPreview ?? createWeatherAdapter({ WEATHER_MODE: 'met-norway' }).createEvidence;
   return createServer(async (request, response) => {
     response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Referrer-Policy', 'same-origin');
@@ -184,6 +187,11 @@ export function createHttpServer({ core, env = process.env, root = ROOT, integra
         if (request.method === 'POST') rateLimit(`mutations:${session.ownerId}`, publicDemo ? 180 : 600, 15 * 60 * 1000);
         if (request.method === 'GET' && pathname === '/api/status') return json(response, 200, { ...core.status(), agreements: core.list(session.ownerId).length, publicDemo, integrations: await getIntegrations() });
         if (request.method === 'GET' && pathname === '/api/integrations') return json(response, 200, { integrations: await getIntegrations() });
+        if (pathname === '/api/weather/preview') {
+          if (request.method !== 'GET') return json(response, 405, { error: { code: 'METHOD_NOT_ALLOWED', message: 'La previsión solo admite lectura.' } }, { Allow: 'GET' });
+          rateLimit(`forecast:${session.ownerId}`, 30, 60 * 60 * 1000);
+          return json(response, 200, { preview: await forecast(), usage: 'planning-only' });
+        }
         if (request.method === 'GET' && pathname === '/api/agreements') return json(response, 200, { agreements: core.list(session.ownerId) });
         if (request.method === 'POST' && pathname === '/api/negotiate') {
           rateLimit(`negotiate:${session.ownerId}`, publicDemo ? 12 : 60, 15 * 60 * 1000);
@@ -238,7 +246,8 @@ export function startServer(env = process.env) {
   const signingSecret = sessionSecret(env, dataDir);
   const store = createStore({ dataDir });
   const core = createCore({ store, paymentAdapter, negotiate: input => negotiate(input, env), evidenceProvider: input => weather.createEvidence(input), allowSandboxAutopilot: isEnabled(env.ALLOW_SANDBOX_AUTOPILOT) && !isEnabled(env.PUBLIC_DEMO) });
-  const server = createHttpServer({ core, env, signingSecret });
+  const server = createHttpServer({ core, env, signingSecret,
+    weatherPreview: weather.mode === 'met-norway' ? () => weather.createEvidence() : undefined });
   const autopilotTimer = setInterval(() => { core.runDueAutopilots().catch(() => console.error('[ASTERION] Autonomous scheduler requires review.')); }, 250);
   autopilotTimer.unref();
   server.once('close', () => clearInterval(autopilotTimer));

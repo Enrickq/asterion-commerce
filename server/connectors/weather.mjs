@@ -1,6 +1,133 @@
-import { connectorError, fetchJson } from './shared.mjs';
+import { connectorError, fetchJson, hash } from './shared.mjs';
 
 export const WEATHER_SCENARIOS = ['clear', 'cloudy', 'stale', 'conflict', 'pending'];
+
+const FORECAST_LOCATION = Object.freeze({ name: 'Entorno del Roque de los Muchachos', latitude: 28.754, longitude: -17.885, altitudeMeters: 2396 });
+const MET_FORECAST_URL = 'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=28.754&lon=-17.885&altitude=2396';
+const MET_USER_AGENT = 'ASTERION/0.1 (+https://github.com/Enrickq/asterion-commerce)';
+// La Palma is outside the Nordic region: MET requests at least three hours
+// between identical queries. Failures share this cooldown, so outages cannot
+// turn a public preview endpoint into a request storm.
+const MET_CACHE_MS = 3 * 60 * 60_000;
+const inRange = (value, minimum, maximum) => typeof value === 'number' && Number.isFinite(value) && value >= minimum && value <= maximum;
+
+function forecastError(message) {
+  return connectorError('INVALID_WEATHER_RESPONSE', `MET Norway: ${message}`);
+}
+
+function forecastTime(value) {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/.test(value)) return NaN;
+  const parsed = Date.parse(value);
+  return Number.isFinite(parsed) && new Date(parsed).toISOString().slice(0, 19) === value.slice(0, 19) ? parsed : NaN;
+}
+
+function metForecastEvidence(snapshot, time, cacheUntil) {
+  const data = snapshot.data;
+  const coordinates = data?.geometry?.coordinates;
+  if (data?.type !== 'Feature' || data.geometry?.type !== 'Point' || !Array.isArray(coordinates) || coordinates.length !== 3 ||
+      !inRange(coordinates[0], -180, 180) || !inRange(coordinates[1], -90, 90) || !inRange(coordinates[2], -500, 9000) ||
+      Math.abs(coordinates[0] - FORECAST_LOCATION.longitude) > 0.001 || Math.abs(coordinates[1] - FORECAST_LOCATION.latitude) > 0.001 ||
+      Math.abs(coordinates[2] - FORECAST_LOCATION.altitudeMeters) > 1) {
+    throw forecastError('la ubicación devuelta no corresponde a la consulta fija.');
+  }
+  const meta = data.properties?.meta;
+  if (meta?.units?.cloud_area_fraction !== '%' || meta.units.relative_humidity !== '%' || meta.units.wind_speed !== 'm/s') {
+    throw forecastError('faltan las unidades esperadas de nubosidad, humedad o viento.');
+  }
+  const issuedTime = forecastTime(meta.updated_at);
+  if (!Number.isFinite(issuedTime) || issuedTime > time + 5 * 60_000 || time - issuedTime > 24 * 60 * 60_000) {
+    throw forecastError('la fecha de actualización del modelo es inválida o está fuera del intervalo admitido.');
+  }
+  const series = data.properties?.timeseries;
+  if (!Array.isArray(series) || series.length === 0 || series.length > 500) throw forecastError('no hay una serie temporal válida.');
+  let selected;
+  let nearest = Infinity;
+  for (const item of series) {
+    const validTime = forecastTime(item?.time);
+    if (!Number.isFinite(validTime)) throw forecastError('la serie incluye una fecha de validez inválida.');
+    const distance = Math.abs(validTime - time);
+    if (distance < nearest) { selected = item; nearest = distance; }
+  }
+  if (nearest > MET_CACHE_MS) throw forecastError('no hay un punto de previsión cercano a la hora de consulta.');
+  const details = selected.data?.instant?.details;
+  if (!inRange(details?.cloud_area_fraction, 0, 100) || !inRange(details?.relative_humidity, 0, 100) || !inRange(details?.wind_speed, 0, 500 / 3.6)) {
+    throw forecastError('faltan valores numéricos válidos de nubosidad, humedad o viento.');
+  }
+  const reading = { cloudPercent: details.cloud_area_fraction, humidityPercent: details.relative_humidity,
+    windKph: Math.round(details.wind_speed * 36) / 10 };
+  const attribution = { name: 'MET Norway', url: 'https://www.met.no/', license: 'CC BY 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/4.0/', termsUrl: 'https://docs.api.met.no/doc/TermsOfService.html',
+    changes: 'Selected a forecast time, renamed fields and converted wind speed from m/s to km/h.' };
+  const modelGrid = { longitude: coordinates[0], latitude: coordinates[1], altitudeMeters: coordinates[2],
+    kind: 'provider-returned-location', gridCellCoordinatesKnown: false,
+    note: 'The provider returns the forecast location, not sensor coordinates or the underlying model grid cell. Altitude adjusts temperature only.' };
+  const provenance = { observedAt: null, issuedAt: new Date(issuedTime).toISOString(), modelUpdatedAt: new Date(issuedTime).toISOString(),
+    validAt: new Date(forecastTime(selected.time)).toISOString(), fetchedAt: snapshot.fetchedAt,
+    ...(snapshot.revalidatedAt && { revalidatedAt: snapshot.revalidatedAt }), dataHash: snapshot.dataHash,
+    dataHashAlgorithm: 'sha256-json', sourceUrl: MET_FORECAST_URL, simulated: false, complete: false,
+    requiresReview: true, settlementReady: false, requestedLocation: { ...FORECAST_LOCATION }, modelGrid, attribution };
+  const source = { id: 'met-norway-locationforecast', name: 'MET Norway · model forecast', provider: 'met-norway', type: 'model-forecast',
+    independenceGroup: 'met-norway-locationforecast', ...provenance, ...reading };
+  return { provider: 'met-norway', evidenceType: 'model-forecast', scenario: 'forecast-preview', ...provenance, ...reading,
+    sources: [source], conflict: false, cache: { minimumTtlSeconds: MET_CACHE_MS / 1000, expiresAt: new Date(cacheUntil).toISOString(),
+      providerExpiresAt: snapshot.providerExpiresAt },
+    note: 'Previsión numérica para planificación; no es una observación local ni una garantía de cielo despejado. Una sola fuente de modelo no habilita captura.' };
+}
+
+function createMetForecastProvider(fetchImpl, now) {
+  let snapshot;
+  let cacheError;
+  let cacheUntil = 0;
+  let inFlight;
+  let lastModified;
+  async function load() {
+    const startedAt = timestamp(now);
+    if (inFlight) return inFlight;
+    if (startedAt < cacheUntil) {
+      if (cacheError) throw cacheError;
+      if (snapshot) return snapshot;
+    }
+    inFlight = (async () => {
+      cacheUntil = startedAt + MET_CACHE_MS;
+      cacheError = undefined;
+      try {
+        let response;
+        try {
+          response = await fetchImpl(MET_FORECAST_URL, { redirect: 'error', signal: AbortSignal.timeout(15_000),
+            headers: { accept: 'application/json', 'User-Agent': MET_USER_AGENT, ...(lastModified && { 'If-Modified-Since': lastModified }) } });
+        } catch { throw connectorError('PROVIDER_UNAVAILABLE', 'MET Norway: conexión no disponible o tiempo de espera agotado.'); }
+        const fetchedTime = timestamp(now);
+        const expires = Date.parse(response.headers?.get('expires'));
+        if (Number.isFinite(expires)) cacheUntil = Math.max(cacheUntil, expires);
+        const providerExpiresAt = Number.isFinite(expires) ? new Date(expires).toISOString() : null;
+        const modified = response.headers?.get('last-modified');
+        const modifiedTime = Date.parse(modified);
+        const safeModified = typeof modified === 'string' && modified.length <= 100 && Number.isFinite(modifiedTime) && modifiedTime <= fetchedTime ? modified : undefined;
+        if (response.status === 304) {
+          if (!snapshot) throw forecastError('se recibió 304 sin una previsión previamente descargada.');
+          snapshot = { ...snapshot, revalidatedAt: new Date(fetchedTime).toISOString(), providerExpiresAt };
+          lastModified = safeModified || lastModified;
+        } else {
+          if (response.status !== 200) throw connectorError('PROVIDER_REJECTED', `MET Norway: solicitud rechazada (HTTP ${response.status}).`, 502, { httpStatus: response.status });
+          let data;
+          try { data = await response.json(); } catch { throw forecastError('la respuesta no contiene JSON válido.'); }
+          const candidate = { data, fetchedAt: new Date(fetchedTime).toISOString(), dataHash: hash(JSON.stringify(data)), providerExpiresAt };
+          metForecastEvidence(candidate, fetchedTime, cacheUntil);
+          snapshot = candidate;
+          lastModified = safeModified;
+        }
+        return snapshot;
+      } catch (error) { cacheError = error; throw error; }
+    })();
+    try { return await inFlight; } finally { inFlight = undefined; }
+  }
+  return async () => {
+    const result = await load();
+    // A cache hit may select a later, already-downloaded forecast point. It
+    // never changes provider issue time or pretends to refresh fetchedAt.
+    return metForecastEvidence(result, timestamp(now), cacheUntil);
+  };
+}
 
 function timestamp(now) {
   const result = typeof now === 'function' ? now() : now;
@@ -36,11 +163,13 @@ function safeAemetUrl(value) {
 
 export function createWeatherAdapter(env = process.env, options = {}) {
   const mode = env.WEATHER_MODE || 'fixtures';
-  if (!['fixtures', 'aemet'].includes(mode)) throw connectorError('UNSUPPORTED_WEATHER_MODE', 'Modo meteorológico no admitido.', 500);
+  if (!['fixtures', 'aemet', 'met-norway'].includes(mode)) throw connectorError('UNSUPPORTED_WEATHER_MODE', 'Modo meteorológico no admitido.', 500);
   const fetchImpl = options.fetch || globalThis.fetch;
   const now = options.now || Date.now;
+  const forecastProvider = mode === 'met-norway' ? createMetForecastProvider(fetchImpl, now) : null;
   async function evidenceProvider(args = {}) {
     if (mode === 'fixtures') return createEvidence({ ...args, now });
+    if (mode === 'met-norway') return forecastProvider();
     if (!env.AEMET_API_KEY || !/^[A-Za-z0-9-]{2,20}$/.test(env.AEMET_STATION_ID || '')) {
       throw connectorError('WEATHER_NOT_CONFIGURED', 'Configura AEMET_API_KEY y el indicativo real AEMET_STATION_ID.', 503);
     }
@@ -63,11 +192,13 @@ export function createWeatherAdapter(env = process.env, options = {}) {
     return { observedAt: source.observedAt, issuedAt: new Date(timestamp(now)).toISOString(), cloudPercent: null,
       windKph: source.windKph, humidityPercent: source.humidityPercent, sources: [source], conflict: false,
       scenario: 'aemet-observation', provider: 'aemet', simulated: false, complete: false, evidenceType: 'insufficient-live-observation',
-      requiresReview: true, note: 'Observación real de la estación indicada. Faltan nubosidad local y una segunda fuente independiente; no habilita captura.' };
+      requiresReview: true, settlementReady: false, note: 'Observación real de la estación indicada. Faltan nubosidad local y una segunda fuente independiente; no habilita captura.' };
   }
   return { kind: mode, mode, createEvidence: evidenceProvider, evidenceProvider,
-    status() { return { mode, configured: mode === 'fixtures' || Boolean(env.AEMET_API_KEY && env.AEMET_STATION_ID), simulated: mode === 'fixtures',
-      ...(mode === 'aemet' && { stationId: env.AEMET_STATION_ID || null, settlementReady: false }) }; } };
+    status() { return { mode, configured: mode === 'fixtures' || mode === 'met-norway' || Boolean(env.AEMET_API_KEY && env.AEMET_STATION_ID), simulated: mode === 'fixtures',
+      ...(mode === 'aemet' && { stationId: env.AEMET_STATION_ID || null, settlementReady: false }),
+      ...(mode === 'met-norway' && { evidenceType: 'model-forecast', settlementReady: false, cacheMinimumSeconds: MET_CACHE_MS / 1000,
+        requestedLocation: { ...FORECAST_LOCATION } }) }; } };
 }
 
 export const evidenceProvider = (args) => createWeatherAdapter().createEvidence(args);

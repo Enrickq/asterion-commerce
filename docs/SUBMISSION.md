@@ -20,7 +20,7 @@ Our first story is a private stargazing experience in La Palma: a guide, portabl
 
 The buyer's mandate becomes a negotiated agreement. Supplier offers and allocations appear in an AG Grid operations view. A deterministic policy evaluates evidence and drives separate authorization, capture and void stages. An audit receipt explains the decision and distinguishes local demo events from payment-provider responses. Supplier disbursements follow capture as separate operations.
 
-The repository includes a reproducible local mode without accounts, alongside PayPal Sandbox, Google Gemini, Anthropic and AEMET adapters. Private Sandbox capture, separate supplier Payouts and cloudy-condition voids were verified manually and autonomously. On October 23, Canary Islands time, three actual Gemini supplier calls produced a €1,650 agreement within a €1,700 mandate. That same buyer-approved agreement completed Sandbox capture and three Payouts autonomously. The public demonstration retains deterministic agents and simulated payments. Inventory, weather and booking availability remain simulated; live weather and webhook delivery are unverified.
+The repository includes a reproducible local mode without accounts, alongside PayPal Sandbox, Google Gemini, Anthropic and AEMET adapters. Private Sandbox capture, separate supplier Payouts and cloudy-condition voids were verified manually and autonomously. On October 23, Canary Islands time, three actual Gemini supplier calls produced a €1,650 agreement within a €1,700 mandate. That same buyer-approved agreement completed Sandbox capture and three Payouts autonomously. The public demonstration retains deterministic agents and simulated payments. Inventory, settlement weather and booking availability remain simulated. A separate read-only MET Norway forecast preview retrieves external model data without changing an agreement or authorizing payment. Complete local weather observations and webhook delivery remain unverified.
 
 ## How we built it
 
@@ -43,6 +43,7 @@ The hard part is preserving distinctions that a chat interface can hide: a forec
 - Actual private PayPal Sandbox authorization, conditional capture and three individually successful Payouts, plus a separate failed-condition authorization void; provider statuses verified through authenticated API queries.
 - An additional approved Sandbox mandate completed capture and three supplier payments autonomously after arming.
 - Three actual Gemini supplier quotes produced a persisted agreement that subsequently completed autonomous PayPal Sandbox capture and three individually validated supplier payments.
+- A separate MET Norway forecast preview with provider update, forecast validity and retrieval times, attribution and explicit settlement veto; [actual API evidence](evidence/weather-preview.json).
 
 The [integrated AI → Sandbox evidence](evidence/ai-sandbox-run.json), [model request metadata](evidence/gemini-verification.json) and [baseline PayPal outcomes](evidence/paypal-sandbox.json) separate actual provider results from simulated inventory and weather. Webhook delivery still requires verification.
 
@@ -66,6 +67,6 @@ Node.js 24, React, Vite, SQLite, AG Grid Community. Optional implemented adapter
 - Actual PayPal Sandbox authorization/capture/void and three individual Payouts: **verified**, [sanitized record](evidence/paypal-sandbox.json). Autonomous clear and cloudy Sandbox outcomes: **verified**. Webhook delivery: **pending**.
 - Complete three-supplier Gemini negotiation and subsequent autonomous Sandbox settlement: **verified**, [integrated record](evidence/ai-sandbox-run.json).
 - Completed sponsor integrations and proof of meaningful use: **pending**.
-- Final eligibility, submission requirements, prize compatibility and deadline timezone checked against the current [official event page](https://paypalaihackathon.devpost.com/): **pending**.
+- Submission requirements, prize compatibility and cutoff checked against the [official rules](https://paypalaihackathon.devpost.com/rules) on October 23, 2026. Personal eligibility, Devpost registration and final submission remain **pending**; see the [delivery checklist](DELIVERY.es.md).
 
-The [PayPal announcement](https://developer.paypal.com/community/blog/PayPal_AI_Hackathon/) states that submissions close November 12, 2026. Do not infer the submission platform's cutoff hour or timezone from that date alone.
+The official cutoff is **November 12, 2026, 12:00 PST (20:00 Canary Islands time)**. Submission materials need English or an English translation. Prepare the [English video script](DEMO.en.md), record the functional application, and provide a publicly visible YouTube URL. The target runtime is 2:50; the video has not yet been recorded. The current Spanish deck still needs translation if included in the submission.

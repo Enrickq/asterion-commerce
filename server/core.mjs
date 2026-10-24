@@ -19,7 +19,7 @@ const DEFAULT_ALLOCATIONS = [
   { id: 'organizer', name: 'Organizador · remanente bruto', role: 'organizer', amountMinor: 18000 },
 ];
 const DEFAULT_POLICY = {
-  version: '1.0',
+  version: '1.1',
   maxCloudPercent: 15,
   maxWindKph: 25,
   maxHumidityPercent: 85,
@@ -28,6 +28,9 @@ const DEFAULT_POLICY = {
   minimumSources: 2,
   maxSourceCloudDifferencePercent: 20,
   site: 'Roque de los Muchachos · La Palma',
+  // Consent covers these application tolerances; they are not an astronomical guarantee.
+  siteLocation: { latitude: 28.754, longitude: -17.885, altitudeMeters: 2396, maxDistanceMeters: 1500, maxAltitudeDifferenceMeters: 150 },
+  realEvidence: { version: '1.0', sourceType: 'observation', independenceBasis: 'adapter-declared' },
   cancellation: 'Anular antes de capturar si las condiciones no se cumplen al vencimiento.',
   autonomy: { requiresExplicitArming: true, delaySeconds: 3, settlement: 'Captura condicionada y desembolsos posteriores separados.' },
 };
@@ -112,6 +115,101 @@ function appendEvent(agreement, type, message, at, data = {}) {
 const inRange = (value, minimum, maximum) => typeof value === 'number' && Number.isFinite(value) && value >= minimum && value <= maximum;
 const isMinor = value => Number.isSafeInteger(value) && value >= 0;
 
+const sourceIdentity = value => typeof value === 'string' && value.trim().length <= 200 ? text(value, 200).normalize('NFKC').toLowerCase() : '';
+const validLocation = location => inRange(location?.latitude, -90, 90) && inRange(location?.longitude, -180, 180) && inRange(location?.altitudeMeters, -500, 10000);
+function zonedObservationTimestamp(value) {
+  if (typeof value !== 'string') return NaN;
+  const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/.exec(value);
+  if (!match) return NaN;
+  const [, year, month, day, hour, minute, second] = match.map(Number);
+  if (!inRange(month, 1, 12) || !inRange(day, 1, 31) || !inRange(hour, 0, 23) || !inRange(minute, 0, 59) || !inRange(second, 0, 59)) return NaN;
+  const calendar = new Date(0);
+  calendar.setUTCFullYear(year, month - 1, day);
+  if (calendar.getUTCMonth() !== month - 1 || calendar.getUTCDate() !== day) return NaN;
+  return Date.parse(value);
+}
+function distanceMeters(a, b) {
+  const radians = degrees => degrees * Math.PI / 180;
+  const latitudeDifference = radians(a.latitude - b.latitude);
+  const longitudeDifference = radians(a.longitude - b.longitude);
+  const chord = Math.sin(latitudeDifference / 2) ** 2 + Math.cos(radians(a.latitude)) * Math.cos(radians(b.latitude)) * Math.sin(longitudeDifference / 2) ** 2;
+  return 6371000 * 2 * Math.asin(Math.sqrt(Math.min(1, chord)));
+}
+function provenanceUrl(value) {
+  if (typeof value !== 'string' || value.length > 2000 || /[?#]/.test(value)) return null;
+  try {
+    const url = new URL(value);
+    if (url.protocol !== 'https:' || !url.hostname || url.username || url.password) return null;
+    // Normalize host/default port, dot segments and trailing slashes before duplicate detection.
+    return `${url.origin}${url.pathname.replace(/\/+$/, '')}`;
+  } catch { return null; }
+}
+
+function assessSources(policy, evidence, milliseconds) {
+  const simulated = evidence.simulated === true;
+  const sources = Array.isArray(evidence.sources) ? evidence.sources : [];
+  const reasons = [];
+  const identities = new Set();
+  const provenances = new Set();
+  const groups = new Set();
+  let fresh = true;
+  const add = (condition, message) => { if (condition) reasons.push(message); };
+  const site = policy.siteLocation;
+  const sitePolicyValid = policy.realEvidence?.version === '1.0' && policy.realEvidence.sourceType === 'observation'
+    && policy.realEvidence.independenceBasis === 'adapter-declared' && validLocation(site)
+    && inRange(site.maxDistanceMeters, 1, 100000) && inRange(site.maxAltitudeDifferenceMeters, 0, 10000);
+  add(evidence.settlementReady === false || (!simulated && evidence.settlementReady !== true), 'El adaptador no declara la evidencia apta para liquidación.');
+  if (!simulated) {
+    // Never silently add policy terms to a historical agreement whose hash was consented.
+    add(!sitePolicyValid, 'El acuerdo no define una política versionada de observaciones locales reales.');
+    add(/forecast|prediction|pron[oó]stico/i.test(String(evidence.evidenceType ?? '')), 'Un pronóstico no sustituye las observaciones requeridas.');
+  }
+  for (const source of sources) {
+    const start = reasons.length;
+    add(!source || typeof source !== 'object' || Array.isArray(source), 'Una fuente requerida no tiene metadatos válidos.');
+    add(simulated ? source?.simulated === false : source?.simulated !== false, 'No se permite mezclar fixtures con observaciones reales.');
+    const hasTimestamp = typeof source?.observedAt === 'string' && source.observedAt.trim().length > 0;
+    if (!simulated || hasTimestamp) {
+      const sourceTime = simulated ? Date.parse(source.observedAt) : zonedObservationTimestamp(source?.observedAt);
+      const sourceAge = hasTimestamp ? (milliseconds - sourceTime) / 1000 : NaN;
+      const invalid = !Number.isFinite(sourceAge) || sourceAge > policy.maxAgeSeconds || sourceAge < -policy.maxClockSkewSeconds;
+      add(invalid, 'Una fuente requerida no tiene una observación vigente con fecha válida y zona horaria explícita.');
+      if (invalid) fresh = false;
+    }
+    add(source?.status === 'unavailable' || source?.status === 'error' || source?.valid === false || source?.settlementReady === false, 'Una fuente requerida no está disponible o veta la liquidación.');
+    add(typeof source?.cloudPercent === 'number' && !inRange(source.cloudPercent, 0, policy.maxCloudPercent), 'Una fuente supera el umbral de nubosidad.');
+    add(typeof source?.windKph === 'number' && !inRange(source.windKph, 0, policy.maxWindKph), 'Una fuente supera el umbral de viento.');
+    add(typeof source?.humidityPercent === 'number' && !inRange(source.humidityPercent, 0, policy.maxHumidityPercent), 'Una fuente supera el umbral de humedad.');
+    if (simulated) {
+      const name = text(source?.name ?? source?.id ?? source?.provider, 200);
+      if (name) groups.add(name);
+      continue;
+    }
+    const id = sourceIdentity(source?.id);
+    const provider = sourceIdentity(source?.provider);
+    const group = sourceIdentity(source?.independenceGroup);
+    const provenance = provenanceUrl(source?.provenance);
+    add(!id || !provider || !group || !provenance, 'Una fuente real carece de identidad, procedencia HTTPS o grupo declarado por el adaptador.');
+    add(Boolean(id) && identities.has(id), 'Hay un identificador de fuente real duplicado.');
+    add(Boolean(provenance) && provenances.has(provenance), 'Hay una procedencia real duplicada aunque cambien sus etiquetas.');
+    if (id) identities.add(id);
+    if (provenance) provenances.add(provenance);
+    add(source?.evidenceType !== 'observation' || /forecast|prediction|pron[oó]stico/i.test(String(source?.type ?? '')), 'Un pronóstico no sustituye las observaciones requeridas.');
+    const location = source?.station ?? source?.location;
+    add(!validLocation(location), 'Una fuente real carece de ubicación y altitud válidas.');
+    if (sitePolicyValid && validLocation(location)) {
+      add(distanceMeters(site, location) > site.maxDistanceMeters, 'Una observación está fuera del radio del sitio aprobado.');
+      add(Math.abs(site.altitudeMeters - location.altitudeMeters) > site.maxAltitudeDifferenceMeters, 'Una observación está fuera de la tolerancia de altitud aprobada.');
+    }
+    // Every counted observation must expose the readings supporting its settlement decision.
+    add(!inRange(source?.cloudPercent, 0, 100) || !inRange(source?.windKph, 0, 500) || !inRange(source?.humidityPercent, 0, 100), 'Una observación real no incluye las mediciones meteorológicas requeridas.');
+    // Groups are adapter-declared lineage metadata, not a scientific proof of independence.
+    if (reasons.length === start && group) groups.add(group);
+  }
+  add(groups.size < policy.minimumSources, simulated ? `Se requieren ${policy.minimumSources} fuentes de demo identificadas.` : `Se requieren ${policy.minimumSources} grupos de observación distintos declarados por el adaptador.`);
+  return { sources, reasons, fresh, count: groups.size, valid: reasons.length === 0, simulated };
+}
+
 export function assessEvidence(agreement, evidence, now = new Date()) {
   const policy = agreement.policy;
   const reasons = [];
@@ -120,7 +218,7 @@ export function assessEvidence(agreement, evidence, now = new Date()) {
   const add = (condition, message) => { if (condition) reasons.push(message); };
   add(!evidence || typeof evidence !== 'object', 'Falta evidencia meteorológica.');
   if (evidence && typeof evidence === 'object') {
-    const observedAt = Date.parse(evidence.observedAt);
+    const observedAt = evidence.simulated === true ? Date.parse(evidence.observedAt) : zonedObservationTimestamp(evidence.observedAt);
     const age = (milliseconds - observedAt) / 1000;
     add(!Number.isFinite(observedAt), 'La evidencia no incluye una fecha de observación válida.');
     add(Number.isFinite(age) && age > policy.maxAgeSeconds, 'La evidencia ha caducado.');
@@ -133,27 +231,17 @@ export function assessEvidence(agreement, evidence, now = new Date()) {
     add(evidence.humidityPercent > policy.maxHumidityPercent, `Humedad superior al ${policy.maxHumidityPercent} %.`);
     add(evidence.conflict === true, 'Las fuentes meteorológicas discrepan.');
     add(evidence.complete === false || evidence.requiresReview === true || evidence.unavailable === true, 'La evidencia está incompleta o requiere revisión.');
-    const sources = Array.isArray(evidence.sources) ? evidence.sources : [];
-    const names = new Set(sources.map(source => text(source?.name ?? source?.id ?? source?.provider, 200)).filter(Boolean));
-    add(names.size < policy.minimumSources, `Se requieren ${policy.minimumSources} fuentes identificadas.`);
-    for (const source of sources) {
-      if (source?.observedAt) {
-        const sourceAge = (milliseconds - Date.parse(source.observedAt)) / 1000;
-        add(!Number.isFinite(sourceAge) || sourceAge > policy.maxAgeSeconds || sourceAge < -policy.maxClockSkewSeconds, 'Una fuente tiene evidencia vencida o una fecha inválida.');
-      }
-      add(source?.status === 'unavailable' || source?.status === 'error' || source?.valid === false, 'Una fuente requerida no está disponible.');
-      add(typeof source?.cloudPercent === 'number' && !inRange(source.cloudPercent, 0, policy.maxCloudPercent), 'Una fuente supera el umbral de nubosidad.');
-      add(typeof source?.windKph === 'number' && !inRange(source.windKph, 0, policy.maxWindKph), 'Una fuente supera el umbral de viento.');
-      add(typeof source?.humidityPercent === 'number' && !inRange(source.humidityPercent, 0, policy.maxHumidityPercent), 'Una fuente supera el umbral de humedad.');
-    }
+    const sourceAssessment = assessSources(policy, evidence, milliseconds);
+    const { sources } = sourceAssessment;
+    reasons.push(...sourceAssessment.reasons);
     const clouds = sources.map(source => source?.cloudPercent).filter(value => inRange(value, 0, 100));
     add(clouds.length > 1 && Math.max(...clouds) - Math.min(...clouds) > policy.maxSourceCloudDifferencePercent, 'Las mediciones de nubosidad superan la discrepancia permitida.');
     checks.push(
       { id: 'cloud', label: 'Nubosidad', passed: inRange(evidence.cloudPercent, 0, policy.maxCloudPercent), actual: evidence.cloudPercent ?? null, threshold: `≤ ${policy.maxCloudPercent} %` },
       { id: 'wind', label: 'Viento', passed: inRange(evidence.windKph, 0, policy.maxWindKph), actual: evidence.windKph ?? null, threshold: `≤ ${policy.maxWindKph} km/h` },
       { id: 'humidity', label: 'Humedad', passed: inRange(evidence.humidityPercent, 0, policy.maxHumidityPercent), actual: evidence.humidityPercent ?? null, threshold: `≤ ${policy.maxHumidityPercent} %` },
-      { id: 'freshness', label: 'Evidencia vigente', passed: Number.isFinite(age) && age <= policy.maxAgeSeconds && age >= -policy.maxClockSkewSeconds, actual: Number.isFinite(age) ? Math.max(0, Math.round(age)) : null, threshold: `≤ ${policy.maxAgeSeconds} s` },
-      { id: 'sources', label: 'Fuentes identificadas', passed: names.size >= policy.minimumSources, actual: names.size, threshold: `≥ ${policy.minimumSources}` },
+      { id: 'freshness', label: 'Evidencia vigente', passed: sourceAssessment.fresh && Number.isFinite(age) && age <= policy.maxAgeSeconds && age >= -policy.maxClockSkewSeconds, actual: Number.isFinite(age) ? Math.max(0, Math.round(age)) : null, threshold: `≤ ${policy.maxAgeSeconds} s` },
+      { id: 'sources', label: sourceAssessment.simulated ? 'Fuentes demo · sin independencia real' : 'Grupos declarados por adaptador', passed: sourceAssessment.valid, actual: sourceAssessment.count, threshold: `≥ ${policy.minimumSources}${sourceAssessment.simulated ? ' fixtures' : ' · declaración, sin verificación externa'}` },
       { id: 'agreement', label: 'Fuentes coherentes', passed: evidence.conflict !== true && !(clouds.length > 1 && Math.max(...clouds) - Math.min(...clouds) > policy.maxSourceCloudDifferencePercent), actual: evidence.conflict === true ? 'Discrepancia' : 'Sin discrepancia declarada', threshold: 'Sin conflicto' },
     );
   }
@@ -166,6 +254,8 @@ export function assessEvidence(agreement, evidence, now = new Date()) {
     evaluatedAt: now.toISOString(),
     evidenceHash: evidence ? hashObject(evidence) : null,
     agreementHash: agreement.hash,
+    evidenceMode: evidence?.simulated === true ? 'simulated' : 'real',
+    independenceBasis: evidence?.simulated === true ? 'demo-fixtures' : 'adapter-declared',
   };
 }
 

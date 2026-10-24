@@ -1275,6 +1275,22 @@ textarea:disabled {
   color: #b4ccc6;
   margin-top: 7px;
 }
+.forecast-preview {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border, #24333b);
+}
+.forecast-preview-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.forecast-preview-heading strong { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #c7ded9; }
+.forecast-preview p { font-size: 11px; line-height: 1.65; color: #8da2ad; margin: 10px 0 0; }
+.forecast-preview a { color: #a6d7cb; text-decoration: underline; text-underline-offset: 3px; }
+.forecast-values { display: flex; flex-wrap: wrap; gap: 24px; margin: 15px 0; }
+.forecast-values dt { color: #8da2ad; font-size: 10px; }
+.forecast-values dd { color: #deece7; font-size: 16px; margin: 5px 0 0; }
+.forecast-preview .forecast-limit { color: #d9bf88; }
+.forecast-limit svg { vertical-align: middle; margin-right: 4px; }
+.forecast-preview .forecast-error { color: #f1a1ac; }
+
 .scenario-picker > label {
   display: block;
   font-size: 7px;

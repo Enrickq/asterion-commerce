@@ -48,6 +48,8 @@ The default two-person scenario trades 20 minutes of schedule flexibility for a 
 
 The Spanish [demo script](docs/DEMO.es.md) includes a 2 minute 50 second presentation and the boundary between fixtures and external services.
 
+**Read forecast** in the evidence panel offers a separate MET Norway forecast for the Roque area. It does not alter the selected scenario or authorize payment. Forecast time, model update time and retrieval time are shown with attribution. See the [weather evidence contract](docs/WEATHER.md).
+
 Autopilot is a real server scheduler, including in the simulated-payment demo. Jobs are persisted before the arm request returns and can resume after a process restart if the database survives. This does not make the free hosting filesystem durable. Manual controls remain available for diagnostics when an autonomous job is not active.
 
 ## Payment model
@@ -99,6 +101,9 @@ Weather thresholds are demo policy parameters, not a scientific guarantee of a p
 - [Integration matrix and configuration](docs/INTEGRATIONS.md)
 - [APIMatic installation and review evidence](docs/APIMATIC-CONTEXT.md)
 - [Spanish demo narration](docs/DEMO.es.md)
+- [English video recording script](docs/DEMO.en.md)
+- [English pitch manuscript](docs/PITCH.en.md)
+- [Delivery checklist, in Spanish](docs/DELIVERY.es.md)
 - [Devpost submission draft](docs/SUBMISSION.md)
 - [Accounts and user setup, in Spanish](docs/ACCOUNTS.es.md)
 - [Public deployment verification](docs/VERIFICATION.es.md)

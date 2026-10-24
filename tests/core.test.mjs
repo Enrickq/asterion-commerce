@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { once } from 'node:events';
-import { createCore, canonicalize, computeAgreementHash, verifyEventChain } from '../server/core.mjs';
+import { createCore, canonicalize, computeAgreementHash, verifyEventChain, assessEvidence } from '../server/core.mjs';
 import { createStore } from '../server/store.mjs';
 import { createHttpServer, startServer } from '../server/index.mjs';
 
@@ -61,6 +61,23 @@ function fixture(t, options = {}) {
   };
 }
 
+// Synthetic adapter payload only: this exercises validation, not external weather verification.
+function syntheticObservations() {
+  const observedAt = '2026-10-21T17:59:50.000Z';
+  return {
+    observedAt, simulated: false, settlementReady: true, evidenceType: 'observation',
+    cloudPercent: 5, windKph: 9, humidityPercent: 40,
+    sources: ['a', 'b'].map(id => ({
+      id: `summit-sensor-${id}`, name: `Synthetic summit sensor ${id}`, provider: `synthetic-provider-${id}`,
+      provenance: `https://weather.example.test/observations/${id}`,
+      independenceGroup: `synthetic-observation-network-${id}`,
+      evidenceType: 'observation', simulated: false, observedAt: id === 'b' ? '2026-10-21T18:59:50+01:00' : observedAt,
+      station: { latitude: 28.754, longitude: -17.885, altitudeMeters: 2396 },
+      cloudPercent: 5, windKph: 9, humidityPercent: 40,
+    })),
+  };
+}
+
 test('canonical JSON is stable across key insertion orders', () => {
   assert.equal(canonicalize({ z: 1, nested: { b: 2, a: 3 } }), canonicalize({ nested: { a: 3, b: 2 }, z: 1 }));
   assert.throws(() => canonicalize({ value: Infinity }));
@@ -101,6 +118,9 @@ test('clear conditions allow one exact capture and only then three separate payo
   const evaluated = await f.core.evaluate(agreement.id, { scenario: 'clear' });
   assert.equal(evaluated.evaluation.eligible, true);
   assert.equal(evaluated.evaluation.checks.length, 6);
+  assert.equal(evaluated.evaluation.evidenceMode, 'simulated');
+  assert.equal(evaluated.evaluation.independenceBasis, 'demo-fixtures');
+  assert.match(evaluated.evaluation.checks.find(check => check.id === 'sources').label, /sin independencia real/);
   const captured = await f.core.execute(agreement.id);
   assert.equal(captured.status, 'CAPTURED');
   assert.equal(captured.payment.status, 'COMPLETED');
@@ -115,6 +135,106 @@ test('clear conditions allow one exact capture and only then three separate payo
   assert.equal(receipt.integrity.eventChainValid, true);
   assert.equal(receipt.agreementHash, agreement.hash);
   assert.equal(receipt.payment.captureId, 'CAPTURE-1');
+});
+
+test('new agreements bind a versioned local-observation policy to their consent hash', async t => {
+  const f = fixture(t);
+  const agreement = await f.negotiated();
+  assert.equal(agreement.policy.version, '1.1');
+  assert.deepEqual(agreement.policy.siteLocation, { latitude: 28.754, longitude: -17.885, altitudeMeters: 2396, maxDistanceMeters: 1500, maxAltitudeDifferenceMeters: 150 });
+  assert.equal(agreement.policy.realEvidence.independenceBasis, 'adapter-declared');
+  const changed = structuredClone(agreement);
+  changed.policy.siteLocation.maxDistanceMeters++;
+  assert.notEqual(computeAgreementHash(changed), agreement.hash);
+});
+
+test('complete synthetic observation metadata permits capture without claiming external independence proof', async t => {
+  const f = fixture(t, { evidenceProvider: async () => syntheticObservations() });
+  const agreement = await f.authorized();
+  const evaluated = await f.core.evaluate(agreement.id, { scenario: 'clear' });
+  assert.deepEqual(evaluated.evaluation.reasons, []);
+  assert.equal(evaluated.evaluation.eligible, true);
+  assert.equal(evaluated.evaluation.independenceBasis, 'adapter-declared');
+  const sources = evaluated.evaluation.checks.find(check => check.id === 'sources');
+  assert.equal(sources.actual, 2);
+  assert.match(sources.threshold, /sin verificación externa/);
+  const result = await f.core.execute(agreement.id);
+  assert.equal(result.status, 'CAPTURED');
+  assert.equal(f.calls.capture, 1);
+});
+
+const invalidObservationCases = [
+  ['renamed duplicate source IDs', evidence => { evidence.sources[1].id = evidence.sources[0].id.toUpperCase(); }, /identificador.*duplicado/],
+  ['renamed duplicate provenance with a different group', evidence => { evidence.sources[1].provenance = `${evidence.sources[0].provenance}/`; }, /procedencia.*duplicada/],
+  ['two labels from the same declared observation lineage', evidence => { evidence.sources[1].independenceGroup = evidence.sources[0].independenceGroup.toUpperCase(); }, /grupos de observación distintos/],
+  ['remote station', evidence => { evidence.sources[1].station.longitude = -16.5; }, /fuera del radio/],
+  ['wrong station altitude', evidence => { evidence.sources[1].station.altitudeMeters = 400; }, /tolerancia de altitud/],
+  ['missing source location', evidence => { delete evidence.sources[1].station; }, /ubicación y altitud/],
+  ['missing source timestamp', evidence => { delete evidence.sources[1].observedAt; }, /observación vigente con fecha válida/],
+  ['ambiguous source timestamp without a timezone', evidence => { evidence.sources[1].observedAt = '2026-10-21T17:59:50'; }, /zona horaria explícita/],
+  ['ambiguous aggregate timestamp without a timezone', evidence => { evidence.observedAt = '2026-10-21T17:59:50'; }, /fecha de observación válida/],
+  ['stale source despite fresh aggregate', evidence => { evidence.sources[1].observedAt = '2026-10-21T17:49:59.000Z'; }, /observación vigente con fecha válida/],
+  ['future source despite fresh aggregate', evidence => { evidence.sources[1].observedAt = '2026-10-21T18:01:01.000Z'; }, /observación vigente con fecha válida/],
+  ['missing source identity', evidence => { delete evidence.sources[1].id; }, /carece de identidad/],
+  ['missing source provider', evidence => { delete evidence.sources[1].provider; }, /carece de identidad/],
+  ['missing source provenance', evidence => { delete evidence.sources[1].provenance; }, /carece de identidad/],
+  ['missing adapter-declared lineage', evidence => { delete evidence.sources[1].independenceGroup; }, /carece de identidad/],
+  ['missing observation readings', evidence => { delete evidence.sources[1].cloudPercent; }, /mediciones meteorológicas requeridas/],
+  ['forecast substituted for an observation', evidence => { evidence.sources[1].evidenceType = 'forecast'; }, /pronóstico/],
+  ['contradictory forecast type', evidence => { evidence.sources[1].type = 'weather-forecast'; }, /pronóstico/],
+  ['aggregate forecast', evidence => { evidence.evidenceType = 'forecast'; }, /pronóstico/],
+  ['explicit settlement veto', evidence => { evidence.settlementReady = false; }, /no declara.*apta/],
+  ['explicit settlement veto even with the fixture flag', evidence => { evidence.simulated = true; evidence.settlementReady = false; evidence.sources.forEach(source => { source.simulated = true; }); }, /no declara.*apta/],
+  ['missing settlement readiness', evidence => { delete evidence.settlementReady; }, /no declara.*apta/],
+  ['individual source settlement veto', evidence => { evidence.sources[1].settlementReady = false; }, /veta la liquidación/],
+  ['fixture mixed into real observations', evidence => { evidence.sources[1].simulated = true; }, /mezclar fixtures/],
+  ['real source mixed into an explicitly simulated aggregate', evidence => { evidence.simulated = true; }, /mezclar fixtures/],
+  ['unclassified source in real evidence', evidence => { delete evidence.sources[1].simulated; }, /mezclar fixtures/],
+  ['non-HTTPS provenance', evidence => { evidence.sources[1].provenance = 'http://weather.example.test/b'; }, /procedencia HTTPS/],
+  ['credential-bearing provenance', evidence => { evidence.sources[1].provenance = 'https://user:secret@weather.example.test/b'; }, /procedencia HTTPS/],
+  ['query-token provenance', evidence => { evidence.sources[1].provenance += '?token=secret'; }, /procedencia HTTPS/],
+];
+for (const [name, mutate, reason] of invalidObservationCases) {
+  test(`settlement evidence fails closed for ${name}`, async t => {
+    const evidence = syntheticObservations();
+    mutate(evidence);
+    const f = fixture(t, { evidenceProvider: async () => evidence });
+    const agreement = await f.authorized();
+    const evaluated = await f.core.evaluate(agreement.id, { scenario: 'clear' });
+    assert.equal(evaluated.evaluation.eligible, false);
+    assert.match(evaluated.evaluation.reasons.join(' '), reason);
+    if (!name.startsWith('ambiguous aggregate')) assert.equal(evaluated.evaluation.checks.find(check => check.id === 'sources').passed, false);
+    const result = await f.core.execute(agreement.id);
+    assert.equal(result.status, 'VOIDED');
+    assert.equal(f.calls.capture, 0);
+    assert.equal(f.calls.void, 1);
+  });
+}
+
+test('persisted historical policy and receipt terms are never upgraded or rehashed on read', async t => {
+  const f = fixture(t);
+  const proposed = await f.negotiated();
+  const historical = f.store.get(proposed.id);
+  historical.policy.version = '1.0';
+  delete historical.policy.siteLocation;
+  delete historical.policy.realEvidence;
+  historical.hash = computeAgreementHash(historical);
+  historical.events = [];
+  f.store.save(historical);
+  const termsBefore = canonicalize(f.core.receipt(historical.id).agreement);
+  f.reopen();
+  assert.equal(f.core.get(historical.id).hash, historical.hash);
+  assert.equal(canonicalize(f.core.receipt(historical.id).agreement), termsBefore);
+  const unsupportedReal = assessEvidence(f.core.get(historical.id), syntheticObservations(), new Date('2026-10-21T18:00:00.000Z'));
+  assert.equal(unsupportedReal.eligible, false);
+  assert.match(unsupportedReal.reasons.join(' '), /política versionada/);
+  await f.core.consent(historical.id, { agreementHash: historical.hash });
+  await f.core.createOrder(historical.id);
+  await f.core.authorize(historical.id, { agreementHash: historical.hash });
+  const evaluated = await f.core.evaluate(historical.id, { scenario: 'clear' });
+  assert.equal(evaluated.evaluation.eligible, true);
+  assert.equal(evaluated.hash, historical.hash);
+  assert.equal(canonicalize(f.core.receipt(historical.id).agreement), termsBefore);
 });
 
 for (const scenario of ['cloudy', 'stale', 'conflict']) {

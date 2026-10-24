@@ -19,7 +19,7 @@ const requireKeys = (names) => {
 };
 const payments = mode('PAYMENTS_MODE', 'demo', ['demo', 'paypal-sandbox']);
 const agent = mode('AGENT_MODE', 'deterministic', ['deterministic', 'anthropic', 'gemini']);
-const weather = mode('WEATHER_MODE', 'fixtures', ['fixtures', 'aemet']);
+const weather = mode('WEATHER_MODE', 'fixtures', ['fixtures', 'aemet', 'met-norway']);
 if (payments === 'paypal-sandbox') requireKeys(['PAYPAL_CLIENT_ID', 'PAYPAL_CLIENT_SECRET']);
 if (['true', '1'].includes(config.PUBLIC_DEMO) && payments !== 'demo') problems.push('PUBLIC_DEMO requires PAYMENTS_MODE=demo.');
 if (config.SESSION_SECRET && config.SESSION_SECRET.length < 32) problems.push('SESSION_SECRET must contain at least 32 characters.');

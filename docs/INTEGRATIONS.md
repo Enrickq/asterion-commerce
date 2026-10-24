@@ -10,6 +10,7 @@ Status vocabulary: **integrated** means real code is used locally; **configurabl
 | Anthropic | Configurable | Optional model-based negotiation through the Messages API | Key, billing access, explicit available model and end-to-end run |
 | Google Gemini | Externally verified | Three actual isolated supplier quotes, validated against price bounds, produced a €1,650 agreement within a €1,700 mandate | Private Free Tier run verified; availability and future quotas remain provider-dependent; [evidence](evidence/gemini-verification.json) |
 | AEMET | Configurable | Fresh local observation retrieval through OpenData | Key and valid station ID; astronomical evidence completeness must still pass |
+| MET Norway | Integrated forecast preview | Separate read-only model forecast for the fixed Roque-area coordinates, with attribution and caching | Not an observation or a complete settlement oracle; see [weather contract](WEATHER.md) |
 | Render | Deployed and verified | Free Node service in Frankfurt with autonomous clear/cloudy flows | Free storage remains ephemeral; paid persistent template is optional |
 | APIMatic | Used in development | PayPal Context Plugin installed in Codex and consulted for implementation review | No generated SDK or runtime use claim; [evidence](APIMATIC-CONTEXT.md) |
 | Kernel | Configurable | Open a real browser session at a server-configured supplier URL | Credentials and external verification; navigation, extraction and reservations are not implemented |
@@ -37,7 +38,7 @@ Copy `.env.example` to `.env`. The startup commands load local configuration. Re
 | `AGENT_MODE` | `deterministic`, `anthropic` or `gemini`; default remains deterministic |
 | `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` | Model credentials and an explicitly available model ID |
 | `GEMINI_API_KEY`, `GEMINI_MODEL` | Google AI Studio server credential and available Gemini model ID; no URL or `models/` prefix |
-| `WEATHER_MODE` | `fixtures` or `aemet` |
+| `WEATHER_MODE` | `fixtures`, `aemet` or `met-norway`; actual-source adapters remain insufficient for capture |
 | `AEMET_API_KEY`, `AEMET_STATION_ID` | OpenData key and actual station identifier |
 | `KERNEL_API_KEY`, `KERNEL_SUPPLIER_URL` | Optional browser-session credential and approved HTTPS destination |
 | `APIMATIC_CONTEXT_INSTALLED` | Development metadata only; set true only after actual installation and use |
@@ -113,5 +114,7 @@ Apply only the selected Blueprint after connecting the repository; do not create
 Neither web-service Blueprint is Render Workflows usage. SQLite durability on a paid disk also requires keeping the service single-instance; it does not provide high availability or a backup policy.
 
 ## Weather evidence
+
+The separate `GET /api/weather/preview` route and **Read forecast** control retrieve a MET Norway model forecast without changing an agreement. No key is required. Provider timestamps, units, attribution and the forecast-only boundary are described in [WEATHER](WEATHER.md). Selecting `WEATHER_MODE=met-norway` for agreement evaluation also retains `settlementReady:false`; a numerical forecast cannot pass as a local observation.
 
 [AEMET OpenData](https://opendata.aemet.es/dist/) requires an API key. Retrieve the station ID from AEMET metadata; do not invent one for the observatory. Renew keys according to [AEMET's current key policy](https://opendata.aemet.es/centrodedescargas/novedades). Actual observations are not a promise about future conditions. A feed without the contract's required cloud information cannot authorize a clear-sky capture.

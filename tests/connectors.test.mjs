@@ -198,7 +198,7 @@ test('Domain capture recovery consumes realistic Sandbox payloads and never repe
   const store = createStore(':memory:');
   try {
     const core = createCore({ store, paymentAdapter: createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }), evidenceProvider: async () => ({
-      observedAt: new Date().toISOString(), cloudPercent: 5, windKph: 10, humidityPercent: 40, sources: [{ name: 'Test summit sensor' }, { name: 'Test forecast' }],
+      simulated: true, observedAt: new Date().toISOString(), cloudPercent: 5, windKph: 10, humidityPercent: 40, sources: [{ name: 'Test summit sensor' }, { name: 'Test forecast' }],
     }) });
     const agreed = await core.negotiate({ intent: 'Private astronomy experience with 20 minute flexibility', budgetMinor: 150000 });
     await core.consent(agreed.id, { agreementHash: agreed.hash });
@@ -331,7 +331,7 @@ test('Partial payout batch stays pending in the domain until all three validated
     const core = createCore({ store, paymentAdapter: {
       mode: 'paypal-sandbox', createOrder: async () => ({ orderId: 'ORDER123' }), authorize: async () => ({ authorizationId: 'AUTH123', status: 'CREATED' }),
       capture: async () => ({ captureId: 'CAPTURE123', status: 'COMPLETED' }), payouts: async () => ({ batchId: 'BATCH123', status: 'PENDING', items: [] }), reconcile: args => sandbox.reconcile(args),
-    }, evidenceProvider: async () => ({ observedAt: new Date().toISOString(), cloudPercent: 5, windKph: 10, humidityPercent: 40, sources: [{ name: 'Test summit' }, { name: 'Test forecast' }] }) });
+    }, evidenceProvider: async () => ({ simulated: true, observedAt: new Date().toISOString(), cloudPercent: 5, windKph: 10, humidityPercent: 40, sources: [{ name: 'Test summit' }, { name: 'Test forecast' }] }) });
     agreed = await core.negotiate({ intent: 'Private astronomy experience with scheduling flexibility', budgetMinor: 150000 });
     await core.consent(agreed.id, { agreementHash: agreed.hash });
     await core.createOrder(agreed.id);
