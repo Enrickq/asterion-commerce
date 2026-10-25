@@ -4,7 +4,7 @@
 
 [![Verify ASTERION](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml) · [MIT license](LICENSE) · Node.js 24 / React / PayPal Sandbox
 
-[Try the public demo](https://asterion-mj13.onrender.com/) · [Inspect recorded provider runs](https://asterion-mj13.onrender.com/#verified-runs) · [English video script](docs/DEMO.en.md)
+[Try the public demo](https://asterion-mj13.onrender.com/) · [Inspect recorded provider runs](https://asterion-mj13.onrender.com/#verified-runs) · [English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-25.pptx) · [English video script](docs/DEMO.en.md)
 
 ASTERION coordinates a complete stargazing experience in La Palma under one customer-approved mandate. Supplier agents propose a bundle; the application enforces the budget and evidence policy, then autonomously captures or voids an authorization. Supplier payments follow capture as separate operations.
 
@@ -129,6 +129,9 @@ Weather thresholds are demo policy parameters, not a scientific guarantee of a p
 - [APIMatic installation and review evidence](docs/APIMATIC-CONTEXT.md)
 - [Spanish demo narration](docs/DEMO.es.md)
 - [English video recording script](docs/DEMO.en.md)
+- [Functional video shot list and editing plan](docs/VIDEO-RECORDING.en.md)
+- [English narration and draft subtitles](docs/video/)
+- [Editable English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-25.pptx)
 - [English pitch manuscript](docs/PITCH.en.md)
 - [Delivery checklist, in Spanish](docs/DELIVERY.es.md)
 - [Devpost submission draft](docs/SUBMISSION.md)

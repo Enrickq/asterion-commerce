@@ -1,6 +1,6 @@
 # ASTERION: English pitch manuscript
 
-**Purpose:** English slide text and speaker notes for a ten-slide jury presentation. This document is alternative presentation material. It does **not** modify the existing live deck and is **not** a finished visual presentation. The live deck could not be inspected because ArtifactSession returned a host-access error, so this manuscript does not claim a word-for-word translation of that inaccessible artifact.
+**Purpose:** English slide text and extended speaker notes for the [editable ten-slide jury presentation](presentation/ASTERION-Pitch.en-2026-10-25.pptx). The PowerPoint uses the established ASTERION palette and current evidence. It is a separate English edition; the earlier Spanish live deck is preserved.
 
 **Current software verification:** application commit `c4428e9e1342ad4ad64b6198a7233da6ccebaf2a`, with **142 automated tests** and public verification recorded in [the verification record](VERIFICATION.es.md). Private PayPal/Gemini verification took place on October 22–23 and retains its historical software baseline in the provider records. A separate public forecast preview was verified on October 25, 2026, Canary Islands time.
 
@@ -139,26 +139,26 @@ Sources: [integration matrix](INTEGRATIONS.md), [APIMatic evidence](APIMATIC-CON
 
 | Time | Visible action | What the audience should understand |
 | --- | --- | --- |
-| 0:00–0:43 | Intent and three supplier quotes | A €1,700 mandate produces a €1,650 agreement |
-| 0:43–1:23 | Agreement consent and official Sandbox approval | The buyer grants explicit authority |
-| 1:23–1:48 | Labeled clear-weather fixture and Autopilot | The server continues after arming |
-| 1:48–2:10 | Completed capture and supplier payments | Each transfer has a verified status |
-| 2:10–2:35 | Separate cloudy agreement | Failed conditions prevent capture |
-| 2:35–2:50 | Receipt and next milestone | Every financial decision has an explanation |
+| 0:00–0:30 | Public mandate and negotiation | A €1,500 ceiling produces a €1,480 simulated agreement |
+| 0:30–1:15 | Consent and clear-fixture Autopilot | The server continues after arming |
+| 1:15–1:40 | Separate public cloudy agreement | Failed conditions prevent capture |
+| 1:40–2:18 | Recorded Gemini and Sandbox evidence | A historical €1,650 capture and three confirmed Payouts |
+| 2:18–2:38 | Receipt and read-only forecast | Inspectable decisions and a visible oracle boundary |
+| 2:38–2:50 | Next milestone and product vision | Actual operators and local observations |
 
-PayPal Sandbox test funds. Weather and inventory remain simulated.
+Public payments are simulated. Historical private evidence uses Sandbox test funds. Inventory and settlement weather remain simulated in both environments.
 
 ### Speaker notes
 
-Follow the [full English recording script](DEMO.en.md). This is a recording plan, not a claim that a video has been completed.
+Follow the [English recording script](DEMO.en.md) and [shot list](VIDEO-RECORDING.en.md). Record the working public application first, then inspect the historical private provider evidence. The video remains pending.
 
-Open with two guests, 20-minute flexibility and a €1,700 ceiling. Show the three validated Gemini quotes and the resulting €1,650 agreement. Show the mandate, its allocations and its evidence policy before showing buyer approval in the official PayPal Sandbox checkout.
+Open the public application with two guests, 20-minute flexibility and a €1,500 ceiling. Show the deterministic €1,480 agreement, its allocations and evidence policy. Record buyer consent, simulated authorization and clear-fixture Autopilot, then a visibly separate cloudy agreement that voids without capture. This public execution uses simulated payments.
 
-Label the weather fixture. Arm the approved mandate and show the server's progress. The verified main agreement completed a €1,650 capture and three separate successful Payouts: €425, €620 and €425. The organizer allocation remains separate from those transfers.
+Switch to **Verified runs** with an explicit recorded-private-run label. The historical agreement used three actual Gemini requests, a €1,700 mandate and a €1,650 quote. It completed PayPal Sandbox capture and three separate successful Payouts: €425, €620 and €425. The organizer allocation remains separate from those transfers. This is inspection of recorded evidence, rather than footage of a new private execution.
 
-Switch visibly to a **different** previously verified cloudy agreement. Its authorization was voided with no capture or supplier Payouts. Do not depict a completed capture being reversed by changing the main agreement's weather selector.
+The separately recorded cloudy Sandbox agreement also shows a void with no capture or supplier Payouts. It is a different agreement. Do not depict a completed capture being reversed by changing the main agreement's weather selector.
 
-The verified Gemini run took about 55 seconds. Label any edited wait, historical footage or receipt inspection. A still image of a completed run is evidence of that run, not a recording of a fresh execution. Keep `PENDING` visible until the provider confirms success. Keep credentials and account-management pages out of frame.
+Label removed public execution waits. The historical Gemini run took about 55 seconds, but that delay must not be attributed to the public deterministic negotiation. A still image of a completed run is evidence of that run. Keep `PENDING` visible until a provider confirms success. A newly recorded private execution would need its own footage and narration matching the actual amounts. Keep credentials and account-management pages out of frame.
 
 Sources: [English recording script](DEMO.en.md), [integrated main agreement](evidence/ai-sandbox-run.json), [separate cloudy outcome](evidence/paypal-sandbox.json).
 
@@ -264,10 +264,10 @@ Commercial operation needs verified authentication, operator authorization, dura
 
 The reusable component is the mandate and policy boundary. Other purchases need their own evidence and contractual conditions. Coordinated travel, events and B2B delivery milestones are expansion hypotheses, not existing customers or integrations.
 
-The hackathon requires meaningful use of PayPal and AI. Submission materials need English or an English translation. The current delivery checklist records a cutoff of November 12, 2026 at 12:00 PST, or 20:00 Canary Islands time. Registration, personal eligibility and final submission still require completion. A final public YouTube demonstration under three minutes remains pending. This manuscript is English preparation material; it neither submits the project nor guarantees an award.
+The hackathon requires meaningful use of PayPal and AI. Submission materials need English or an English translation. The current delivery checklist records a cutoff of November 12, 2026 at 12:00 PST, or 20:00 Canary Islands time. Registration, personal eligibility and final submission still require completion. A final public YouTube demonstration under three minutes remains pending. This presentation does not submit the project or guarantee an award.
 
 Sources: [current submission draft](SUBMISSION.md), [architecture and field requirements](ARCHITECTURE.md), [official hackathon rules](https://paypalaihackathon.devpost.com/rules), [official event announcement](https://developer.paypal.com/community/blog/PayPal_AI_Hackathon/).
 
-## Handoff for the visual deck
+## Presentation files
 
-Use the ten sections above as the English slide copy and presenter notes. Keep the allocation arithmetic and the public/private environment disclosures intact. Review text fit when applying this manuscript to the existing visual deck. The live deck itself remains unchanged, and its English visual layout has not been rendered or inspected by this work.
+The [English PowerPoint](presentation/ASTERION-Pitch.en-2026-10-25.pptx) contains editable text and native tables, source references and presenter notes. This manuscript retains longer explanations for rehearsal. Keep the public/private scene transition, allocation arithmetic and environment disclosures intact when adapting it for a live pitch.

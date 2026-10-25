@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-25 · English jury presentation
+
+- Added a ten-slide editable English PowerPoint with native allocation, architecture and roadmap tables, presenter notes and source references.
+- Updated the recording script and shot list to separate a fresh public €1,480 simulation from inspection of the historical €1,650 Gemini / PayPal Sandbox evidence.
+- Added the 258-word narration transcript and 36 draft English subtitle cues for the planned 2:50 edit. Caption timing still requires alignment to the recorded speech.
+- Linked the deck and recording materials from the reviewer documentation. The final functional video, YouTube upload and Devpost submission remain pending.
+
 ## 2026-10-25 · Recorded evidence and receipt integrity
 
 - Added **Verified runs**, a public read-only view of the historical Gemini → PayPal Sandbox agreement, individual supplier payments, source records and a separate cloudy-condition void. The interface labels test funds and simulated settlement weather.

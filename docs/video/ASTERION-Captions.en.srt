@@ -1,0 +1,166 @@
+1
+00:00:00,150 --> 00:00:03,921
+A customer wants a perfect night under the
+stars.
+
+2
+00:00:04,001 --> 00:00:09,850
+The harder problem is deciding when an
+autonomous agent is allowed to spend.
+
+3
+00:00:10,150 --> 00:00:14,544
+ASTERION converts intent into a spending
+mandate.
+
+4
+00:00:14,624 --> 00:00:21,529
+In this public simulation, supplier agents
+negotiate a fourteen-eighty bundle
+
+5
+00:00:21,609 --> 00:00:25,017
+within a fifteen-hundred-euro ceiling.
+
+6
+00:00:25,097 --> 00:00:29,850
+The backend validates the price and every
+allocation.
+
+7
+00:00:30,150 --> 00:00:38,253
+The customer approves the exact agreement,
+weather thresholds and cancellation terms.
+
+8
+00:00:38,333 --> 00:00:41,764
+A language model may propose a deal.
+
+9
+00:00:41,844 --> 00:00:47,850
+It cannot increase the approved budget or
+access payment tools.
+
+10
+00:00:48,150 --> 00:00:50,962
+Arm the mandate once.
+
+11
+00:00:51,042 --> 00:00:59,211
+The server schedules the job, evaluates
+evidence and executes
+
+12
+00:00:59,291 --> 00:01:03,308
+without another payment click.
+
+13
+00:01:03,388 --> 00:01:06,602
+Here the fixture passes.
+
+14
+00:01:06,682 --> 00:01:14,850
+Capture and supplier distribution complete
+as separate steps.
+
+15
+00:01:15,150 --> 00:01:20,897
+A second agreement faces cloudy
+conditions.
+
+16
+00:01:20,977 --> 00:01:28,863
+The same policy blocks capture and voids
+the authorization.
+
+17
+00:01:28,943 --> 00:01:32,552
+This is a separate mission.
+
+18
+00:01:32,632 --> 00:01:39,850
+Knowing when to refuse payment is part of
+the product.
+
+19
+00:01:40,150 --> 00:01:44,874
+These next results are recorded private
+provider evidence.
+
+20
+00:01:44,954 --> 00:01:50,086
+Three actual Gemini requests produced a
+sixteen-fifty agreement
+
+21
+00:01:50,166 --> 00:01:52,690
+within seventeen hundred euros.
+
+22
+00:01:52,770 --> 00:01:57,902
+That same agreement completed autonomous
+PayPal Sandbox capture
+
+23
+00:01:57,982 --> 00:02:03,358
+and three individually checked supplier
+Payouts: four twenty-five,
+
+24
+00:02:03,438 --> 00:02:06,044
+six twenty and four twenty-five.
+
+25
+00:02:06,124 --> 00:02:07,834
+Test funds were used.
+
+26
+00:02:07,914 --> 00:02:11,743
+Inventory and settlement weather were
+fixtures.
+
+27
+00:02:11,823 --> 00:02:17,850
+The public records preserve the agreement
+link and transaction references.
+
+28
+00:02:18,150 --> 00:02:22,877
+The receipt can be checked offline for
+internal consistency.
+
+29
+00:02:22,957 --> 00:02:27,132
+A real MET Norway forecast is available
+for planning,
+
+30
+00:02:27,212 --> 00:02:29,733
+with timestamps and attribution.
+
+31
+00:02:29,813 --> 00:02:31,940
+It cannot unlock a payment.
+
+32
+00:02:32,020 --> 00:02:37,850
+Local observations and actual operators
+are the next validation milestone.
+
+33
+00:02:38,150 --> 00:02:41,269
+Agents negotiate. Evidence unlocks
+payment.
+
+34
+00:02:41,349 --> 00:02:43,597
+La Palma is the first use case.
+
+35
+00:02:43,677 --> 00:02:47,159
+ASTERION is infrastructure for complex
+purchases
+
+36
+00:02:47,239 --> 00:02:49,850
+under one customer-approved mandate.

@@ -4,8 +4,8 @@ Estado actualizado el 25 de octubre de 2026. Esto es un plan de entrega; la cand
 
 ## Lo obligatorio pendiente
 
-1. Grabar el recorrido funcional, editarlo a menos de tres minutos y publicar el vídeo en YouTube. [Guion en inglés listo para grabación](DEMO.en.md).
-2. Revisar todo el material presentado en inglés o aportar traducción. Descripción, instrucciones, [guion](DEMO.en.md) y [manuscrito de diez diapositivas](PITCH.en.md) disponibles en inglés. El deck visual sigue en español; su herramienta devolvió un error de acceso y no se modificó.
+1. Grabar el recorrido funcional, editarlo a menos de tres minutos y publicar el vídeo en YouTube. [Guion en inglés](DEMO.en.md) y [plan de tomas](VIDEO-RECORDING.en.md) preparados. La ejecución pública simulada y las pruebas históricas de proveedores aparecen en escenas distintas.
+2. Revisar el paquete final en inglés. Descripción, instrucciones, guion y [PowerPoint editable de diez diapositivas](presentation/ASTERION-Pitch.en-2026-10-25.pptx) disponibles. El [manuscrito](PITCH.en.md) aporta notas ampliadas. La edición inglesa conserva el deck español anterior.
 3. Confirmar elegibilidad e identidad del participante, registro en Devpost y campos de candidatura. La revisión técnica de las bases no confirma la elegibilidad personal.
 4. Revisar y enviar la candidatura; comprobar que vídeo, repositorio, licencia e instrucciones permiten al jurado evaluar el proyecto.
 
@@ -33,4 +33,4 @@ El catálogo, disponibilidad y clima siguen simulados. No hay reserva con un ope
 
 La revisión meteorológica pasó **114 pruebas locales y CI**, compilación y preflight. El smoke y la verificación pública comprobaron captura y anulación en los escenarios simulados. La consulta externa de previsión también está verificada en Render y [registrada por separado](evidence/weather-preview.json); no reejecuta ni amplía las pruebas históricas de PayPal o Gemini.
 
-La revisión posterior de experiencia e integridad pasó **142 pruebas** y está desplegada. Añade la vista pública **Verified runs**, recibos completos y verificables offline, estados de reembolso seguros y mejoras de lectura y teclado. El vídeo y la presentación visual inglesa siguen pendientes; una interfaz o un manuscrito mejorados no equivalen a esos entregables finales.
+La revisión posterior de experiencia e integridad pasó **142 pruebas** y está desplegada. Añade la vista pública **Verified runs**, recibos completos y verificables offline, estados de reembolso seguros y mejoras de lectura y teclado. La presentación visual inglesa está terminada. El vídeo y su publicación siguen pendientes.

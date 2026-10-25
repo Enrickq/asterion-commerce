@@ -1,5 +1,7 @@
 # ASTERION · Guion de demo de 2:50
 
+Guion de ensayo en español y variantes privadas. Para la grabación final, el [guion inglés](DEMO.en.md), el [plan de tomas](VIDEO-RECORDING.en.md) y el [deck inglés](presentation/ASTERION-Pitch.en-2026-10-25.pptx) separan la ejecución pública nueva de la inspección de pruebas históricas.
+
 ## Preparación
 
 Ejecutar `pnpm dev`, abrir `http://localhost:5173` y comprobar los indicadores de modo. El recorrido reproducible usa agentes deterministas, meteorología de fixture y pagos simulados. Decirlo en voz alta. Para grabar una variante con PayPal Sandbox, validar antes las credenciales y completar la aprobación real del comprador en PayPal; el tiempo de login puede requerir editar el vídeo.
@@ -29,7 +31,7 @@ Cambiar la frase de 1:04 por: «Esto es PayPal Sandbox: fondos de prueba y una a
 
 El 23 de octubre, hora de Canarias, tres llamadas reales de Gemini negociaron un paquete de **1.650 EUR dentro de 1.700 EUR**: guía 425, telescopio 620, transporte 425 y coordinación 180. Ese mismo acuerdo terminó liquidado por Autopilot en PayPal Sandbox, con captura y tres Payouts confirmados. Ver [evidencia integrada](evidence/ai-sandbox-run.json).
 
-Para grabar esta variante, usar esos importes y explicar que el catálogo y el clima siguen simulados. La inferencia tardó unos 55 segundos en la ejecución verificada: si se edita la espera, rotular el tiempo transcurrido. No presentar el descuento fijo de la demo determinista como resultado del modelo. El vídeo continúa pendiente de grabación.
+Estos importes corresponden al acuerdo histórico. Para grabar una nueva ejecución privada, conservar metraje original de todo el flujo y ajustar los importes y la narración a su resultado real. Explicar que el catálogo y el clima siguen simulados. La inferencia tardó unos 55 segundos en la ejecución histórica: una ejecución nueva debe mostrar su propio tiempo. No presentar el descuento fijo de la demo determinista como resultado del modelo. El vídeo continúa pendiente de grabación.
 
 Si los payouts aún no se han probado externamente, explicar que las asignaciones son el ledger de proveedores y que su envío está pendiente de verificación. Mostrar `PENDING` como pendiente; no convertirlo en éxito para el vídeo.
 

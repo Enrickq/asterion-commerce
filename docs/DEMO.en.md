@@ -1,28 +1,30 @@
 # ASTERION · English recording script · target 2:50
 
-This is a recording plan, not a completed video. Use the verified private Gemini → PayPal Sandbox agreement for the main story. Inventory and weather are fixtures. The public hosted demo uses deterministic negotiation and simulated payments.
+This is a recording plan, not a completed video. Record the working public application, then inspect the separately recorded Gemini and PayPal Sandbox evidence. The [production shot list](VIDEO-RECORDING.en.md) contains capture setup, persistent labels and pickup instructions. The [English deck](presentation/ASTERION-Pitch.en-2026-10-25.pptx) follows the same scope.
 
 ## Recording sequence
 
 | Time | Footage | English narration |
 | --- | --- | --- |
-| 0:00–0:18 | Mandate: two guests, 20-minute flexibility, €1,700 ceiling | “Book an extraordinary night under the stars in La Palma: a guide, telescope and transport. Stay below seventeen hundred euros. Complete the payment only when the weather evidence satisfies the conditions I approve.” |
-| 0:18–0:43 | Three supplier quotes; AG Grid allocations | “ASTERION turns that request into a spending mandate. Three isolated Gemini supplier contexts propose prices. The backend validates every quote. This verified run agreed sixteen hundred and fifty euros. The service catalog is simulated; the Gemini requests are actual API calls.” |
-| 0:43–1:02 | Approved agreement, allocations and policy | “The customer approves the price, suppliers and evidence policy. The language model cannot change the budget or call payment tools. Its proposal becomes an agreement only after validation and customer consent.” |
-| 1:02–1:23 | Official Sandbox approval, authorization identifier | “This is PayPal Sandbox, using test funds. The buyer approves through PayPal. ASTERION then authorizes the amount. Authorization and capture are separate operations.” |
-| 1:23–1:48 | Clearly labeled clear-weather fixture; arm Autopilot | “For this reproducible demonstration, weather is a labeled test scenario. One action arms the approved mandate. The server persists its job, checks evidence freshness and thresholds, then executes without another payment click.” |
-| 1:48–2:10 | Capture COMPLETED; three supplier items SUCCESS | “PayPal confirmed the capture and three separate supplier Payouts: four hundred twenty-five, six hundred twenty, and four hundred twenty-five euros. Each transfer has its own verified status. These are subsequent payments, not an atomic split.” |
-| 2:10–2:35 | Separate verified cloudy agreement; authorization VOIDED | “Now a separate cloudy scenario fails the policy. The server voids the authorization. There is no capture and no supplier payout. A financial agent must also demonstrate when it refuses to spend.” |
-| 2:35–2:50 | Receipt, evidence links and brand | “The next milestone is location-specific live weather evidence and actual operators. La Palma is our first use case. The infrastructure can coordinate other complex purchases. ASTERION. Intent. Evidence. Payment.” |
+| 0:00–0:10 | Mission control, simulation label visible | “A customer wants a perfect night under the stars. The harder problem is deciding when an autonomous agent is allowed to spend.” |
+| 0:10–0:30 | Two guests, €1,500 ceiling, 20-minute flexibility. Negotiate and show the €1,480 public bundle. | “ASTERION converts intent into a spending mandate. In this public simulation, supplier agents negotiate a fourteen-eighty bundle within a fifteen-hundred-euro ceiling. The backend validates the price and every allocation.” |
+| 0:30–0:48 | Review terms, approve and simulate authorization | “The customer approves the exact agreement, weather thresholds and cancellation terms. A language model may propose a deal. It cannot increase the approved budget or access payment tools.” |
+| 0:48–1:15 | Clear-fixture Autopilot, capture and separate supplier distribution | “Arm the mandate once. The server schedules the job, evaluates evidence and executes without another payment click. Here the fixture passes. Capture and supplier distribution complete as separate steps.” |
+| 1:15–1:40 | New mission, cloudy fixture, VOIDED without capture | “A second agreement faces cloudy conditions. The same policy blocks capture and voids the authorization. This is a separate mission. Knowing when to refuse payment is part of the product.” |
+| 1:40–2:18 | Switch to Verified runs. Inspect the recorded €1,650 private result, allocations and provider references. | “These next results are recorded private provider evidence. Three actual Gemini requests produced a sixteen-fifty agreement within seventeen hundred euros. That same agreement completed autonomous PayPal Sandbox capture and three individually checked supplier Payouts: four twenty-five, six twenty and four twenty-five. Test funds were used. Inventory and settlement weather were fixtures. The public records preserve the agreement link and transaction references.” |
+| 2:18–2:38 | Evidence sources, complete receipt and read-only forecast | “The receipt can be checked offline for internal consistency. A real MET Norway forecast is available for planning, with timestamps and attribution. It cannot unlock a payment. Local observations and actual operators are the next validation milestone.” |
+| 2:38–2:50 | Brand, demo and repository links | “Agents negotiate. Evidence unlocks payment. La Palma is the first use case. ASTERION is infrastructure for complex purchases under one customer-approved mandate.” |
 
 ## Evidence and editing
 
-- Main agreement: `90136dcb-b2ce-4c9e-bb4d-728f7a9a5283`; [integrated evidence](evidence/ai-sandbox-run.json).
-- Cloudy branch: separate agreement `d1296ff9-581c-4f8f-ac68-e94597af5462`; [baseline evidence](evidence/paypal-sandbox.json). Label the scene change; do not present it as the main agreement reversing a completed capture.
-- The verified model run took about 55 seconds. Label any time jump, for example “55 seconds elapsed · inference wait shortened.” Label edited checkout or payout waits as well.
-- Historical footage or receipt inspection must be labeled as such. Record a new run only after checking model quota, Sandbox balance and the selected modes. A still image of a completed run is evidence, not footage of a fresh execution.
+- Keep `SIMULATED PAYMENTS & WEATHER · DETERMINISTIC AGENTS` visible during the public flow. The clear and cloudy outcomes belong to different newly recorded agreements.
+- At 1:40 show `RECORDED PRIVATE RUN · GEMINI + PAYPAL SANDBOX · TEST FUNDS`. Historical main agreement: `90136dcb-b2ce-4c9e-bb4d-728f7a9a5283`; [integrated evidence](evidence/ai-sandbox-run.json).
+- A separate historical cloudy Sandbox agreement is also available: `d1296ff9-581c-4f8f-ac68-e94597af5462`; [baseline evidence](evidence/paypal-sandbox.json). It did not reverse the completed main capture.
+- Label removed public execution waits. The historical model run took about 55 seconds; do not add that delay to the public deterministic negotiation.
+- Historical receipt inspection must be labeled. A still image of a completed run is evidence of that run. Official Sandbox checkout or a fresh private execution can be added only with actual original footage and narration revised to match its amounts and statuses.
 - Frame only the application and the buyer approval flow. Keep developer credentials, test-account passwords, email inboxes and account management pages out of frame.
 - Keep `PENDING` visible until the provider confirms success. The narration must match the actual footage and amounts; revise it if a new run differs.
-- Record original footage without unlicensed music or third-party promotional assets. Review the final duration, subtitles and legibility before upload.
+- The optional offline verifier shot checks a complete receipt exported from the fresh walkthrough. It does not authenticate provider records or accept the sanitized evidence-summary format.
+- Record original footage without unlicensed music or third-party promotional assets. Review the final duration, subtitles and legibility before upload. Keep the next milestone, complete local weather observations, distinct from a read-only model forecast.
 
 The [official rules](https://paypalaihackathon.devpost.com/rules), checked on October 23, 2026, call for English materials or translations, a publicly visible YouTube demonstration, and a video shorter than three minutes. The final video and its YouTube URL are still pending.
