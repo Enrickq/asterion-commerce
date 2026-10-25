@@ -1,31 +1,56 @@
 # ASTERION
 
-**Intent. Evidence. Payment.**
+**Agents negotiate. Evidence unlocks payment.**
 
-[Open the public demo](https://asterion-mj13.onrender.com/) · [Verified CI run](https://github.com/Enrickq/asterion-commerce/actions/runs/40079174416)
+[![Verify ASTERION](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml) · [MIT license](LICENSE) · Node.js 24 / React / PayPal Sandbox
 
-![ASTERION public demo](docs/assets/asterion-public.png)
+[Try the public demo](https://asterion-mj13.onrender.com/) · [Inspect recorded provider runs](https://asterion-mj13.onrender.com/#verified-runs) · [English video script](docs/DEMO.en.md)
 
-ASTERION is a working prototype for conditional agentic commerce. A buyer agent negotiates a complete stargazing experience in La Palma with supplier agents. The customer approves an explicit spending mandate and arms Autopilot. A persisted server job then evaluates evidence, captures or voids the authorization, and requests separate supplier payouts without further clicks.
+ASTERION coordinates a complete stargazing experience in La Palma under one customer-approved mandate. Supplier agents propose a bundle; the application enforces the budget and evidence policy, then autonomously captures or voids an authorization. Supplier payments follow capture as separate operations.
 
-The product question is simple: **can an agent explain why money should move, and prove why it did not move when conditions failed?**
+The foundation model proposes. The customer approves. A deterministic policy owns financial execution.
 
-The default experience runs locally without accounts or API keys. It uses reproducible negotiation, weather fixtures and simulated payments, clearly identified as demo data. **Actual PayPal Sandbox authorization, capture, separate supplier Payouts and a cloudy-condition void were verified on October 22, 2026** in a private local environment. Further approved mandates completed both outcomes autonomously. See the [sanitized provider evidence](docs/evidence/paypal-sandbox.json). On October 23, Canary Islands time, **three actual Gemini supplier calls produced a €1,650 agreement within a €1,700 mandate**; see [model evidence](docs/evidence/gemini-verification.json). A separate MET Norway forecast preview was verified publicly on October 25; [record](docs/evidence/weather-preview.json). Complete local observations for settlement and webhook delivery remain unverified.
+![ASTERION public workspace](docs/assets/asterion-public.png)
 
-The same Gemini-negotiated agreement subsequently completed buyer-approved PayPal Sandbox authorization, autonomous capture and three validated supplier payments. [Integrated AI → Sandbox evidence](docs/evidence/ai-sandbox-run.json) records the €1,650 capture and €425/€620/€425 Payouts. The public hosted demo retains simulated payments and deterministic agents.
+## What you can verify
+
+| Evidence | Demonstrated outcome | Scope |
+| --- | --- | --- |
+| [Public walkthrough](https://asterion-mj13.onrender.com/) | Server Autopilot completes both capture/distribution and failed-condition void paths | Deterministic agents, fixture weather, simulated payments |
+| [Same-agreement Gemini → Sandbox run](docs/evidence/ai-sandbox-run.json) | Three actual model quotes produced a €1,650 agreement within €1,700; autonomous capture and three successful supplier Payouts of €425 / €620 / €425 | Recorded private Sandbox run; test funds, simulated inventory and settlement weather |
+| [Separate cloudy run](docs/evidence/paypal-sandbox.json) | Authorization voided without capture or supplier Payouts | Different approved agreement; deterministic negotiation and fixture weather |
+| [MET Norway preview](docs/evidence/weather-preview.json) | Actual model forecast retrieved by the public application with timestamps and attribution | Read-only planning view; does not authorize a charge |
+
+The public **Verified runs** view makes the model/payment agreement linkage, transaction references, allocations and historical screenshot inspectable. Source records retain their dates, historical software baselines and verification methods. They are sanitized local summaries, not signed provider attestations. Complete local observations for settlement, actual bookings, webhook delivery and production-money use remain unverified.
+
+## A quick route for reviewers
+
+1. Open **Verified runs** to inspect the recorded Gemini/Sandbox outcome and its JSON sources.
+2. In **Mission control**, keep the default two-person brief and €1,500 ceiling; negotiate the €1,480 demo bundle.
+3. Review and approve the exact mandate, then simulate authorization.
+4. Select clear skies and **Arm autonomous execution**. The server continues without another payment click.
+5. Create a separate mission with the cloudy scenario; verify an authorization void without capture.
+6. Export the receipt and run the [offline consistency verifier](docs/RECEIPTS.md):
+
+```sh
+pnpm verify:receipt path/to/asterion-receipt.json
+```
+
+The free Render service may need a cold start. Default local mode needs no accounts or keys. No real bookings or production funds are involved. The final demonstration video is still pending; the recording script is preparation material.
 
 ## Run locally
 
 Requirements: Node.js **24 or newer** and pnpm **11**. Node's built-in SQLite module stores agreements and their audit history.
 
 ```powershell
-pnpm install
-Copy-Item .env.example .env
+pnpm install --frozen-lockfile
 node scripts/preflight.mjs
 pnpm dev
 ```
 
 Open [localhost:5173](http://localhost:5173). The API listens on [localhost:8787](http://localhost:8787). Keep the terminal running.
+
+The commands work on Windows, macOS and Linux. Default mode does not need an environment file. For optional adapters, copy `.env.example` to `.env` with `Copy-Item .env.example .env` in PowerShell or `cp .env.example .env` in a POSIX shell; configure only the selected integrations.
 
 ```powershell
 pnpm test

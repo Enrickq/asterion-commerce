@@ -41,8 +41,11 @@ import {
   Wind,
   X,
 } from "lucide-react";
+import AccessibleModal from "./AccessibleModal.jsx";
+import { getExecutionMessage, getPaymentSteps } from "./payment-view.mjs";
 
 const ProviderGrid = lazy(() => import("./ProviderGrid.jsx"));
+const EvidenceRoom = lazy(() => import("./EvidenceRoom.jsx"));
 
 const money = (value = 0) =>
   new Intl.NumberFormat("en-IE", {
@@ -78,6 +81,8 @@ const STATUS = {
   PAYOUTS_PENDING: ["Distributing", "gold"],
   SETTLED: ["Distribution complete", "mint"],
   PAYMENT_FAILED: ["Payment needs attention", "rose"],
+  REFUNDED: ["Capture refunded", "rose"],
+  PARTIALLY_REFUNDED: ["Capture partially refunded", "gold"],
 };
 const CHECK_LABELS = {
   cloud: "Cloud cover",
@@ -288,7 +293,7 @@ function App() {
   const [error, setError] = useState("");
   const [scenario, setScenario] = useState("clear");
   const [consent, setConsent] = useState(false);
-  const [view, setView] = useState("mission");
+  const [view, setView] = useState(() => window.location.hash === "#verified-runs" ? "evidence" : "mission");
   const [drawer, setDrawer] = useState(null);
   const [mobileNav, setMobileNav] = useState(false);
   const [toast, setToast] = useState("");
@@ -303,10 +308,10 @@ function App() {
   const statusInfo = STATUS[status] || ["Ready to negotiate", "muted"];
   const total = agreement?.totalMinor || 148000;
   const hasAuth = Boolean(agreement?.payment?.authorizationId);
-  const hasCaptured = ["CAPTURED", "PAYOUTS_PENDING", "SETTLED"].includes(
+  const hasCaptured = ["CAPTURED", "PAYOUTS_PENDING", "SETTLED", "REFUNDED", "PARTIALLY_REFUNDED"].includes(
     status,
   );
-  const terminal = ["VOIDED", "SETTLED"].includes(status);
+  const terminal = ["VOIDED", "SETTLED", "REFUNDED", "PARTIALLY_REFUNDED"].includes(status);
   const autonomous = ["ARMED", "RUNNING"].includes(
     agreement?.autopilot?.status,
   );
@@ -325,6 +330,18 @@ function App() {
         : 3;
   const integrated = system?.integrations;
   const canArmAutopilot = isDemo || system?.sandboxAutopilotEnabled === true;
+  const paymentSteps = getPaymentSteps(agreement);
+  const suppliersConfirmed = paymentSteps.find(step => step.id === "payouts")?.complete === true;
+
+  useEffect(() => {
+    const readLocation = () => setView(window.location.hash === "#verified-runs" ? "evidence" : "mission");
+    window.addEventListener("hashchange", readLocation);
+    return () => window.removeEventListener("hashchange", readLocation);
+  }, []);
+  useEffect(() => {
+    const hash = view === "evidence" ? "#verified-runs" : "";
+    window.history.replaceState({}, "", window.location.pathname + window.location.search + hash);
+  }, [view]);
 
   const refreshList = useCallback(async () => {
     try {
@@ -368,14 +385,18 @@ function App() {
       !autonomous
     )
       return;
+    let disposed = false;
+    const id = agreement.id;
     const timer = setInterval(
       () =>
-        api(`/agreements/${agreement.id}`)
-          .then(setAgreement)
+        api(`/agreements/${id}`)
+          .then(next => {
+            if (!disposed) setAgreement(current => current?.id === id && (next.events?.length ?? 0) >= (current.events?.length ?? 0) ? next : current);
+          })
           .catch(() => {}),
       autonomous ? 900 : 4000,
     );
-    return () => clearInterval(timer);
+    return () => { disposed = true; clearInterval(timer); };
   }, [status, agreement?.id, autonomous]);
 
   const run = async (label, callback) => {
@@ -479,13 +500,7 @@ function App() {
     run("executing", async () => {
       const next = await api(`/agreements/${agreement.id}/execute`, {});
       setAgreement(next);
-      setToast(
-        next.status === "VOIDED"
-          ? "Authorization voided. There was no charge to refund."
-          : next.status === "CAPTURE_PENDING"
-            ? "Capture submitted. Waiting for confirmation."
-            : "Capture confirmed. Provider payments are separate operations.",
-      );
+      setToast(getExecutionMessage(next));
     });
 
   const distribute = () =>
@@ -601,6 +616,8 @@ function App() {
       )?.status ||
       (status === "VOIDED"
         ? "CANCELLED"
+        : ["REFUNDED", "PARTIALLY_REFUNDED"].includes(status)
+          ? "REVIEW AFTER REFUND"
         : ["organizer", "platform"].includes(a.role?.toLowerCase())
           ? "GROSS REMAINDER"
           : hasCaptured
@@ -614,6 +631,7 @@ function App() {
         <a
           href="#"
           className="brand"
+          aria-label="ASTERION home"
           onClick={(e) => {
             e.preventDefault();
             setView("mission");
@@ -636,11 +654,14 @@ function App() {
           {[
             { id: "mission", label: "Mission control", icon: Orbit },
             { id: "agreements", label: "Agreements", icon: Layers3 },
+            { id: "evidence", label: "Verified runs", icon: ShieldCheck },
             { id: "integrations", label: "Integrations", icon: Network },
           ].map(({ id, label, icon: Icon }) => (
             <button
               key={id}
+              aria-label={label}
               className={view === id ? "nav-item active" : "nav-item"}
+              aria-current={view === id ? "page" : undefined}
               onClick={() => {
                 setView(id);
                 setMobileNav(false);
@@ -695,6 +716,7 @@ function App() {
             <button
               className="mobile-menu"
               aria-label="Toggle navigation"
+              aria-expanded={mobileNav}
               onClick={() => setMobileNav(!mobileNav)}
             >
               <Menu size={21} />
@@ -706,6 +728,8 @@ function App() {
                 ? "Mission control"
                 : view === "agreements"
                   ? "Agreements"
+                  : view === "evidence"
+                    ? "Verified runs"
                   : "Integrations"}
             </strong>
           </div>
@@ -739,6 +763,8 @@ function App() {
                   ? "Mission control"
                   : view === "agreements"
                     ? "Every agreement, accounted for."
+                    : view === "evidence"
+                      ? "Verified runs"
                     : "Connected by purpose."}
               </h1>
               <p>
@@ -746,12 +772,15 @@ function App() {
                   ? "A remarkable experience. An agreement you can verify."
                   : view === "agreements"
                     ? "Inspect the agreement, the evidence and every payment decision."
+                      : view === "evidence"
+                        ? "Recorded results. Inspectable sources. Clear limits."
                     : "A transparent view of what is connected, simulated and ready to configure."}
               </p>
             </div>
             <button
               className="button button-secondary new-mission"
               onClick={newMission}
+              disabled={Boolean(busy)}
             >
               <Sparkles size={15} />
               New mission
@@ -813,6 +842,11 @@ function App() {
                 </div>
               </section>
 
+              <div className="verified-entry">
+                <div><ShieldCheck size={18} /><p><strong>See the recorded Gemini → PayPal Sandbox run.</strong><span>Three actual quotes, one approved agreement and three confirmed supplier payments.</span></p></div>
+                <button className="text-button" onClick={() => { setView("evidence"); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Inspect verified runs <ArrowUpRight size={15} /></button>
+              </div>
+
               <div className="stats-strip">
                 <Metric
                   icon={Wallet}
@@ -841,7 +875,9 @@ function App() {
                   label="CAPTURED"
                   value={hasCaptured ? money(total) : "€0"}
                   detail={
-                    hasCaptured
+                    ["REFUNDED", "PARTIALLY_REFUNDED"].includes(status)
+                      ? "Historical capture · refund requires review"
+                      : hasCaptured
                       ? "Capture confirmed"
                       : status === "VOIDED"
                         ? "Blocked · no charge"
@@ -1224,46 +1260,7 @@ function App() {
                     </Badge>
                   </div>
                   <div className="payment-steps">
-                    <PaymentStep
-                      complete={Boolean(agreement)}
-                      active={!agreement}
-                      title="Negotiate an agreement"
-                      detail="Services and terms fit together"
-                    />
-                    <PaymentStep
-                      complete={hasAuth}
-                      active={Boolean(agreement) && !hasAuth}
-                      title="Buyer approves with PayPal"
-                      detail={
-                        hasAuth
-                          ? short(agreement.payment.authorizationId)
-                          : "The exact amount and agreement"
-                      }
-                    />
-                    <PaymentStep
-                      complete={Boolean(agreement?.evaluation?.eligible)}
-                      active={hasAuth && !evidence}
-                      title="Evidence satisfies the policy"
-                      detail={
-                        status === "VOIDED"
-                          ? "Conditions failed. Authorization voided."
-                          : "Fresh, complete and within limits"
-                      }
-                      failed={
-                        status === "VOIDED" ||
-                        agreement?.evaluation?.eligible === false
-                      }
-                    />
-                    <PaymentStep
-                      complete={hasCaptured}
-                      active={agreement?.evaluation?.eligible && !hasCaptured}
-                      title="Capture, then distribute"
-                      detail={
-                        hasCaptured
-                          ? short(agreement.payment.captureId)
-                          : "Separate, traceable operations"
-                      }
-                    />
+                    {paymentSteps.map(({ id, ...step }) => <PaymentStep key={id} {...step} />)}
                   </div>
                   {agreement && !hasAuth && (
                     <>
@@ -1397,6 +1394,8 @@ function App() {
                     (status === "CAPTURE_PENDING" ||
                       status === "PAYOUTS_PENDING" ||
                       status === "VOID_PENDING" ||
+                      status === "REFUNDED" ||
+                      status === "PARTIALLY_REFUNDED" ||
                       (!isDemo &&
                         agreement?.payment?.orderId &&
                         agreement?.payment?.lastError)) && (
@@ -1409,25 +1408,26 @@ function App() {
                         Reconcile payment state
                       </button>
                     )}
-                  {terminal && (
+                  {terminal && !["REFUNDED", "PARTIALLY_REFUNDED"].includes(status) && (
                     <div
-                      className={`terminal-banner ${status === "VOIDED" ? "voided" : ""}`}
+                      className={`terminal-banner ${status === "VOIDED" || !suppliersConfirmed ? "voided" : ""}`}
                     >
                       <ShieldCheck size={18} />
                       <div>
                         <strong>
                           {status === "VOIDED"
                             ? "The agreement protected the buyer."
-                            : "Every supplier payment is accounted for."}
+                            : suppliersConfirmed ? "Every supplier payment is accounted for." : "Supplier evidence needs review."}
                         </strong>
                         <p>
                           {status === "VOIDED"
                             ? "No capture. No payout. No charge to refund."
-                            : "Inspect the receipt for the complete event trail."}
+                            : suppliersConfirmed ? "Inspect the receipt for the complete event trail." : getExecutionMessage(agreement)}
                         </p>
                       </div>
                     </div>
                   )}
+                  {["REFUNDED", "PARTIALLY_REFUNDED"].includes(status) && <div className="terminal-banner voided"><ShieldCheck size={18} /><div><strong>Refund reconciliation required.</strong><p>{getExecutionMessage(agreement)}</p></div></div>}
                   {!agreement && (
                     <div className="payment-empty">
                       <LockKeyhole size={14} />
@@ -1607,6 +1607,8 @@ function App() {
             />
           )}
 
+          {view === "evidence" && <Suspense fallback={<div className="audit-empty"><Spinner />Loading recorded evidence…</div>}><EvidenceRoom onStartDemo={() => { setView("mission"); window.scrollTo({ top: 0, behavior: "smooth" }); }} /></Suspense>}
+
           <footer className="footer">
             <div>
               <Star size={15} />
@@ -1636,19 +1638,16 @@ function App() {
         </div>
       )}
       {drawer && (
-        <div className="modal-backdrop" onClick={() => setDrawer(null)}>
-          <section
-            className={`modal ${drawer === "architecture" ? "wide" : ""}`}
-            role="dialog"
-            aria-modal="true"
-            aria-label={
+          <AccessibleModal
+            className={drawer === "architecture" ? "wide" : ""}
+            onClose={() => setDrawer(null)}
+            label={
               drawer === "agreement"
                 ? "Agreement details"
                 : drawer === "evidence"
                   ? "Evidence details"
                   : "ASTERION information"
             }
-            onClick={(e) => e.stopPropagation()}
           >
             <div className="modal-heading">
               <div>
@@ -1861,10 +1860,9 @@ function App() {
                     </p>
                   </li>
                   <li>
-                    <strong>Execute the decision.</strong>
+                    <strong>Arm Autopilot and watch.</strong>
                     <p>
-                      Capture only when eligible, then distribute. Otherwise
-                      void the authorization.
+                      Arm the approved mandate once. The server evaluates the scenario, captures or voids, and follows supplier payments without another click.
                     </p>
                   </li>
                   <li>
@@ -1884,8 +1882,7 @@ function App() {
                 </button>
               </>
             )}
-          </section>
-        </div>
+          </AccessibleModal>
       )}
     </div>
   );

@@ -1,0 +1,73 @@
+.evidence-room { max-width: 1180px; margin-inline: auto; }
+.recorded-intro { padding: 30px 0 36px; max-width: 820px; }
+.recorded-eyebrow { display: flex; align-items: center; gap: 9px; font-size: 12px; letter-spacing: .12em; color: #b3e4ce; }
+.recorded-intro h2 { font: 500 clamp(30px, 4.5vw, 53px)/1.15 Manrope, sans-serif; letter-spacing: -.045em; color: #e5efed; margin: 22px 0; }
+.recorded-intro h2 em { font-style: normal; color: #b3e4ce; }
+.recorded-intro p { max-width: 720px; font-size: 16px; line-height: 1.75; color: #b0c0c8; }
+.recorded-disclosure { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; line-height: 1.65; color: #dbbf8a; margin-top: 22px; }
+.recorded-disclosure svg { flex-shrink: 0; margin-top: 3px; }
+.recorded-date { font-size: 12px; color: #9baeb9; margin-top: 10px; }
+.recorded-flow { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 28px 0; margin: 0; border-block: 1px solid #29403e; gap: 20px; }
+.recorded-flow li { display: flex; flex-direction: column; align-items: flex-start; gap: 11px; position: relative; }
+.recorded-tick { display: grid; place-items: center; border: 1px solid #4b7965; color: #b3e4ce; border-radius: 50%; width: 28px; height: 28px; }
+.recorded-flow li > span:not(.recorded-tick) { color: #acc0c8; font-size: 13px; }
+.recorded-flow strong { font: 550 clamp(19px, 2.2vw, 28px)/1.3 Manrope, sans-serif; color: #e6f5ed; overflow-wrap: anywhere; }
+.recorded-flow small { font-size: 12px; line-height: 1.55; color: #9aafba; }
+.recorded-ledger { padding: 36px 0 25px; }
+.recorded-section-title { display: flex; justify-content: space-between; align-items: baseline; gap: 15px; margin-bottom: 20px; }
+.recorded-section-title h3, .recorded-screen h3, .recorded-next h3 { font: 500 22px/1.45 Manrope, sans-serif; color: #e3eeeb; margin: 0; }
+.recorded-section-title > span { color: #b3e4ce; font-size: 14px; }
+.recorded-table-scroll { overflow-x: auto; }
+.recorded-ledger table { border-collapse: collapse; width: 100%; min-width: 430px; text-align: left; font-size: 14px; }
+.recorded-ledger caption { text-align: left; padding-bottom: 13px; color: #9bafb8; font-size: 12px; }
+.recorded-ledger th, .recorded-ledger td { border-bottom: 1px solid #22343d; padding: 17px 12px; line-height: 1.55; }
+.recorded-ledger thead th { color: #94b0b8; font-size: 12px; font-weight: 500; }
+.recorded-ledger tbody th { font-weight: 500; color: #c7d7dc; }
+.recorded-ledger tbody td:nth-child(2) { color: #e4f0e9; font-variant-numeric: tabular-nums; }
+.recorded-success { display: inline-flex; gap: 6px; align-items: center; color: #b3e4ce; font-size: 12px; }
+.recorded-remainder { color: #b3bdc6; font-size: 12px; }
+.recorded-note { color: #9bafb8; font-size: 12px; line-height: 1.8; }
+.recorded-details { border-block: 1px solid #2a3e45; padding: 7px 0; }
+.recorded-details summary { min-height: 54px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #d4e7df; }
+.recorded-details summary::after { content: '+'; margin-left: auto; font-size: 23px; }
+.recorded-details[open] summary::after { content: '−'; }
+.recorded-details summary > span { font-size: 12px; color: #9bb2bb; margin-left: 12px; }
+.recorded-details dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px 30px; margin: 20px 0; }
+.recorded-details dt { color: #9cb2bc; font-size: 12px; margin-bottom: 7px; }
+.recorded-details dd { margin: 0; font: 12px/1.7 ui-monospace, monospace; color: #d4e5df; overflow-wrap: anywhere; }
+.recorded-links { display: flex; gap: 18px; flex-wrap: wrap; margin: 20px 0 12px; }
+.evidence-room a:not(.recorded-screen a) { display: inline-flex; align-items: center; gap: 8px; color: #b3e4ce; min-height: 44px; font-size: 13px; text-decoration: underline; text-underline-offset: 4px; }
+.recorded-failure { border-left: 2px solid #d4b67d; padding: 5px 0 5px 25px; margin: 38px 0; max-width: 850px; }
+.recorded-failure > div:first-child { display: flex; align-items: center; gap: 10px; color: #d4b67d; }
+.recorded-failure .recorded-eyebrow { color: #dbc590; }
+.recorded-failure h3 { font: 500 25px/1.4 Manrope,sans-serif; color: #ece5d4; margin: 18px 0 12px; }
+.recorded-failure > p:not(.recorded-note) { font-size: 14px; line-height: 1.8; color: #b4c2ca; }
+.recorded-failure-result { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-top: 20px; }
+.recorded-failure-result strong { color: #e6cc97; font-size: 22px; }
+.recorded-failure-result span { color: #bfc8cd; font-size: 13px; }
+.recorded-screen { padding-block: 30px; border-top: 1px solid #22343d; }
+.recorded-screen p, .recorded-next p { color: #a7bbc4; font-size: 14px; line-height: 1.8; }
+.recorded-screen > a { display: block; margin-top: 20px; }
+.recorded-screen img { display: block; width: 100%; height: auto; border: 1px solid #30434d; border-radius: 10px; }
+.recorded-screen a > span { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #b3e4ce; margin-top: 10px; min-height: 44px; }
+.recorded-next { padding-block: 30px; display: flex; align-items: center; gap: 30px; justify-content: space-between; border-top: 1px solid #22343d; }
+.recorded-next > div { max-width: 650px; }
+.recorded-next .button { flex-shrink: 0; }
+.recorded-unavailable { padding: 28px; font-size: 14px; line-height: 1.8; }
+@media (max-width: 760px) {
+  .recorded-flow { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px 20px; }
+  .recorded-details dl { grid-template-columns: minmax(0,1fr); }
+  .recorded-details summary { flex-wrap: wrap; padding-block: 10px; }
+  .recorded-details summary > span { width: 100%; margin-left: 26px; }
+  .recorded-next { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 450px) {
+  .recorded-intro { padding-top: 12px; }
+  .recorded-intro h2 { font-size: 30px; }
+  .recorded-intro p { font-size: 14px; }
+  .recorded-section-title { flex-direction: column; gap: 4px; }
+  .recorded-flow { column-gap: 15px; }
+  .recorded-flow strong { font-size: 19px; }
+  .recorded-failure { padding-left: 17px; }
+  .recorded-failure h3 { font-size: 22px; }
+}

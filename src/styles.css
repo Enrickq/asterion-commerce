@@ -2947,3 +2947,207 @@ textarea:disabled {
 .autopilot-card.running > p {
   margin-bottom: 0;
 }
+
+/* Readable decision information at every viewport, including video capture. */
+.verified-entry { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; padding: 18px 0; border-bottom: 1px solid #29403e; margin-bottom: 18px; }
+.verified-entry > div { display: flex; align-items: center; gap: 12px; color: #b3e4ce; flex: 1 1 300px; }
+.verified-entry p { margin: 0; font-size: 13px; line-height: 1.7; }
+.verified-entry p strong { color: #d8e9e2; }
+.verified-entry p span { display: block; color: #a0b5be; font-size: 12px; }
+.verified-entry svg { flex-shrink: 0; }
+:root {
+  --body-size: 15px;
+  --caption-size: 12px;
+  --control-size: 14px;
+  --readable-muted: #91a7b3;
+}
+html { scrollbar-gutter: stable; }
+body { font-size: var(--body-size); }
+.app-shell :is(.page-intro, .panel-heading, .agreement-ribbon, .integration-notice) {
+  flex-wrap: wrap;
+}
+.app-shell :is(.page-intro p, .hero-content > p, .panel p, .modal-copy, .demo-guide li, .architecture-notes h4, .large-empty) {
+  font-size: var(--body-size);
+  line-height: 1.7;
+}
+.app-shell :is(.microcopy, .intent-locked, .intent-locked > button, .field-label, .intent-controls label > span,
+  .party-size > span, .party-size small, .budget-input > small, .intent-constraints > span, .weather-display p,
+  .weather-metrics span, .scenario-picker > label, .policy-checks > div, .policy-checks small,
+  .payment-amount > span:first-child, .payment-amount > strong > small, .payment-step small, .consent-box,
+  .inline-link, .payment-empty, .terminal-banner p, .grid-state, .audit-event, .audit-event > time,
+  .audit-event > strong, .audit-event > p, .event-chain, .footer, .footer small, .footer > div > span,
+  .agreement-list-row small, .agreement-list-row > .registry-date, .integration-disclosure,
+  .integration-disclosure code, .integration-card > small, .integration-card > a,
+  .forecast-preview p, .forecast-values dt, .forecast-preview-heading strong,
+  .terms-grid span, .modal-heading .eyebrow, .architecture-flow > div > span,
+  .agent-log strong, .negotiation-entry strong > small, .negotiation-total > span,
+  .negotiation-total small, .supplier-node > small, .buyer-node > div, .buyer-node small,
+  .agreement-ribbon > div > span:last-child, .agreement-ribbon strong, .panel-kicker,
+  .metric-label, .metric > small, .log-placeholder small, .empty-distribution > span) {
+  font-size: var(--caption-size);
+  line-height: 1.6;
+}
+.app-shell :is(.microcopy, .field-label, .budget-input > small, .weather-metrics span,
+  .scenario-picker > label, .payment-step small, .audit-event > time, .audit-event > p,
+  .event-chain, .footer, .footer small, .log-placeholder small, .integration-card > small) {
+  color: var(--readable-muted);
+}
+.app-shell :is(.badge, .payment-amount > .badge, .panel-heading > .badge, .integration-card .badge,
+  .autopilot-card .badge, .agreement-list-row > .badge) {
+  font-size: var(--caption-size);
+  line-height: 1.45;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.app-shell :is(.button, .text-button, .new-mission, .inline-link, .nav-item,
+  .agreement-ribbon > button, .integration-card > a, .intent-locked > button) {
+  font-size: var(--control-size);
+  min-height: 44px;
+}
+.app-shell :is(button, .button, .integration-card > a) { min-width: 44px; }
+.app-shell .icon-button { min-width: 44px; min-height: 44px; }
+.app-shell .inline-link { display: inline-flex; align-items: center; vertical-align: middle; }
+.app-shell :is(textarea, select, input:not([type="checkbox"]):not([type="radio"])) {
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 44px;
+}
+.app-shell textarea { min-height: 150px; }
+.app-shell .consent-box { padding: 14px; gap: 12px; align-items: flex-start; }
+.app-shell .consent-box input { min-width: 22px; min-height: 22px; margin-top: 1px; }
+.app-shell .intent-locked { flex-wrap: wrap; }
+.app-shell :is(.payment-step strong, .terminal-banner strong, .negotiation-entry strong, .supplier-node strong,
+  .empty-distribution strong, .agreement-list-row, .integration-notice strong) {
+  font-size: 14px;
+  line-height: 1.55;
+}
+.app-shell .payment-step small { overflow-wrap: anywhere; }
+.app-shell .weather-metrics strong { font-size: 16px; line-height: 1.4; }
+.app-shell .panel-heading h3 { font-size: 19px; line-height: 1.45; }
+.app-shell .payment-amount > .badge {
+  position: static;
+  display: inline-flex;
+  max-width: 100%;
+  margin-top: 12px;
+}
+.app-shell .policy-checks > div { align-items: flex-start; gap: 10px; padding-block: 10px; }
+.app-shell .policy-checks > div > svg { flex-shrink: 0; margin-top: 3px; }
+.app-shell .policy-checks span { min-width: 0; }
+.app-shell .policy-checks small {
+  max-width: 45%;
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+.app-shell .negotiation-entry { gap: 10px; }
+.app-shell .negotiation-entry strong { flex-wrap: wrap; gap: 4px 10px; }
+.app-shell .negotiation-entry > b { font-size: 15px; white-space: nowrap; }
+.app-shell .negotiation-total { gap: 14px; flex-wrap: wrap; }
+.app-shell .agreement-ribbon { gap: 12px 20px; }
+.app-shell .agreement-ribbon > p { max-width: 42ch; margin: 0; flex: 1 1 200px; }
+.app-shell .agreement-ribbon strong { overflow-wrap: anywhere; }
+.app-shell .buyer-node { padding: 9px 12px; min-width: 190px; }
+.app-shell .agent-map { height: 205px; }
+.app-shell .supplier-nodes { top: 120px; gap: 8px; }
+.app-shell .supplier-node { min-width: 0; text-align: center; }
+.app-shell .supplier-node > small { max-width: 16ch; }
+.app-shell .agent-log { max-height: 360px; }
+.app-shell .audit-event { align-items: flex-start; flex-wrap: wrap; gap: 8px 12px; }
+.app-shell .audit-event > p { flex: 1 1 280px; }
+.app-shell .audit-event > strong { overflow-wrap: anywhere; }
+.app-shell .footer { flex-wrap: wrap; line-height: 1.6; }
+.app-shell .footer > div { flex-wrap: wrap; }
+.app-shell .footer > span { flex-wrap: wrap; text-align: left; }
+.app-shell .autopilot-card > div { flex-wrap: wrap; gap: 8px; }
+.app-shell .autopilot-card > div > span { font-size: 12px; line-height: 1.6; }
+.app-shell .autopilot-card > p { color: #a2bfb0; }
+.app-shell .integration-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.app-shell .integration-card > p { min-height: 0; }
+.app-shell .integration-notice { align-items: flex-start; }
+.app-shell .integration-notice > .text-button { white-space: normal; }
+.app-shell .empty-distribution { flex-wrap: wrap; }
+
+/* Native <dialog> supplies the top layer, inert background and keyboard trap. */
+dialog.accessible-modal {
+  margin: auto;
+  width: min(700px, calc(100vw - 40px));
+  max-width: none;
+  max-height: calc(100dvh - 40px);
+  color: #c1cdd4;
+  padding: clamp(20px, 3vw, 32px);
+  overscroll-behavior: contain;
+}
+dialog.accessible-modal.wide { width: min(920px, calc(100vw - 40px)); }
+dialog.accessible-modal::backdrop { background: #030a10c9; backdrop-filter: blur(7px); }
+dialog.accessible-modal :is(.modal-copy, .demo-guide li, .demo-guide p, .architecture-flow p, .architecture-notes p) {
+  font-size: 15px;
+  line-height: 1.7;
+}
+dialog.accessible-modal :is(.modal-heading .eyebrow, .terms-grid span, .terms-grid strong, .badge,
+  .architecture-flow > div > span, .architecture-notes h4) {
+  font-size: 12px;
+  line-height: 1.6;
+}
+dialog.accessible-modal pre { font-size: 12px; line-height: 1.65; }
+dialog.accessible-modal :is(button, .button) { min-height: 44px; min-width: 44px; font-size: 14px; }
+dialog.accessible-modal .modal-heading h2 { margin-top: 6px; font-size: 25px; }
+dialog.accessible-modal .modal-heading .icon-button { margin: 0; }
+dialog.accessible-modal .modal-copy { color: #a6bac4; }
+dialog.accessible-modal .terms-grid strong { font-size: 16px; }
+
+@media (max-width: 1100px) {
+  .app-shell .integration-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .app-shell .mission-columns { grid-template-columns: minmax(0, 1fr); }
+  .app-shell .panel { min-width: 0; }
+  .app-shell .lower-columns { align-items: start; }
+}
+@media (max-width: 760px) {
+  .app-shell :is(.page-intro, .topbar) { gap: 12px; }
+  .app-shell .page-intro p { max-width: 48ch; }
+  .app-shell .journey-bar { gap: 8px; }
+  .app-shell .journey-step { min-height: 44px; font-size: 12px; flex-basis: calc(50% - 8px); }
+  .app-shell .journey-step > span { font-size: 12px; width: 23px; height: 23px; }
+  .app-shell .journey-status { display: flex; font-size: 12px; flex-basis: 100%; }
+  .app-shell .payment-step { gap: 12px; }
+  .app-shell .agreement-ribbon > div { flex-wrap: wrap; }
+  .app-shell .agreement-ribbon > button { margin-left: 0; }
+  .app-shell .agreement-list-row { flex-wrap: wrap; gap: 12px; }
+  .app-shell .agreement-list-row > span:nth-child(2) { flex-basis: calc(100% - 64px); }
+  .app-shell .forecast-values { gap: 16px 24px; }
+  dialog.accessible-modal :is(.architecture-flow, .architecture-notes) { grid-template-columns: 1fr; }
+  dialog.accessible-modal .architecture-flow > div { padding: 16px; }
+}
+@media (max-width: 480px) {
+  .app-shell .topbar { height: auto; min-height: 72px; padding-block: 12px; flex-wrap: wrap; }
+  .app-shell .topbar-left { min-width: 0; flex: 1 1 170px; }
+  .app-shell .topbar-right { margin-left: auto; }
+  .app-shell .breadcrumb { font-size: 12px; flex-wrap: wrap; }
+  .app-shell .new-mission { font-size: 14px; }
+  .app-shell .new-mission > svg:last-child { display: none; }
+  .app-shell .panel { padding: 20px 17px; }
+  .app-shell .intent-controls { flex-wrap: wrap; gap: 16px; }
+  .app-shell .intent-controls > label { flex-basis: 100%; }
+  .app-shell .party-size { padding-left: 0; border-left: 0; }
+  .app-shell .party-size strong { margin-top: 8px; }
+  .app-shell .weather-metrics > div { padding-inline: 8px; }
+  .app-shell .weather-metrics { grid-template-columns: 1fr; gap: 12px; padding: 14px; }
+  .app-shell .weather-metrics > div { display: flex; align-items: center; gap: 10px; border-right: 0; padding: 0; }
+  .app-shell .weather-metrics span { margin: 0; }
+  .app-shell .weather-metrics strong { margin: 0 0 0 auto; }
+  .app-shell .policy-checks > div { flex-wrap: wrap; }
+  .app-shell .policy-checks small { max-width: 100%; }
+  .app-shell .integration-grid { grid-template-columns: minmax(0, 1fr); }
+  .app-shell .integration-card .badge { max-width: 70%; }
+  .app-shell .audit-event > strong { flex: 1; min-width: 0; }
+  .app-shell .audit-event > p { flex-basis: 100%; padding-left: 16px; }
+  .app-shell .empty-distribution > span { margin-left: 0; }
+  dialog.accessible-modal, dialog.accessible-modal.wide {
+    width: calc(100vw - 24px);
+    max-height: calc(100dvh - 24px);
+    padding: 20px 16px;
+  }
+  dialog.accessible-modal .modal-heading { gap: 12px; }
+  dialog.accessible-modal .modal-heading h2 { font-size: 22px; }
+  dialog.accessible-modal .terms-grid { grid-template-columns: 1fr; }
+}
