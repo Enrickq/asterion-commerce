@@ -94,7 +94,28 @@ function payoutAllocations(agreement) {
   return allocations.filter((a) => !['platform', 'platform-fee', 'fee', 'organizer'].includes(a.id) && !['platform', 'organizer'].includes(a.role) && !['platform', 'organizer'].includes(a.kind) && !a.retained);
 }
 
-function verifiedPayoutBatch(payouts, agreement, expectedBatchId) {
+function normalizedEmail(value) {
+  if (typeof value !== 'string' || value.length > 127 || !/^[\x21-\x7e]+$/.test(value) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return null;
+  const at = value.lastIndexOf('@');
+  // Domains are case-insensitive; preserve the local part rather than assuming
+  // that every provider treats differently cased mailbox names as equivalent.
+  return value.slice(0, at) + '@' + value.slice(at + 1).toLowerCase();
+}
+
+function configuredPayoutRecipients(env, allocations) {
+  let recipients;
+  try { recipients = JSON.parse(env.PAYPAL_PAYOUT_RECIPIENTS || '{}'); }
+  catch { throw connectorError('INVALID_PAYOUT_CONFIGURATION', 'PAYPAL_PAYOUT_RECIPIENTS debe ser JSON válido.', 503); }
+  if (!recipients || typeof recipients !== 'object' || Array.isArray(recipients)) throw connectorError('INVALID_PAYOUT_CONFIGURATION', 'PAYPAL_PAYOUT_RECIPIENTS debe ser un objeto JSON.', 503);
+  return new Map(allocations.map(allocation => {
+    const configured = Object.hasOwn(recipients, allocation.id) ? recipients[allocation.id] : env[`PAYPAL_${allocation.id.replace(/-/g, '_').toUpperCase()}_EMAIL`];
+    const receiver = normalizedEmail(configured);
+    if (!receiver) throw connectorError('PAYOUT_RECIPIENT_MISSING', `Configura un receptor Sandbox válido para ${allocation.id}.`, 503);
+    return [allocation.id, receiver];
+  }));
+}
+
+function verifiedPayoutBatch(payouts, agreement, expectedBatchId, expectedRecipients) {
   const batchId = providerId(payouts?.batch_header?.payout_batch_id);
   if (batchId !== expectedBatchId) throw connectorError('PAYOUT_BATCH_MISMATCH', 'El lote devuelto por PayPal no coincide con el lote conocido.');
   const senderBatchId = payouts.batch_header.sender_batch_header?.sender_batch_id;
@@ -123,8 +144,16 @@ function verifiedPayoutBatch(payouts, agreement, expectedBatchId) {
     if (item.payout_batch_id !== undefined && item.payout_batch_id !== expectedBatchId) throw connectorError('PAYOUT_BATCH_MISMATCH', 'Un pago pertenece a otro lote de PayPal.');
     const amount = item.payout_item.amount;
     const amountMinor = verifiedAmount({ currency_code: amount?.currency, value: amount?.value }, allocation.amountMinor, 'PAYOUT_AMOUNT_MISMATCH');
+    // A sender_item_id is an accounting reference, not proof of the destination.
+    // Verify PayPal's echoed receiver against private server configuration, then
+    // expose only the match result; never copy recipient addresses into receipts.
+    const recipientType = item.payout_item.recipient_type ?? payouts.batch_header.sender_batch_header?.recipient_type;
+    const receiver = normalizedEmail(item.payout_item.receiver);
+    if (recipientType !== 'EMAIL' || !receiver || receiver !== expectedRecipients.get(allocation.id)) {
+      throw connectorError('PAYOUT_RECIPIENT_MISMATCH', 'PayPal no confirmó el destinatario configurado para una asignación.');
+    }
     if (typeof item.transaction_status !== 'string' || !/^[A-Z_]{1,50}$/.test(item.transaction_status)) throw connectorError('INVALID_PROVIDER_RESPONSE', 'PayPal no devolvió un estado individual válido.');
-    return { payoutItemId, senderItemId, allocationId: allocation.id, status: item.transaction_status, amountMinor, currency: 'EUR' };
+    return { payoutItemId, senderItemId, allocationId: allocation.id, status: item.transaction_status, amountMinor, currency: 'EUR', recipientMatched: true };
   });
   // In-progress batches may expose fewer items. The domain service requires all
   // three independently verified successes before it can mark the agreement SETTLED.
@@ -247,13 +276,9 @@ export function createPaymentAdapter(env = process.env, options = {}) {
         batchId: demoId('PAYOUT', batchId), status: 'SUCCESS', simulated: true, provider: kind,
         items: allocations.map((a) => ({ allocationId: a.id, payoutItemId: demoId('ITEM', itemId(a)), senderItemId: itemId(a), status: 'SUCCESS', amountMinor: a.amountMinor })),
       }));
-      let recipients = {};
-      try { recipients = JSON.parse(env.PAYPAL_PAYOUT_RECIPIENTS || '{}'); } catch { throw connectorError('INVALID_PAYOUT_CONFIGURATION', 'PAYPAL_PAYOUT_RECIPIENTS debe ser JSON válido.', 503); }
+      const recipients = configuredPayoutRecipients(env, allocations);
       const items = allocations.map((allocation) => {
-        const receiver = recipients[allocation.id] || env[`PAYPAL_${allocation.id.replace(/-/g, '_').toUpperCase()}_EMAIL`];
-        if (typeof receiver !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(receiver)) {
-          throw connectorError('PAYOUT_RECIPIENT_MISSING', `Configura un receptor Sandbox para ${allocation.id}.`, 503);
-        }
+        const receiver = recipients.get(allocation.id);
         return { recipient_type: 'EMAIL', receiver, amount: { value: moneyValue(allocation.amountMinor, agreement.currency || 'EUR'), currency: agreement.currency || 'EUR' },
           sender_item_id: itemId(allocation), note: `Acuerdo ${id.slice(0, 120)}` };
       });
@@ -281,6 +306,7 @@ export function createPaymentAdapter(env = process.env, options = {}) {
         if (payouts) result.payouts = structuredClone(payouts);
         return result;
       }
+      const expectedRecipients = refs.batchId ? configuredPayoutRecipients(env, payoutAllocations(agreement)) : null;
       if (refs.captureId) {
         const capture = await api(`/v2/payments/captures/${requireId(refs.captureId, 'Captura')}`);
         result.payment = verifiedCapture(capture, agreement, refs, refs.captureId);
@@ -317,7 +343,7 @@ export function createPaymentAdapter(env = process.env, options = {}) {
       }
       if (refs.batchId) {
         const payouts = await api(`/v1/payments/payouts/${requireId(refs.batchId, 'Lote')}?page_size=1000`);
-        result.payouts = verifiedPayoutBatch(payouts, agreement, refs.batchId);
+        result.payouts = verifiedPayoutBatch(payouts, agreement, refs.batchId, expectedRecipients);
       }
       return result;
     },

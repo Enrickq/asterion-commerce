@@ -14,7 +14,8 @@ const agreement = {
   allocations: [{ id: 'guide', amountMinor: 40_000 }, { id: 'telescope', amountMinor: 50_000 },
     { id: 'transport', amountMinor: 40_000 }, { id: 'organizer', role: 'organizer', amountMinor: 18_000 }],
 };
-const sandboxEnv = { PAYMENTS_MODE: 'paypal-sandbox', PAYPAL_CLIENT_ID: 'test-client', PAYPAL_CLIENT_SECRET: 'private-test-secret' };
+const sandboxEnv = { PAYMENTS_MODE: 'paypal-sandbox', PAYPAL_CLIENT_ID: 'test-client', PAYPAL_CLIENT_SECRET: 'private-test-secret',
+  PAYPAL_GUIDE_EMAIL: 'guide@example.com', PAYPAL_TELESCOPE_EMAIL: 'telescope@example.com', PAYPAL_TRANSPORT_EMAIL: 'transport@example.com' };
 const json = (data, status = 200) => new Response(status === 204 ? null : JSON.stringify(data), { status, headers: { 'content-type': 'application/json' } });
 function queuedFetch(responses) {
   const calls = [];
@@ -243,7 +244,7 @@ function payoutBatchPayload(sourceAgreement = agreement) {
   return { batch_header: { payout_batch_id: 'BATCH123', batch_status: 'SUCCESS' }, total_items: 3, total_pages: 1,
     items: sourceAgreement.allocations.filter(allocation => allocation.id !== 'organizer').map((allocation, index) => ({
       payout_item_id: `PAYOUTITEM${index + 1}`, payout_batch_id: 'BATCH123', transaction_status: 'SUCCESS',
-      payout_item: { sender_item_id: stableRequestId('item', `${sourceAgreement.id}:${allocation.id}`),
+      payout_item: { sender_item_id: stableRequestId('item', `${sourceAgreement.id}:${allocation.id}`), recipient_type: 'EMAIL', receiver: `${allocation.id}@example.com`,
         amount: { currency: 'EUR', value: (allocation.amountMinor / 100).toFixed(2) } },
     })) };
 }
@@ -262,7 +263,46 @@ test('Payout reconciliation binds all recipients to expected sender IDs and pres
     ['guide', 40000, 'EUR', 'SUCCESS'], ['telescope', 50000, 'EUR', 'SUCCESS'], ['transport', 40000, 'EUR', 'SUCCESS'],
   ]);
   assert.equal(JSON.stringify(result).includes('private-payout-token'), false);
+  assert.ok(result.payouts.items.every(item => item.recipientMatched === true));
+  assert.ok(['guide', 'telescope', 'transport'].every(id => !JSON.stringify(result).includes(`${id}@example.com`)));
   assert.ok(mock.calls.slice(1).every(call => call.method === 'GET'));
+});
+
+test('Payout reconciliation verifies the actual receiver and type without reflecting addresses in failures', async () => {
+  for (const mutate of [
+    payload => { payload.items[0].payout_item.receiver = 'wrong-destination@example.com'; },
+    payload => { delete payload.items[0].payout_item.receiver; },
+    payload => { payload.items[0].payout_item.recipient_type = 'PHONE'; },
+    payload => { delete payload.items[0].payout_item.recipient_type; },
+  ]) {
+    const payload = payoutBatchPayload(); mutate(payload);
+    const mock = payoutReconcileMock(payload);
+    await assert.rejects(createPaymentAdapter(sandboxEnv, { fetch: mock.fetch }).reconcile({ agreement: payoutAgreement() }), error =>
+      error.code === 'PAYOUT_RECIPIENT_MISMATCH' && !JSON.stringify(error).includes('@example.com'));
+    assert.ok(mock.calls.slice(1).every(call => call.method === 'GET'));
+  }
+  const payload = payoutBatchPayload();
+  payload.batch_header.sender_batch_header = { recipient_type: 'EMAIL' };
+  delete payload.items[0].payout_item.recipient_type;
+  payload.items[0].payout_item.receiver = 'guide@EXAMPLE.COM';
+  const result = await createPaymentAdapter(sandboxEnv, { fetch: payoutReconcileMock(payload).fetch }).reconcile({ agreement: payoutAgreement() });
+  assert.equal(result.payouts.items[0].recipientMatched, true);
+});
+
+test('Invalid recipient configuration fails before provider requests instead of certifying an unbound payout', async () => {
+  for (const env of [
+    { ...sandboxEnv, PAYPAL_PAYOUT_RECIPIENTS: '[]' },
+    { ...sandboxEnv, PAYPAL_PAYOUT_RECIPIENTS: 'null' },
+    { ...sandboxEnv, PAYPAL_PAYOUT_RECIPIENTS: '{broken' },
+    { ...sandboxEnv, PAYPAL_PAYOUT_RECIPIENTS: '{"guide":""}' },
+    { ...sandboxEnv, PAYPAL_GUIDE_EMAIL: undefined },
+    { ...sandboxEnv, PAYPAL_GUIDE_EMAIL: 'line\nbreak@example.com' },
+  ]) {
+    let requests = 0;
+    const adapter = createPaymentAdapter(env, { fetch: async () => { requests++; assert.fail('Invalid receiver configuration must fail before network access'); } });
+    await assert.rejects(adapter.reconcile({ agreement: payoutAgreement() }), error => ['INVALID_PAYOUT_CONFIGURATION', 'PAYOUT_RECIPIENT_MISSING'].includes(error.code));
+    assert.equal(requests, 0);
+  }
 });
 
 test('Payout reconciliation rejects foreign batches, recipients and duplicate provider or sender IDs', async () => {

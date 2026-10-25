@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { once } from 'node:events';
-import { createCore, canonicalize, computeAgreementHash, verifyEventChain, assessEvidence } from '../server/core.mjs';
+import { createCore, canonicalize, computeAgreementHash, verifyEventChain, assessEvidence, hashObject } from '../server/core.mjs';
 import { createStore } from '../server/store.mjs';
 import { createHttpServer, startServer } from '../server/index.mjs';
 
@@ -406,6 +406,121 @@ test('payout idempotency survives concurrent requests and restarts', async t => 
   f.reopen();
   await f.core.payouts(agreement.id);
   assert.equal(f.calls.payouts, 1);
+});
+
+test('a receipt retains every committed audit event beyond one hundred and verifies the delivered proof', async t => {
+  const f = fixture(t);
+  const agreement = await f.authorized();
+  await f.core.evaluate(agreement.id, { scenario: 'clear' });
+  await f.core.execute(agreement.id);
+  await f.core.payouts(agreement.id);
+  for (let index = 0; index < 105; index++) await f.core.reconcile(agreement.id);
+  const stored = f.store.get(agreement.id);
+  const receipt = f.core.receipt(agreement.id);
+  assert.ok(stored.events.length > 100);
+  assert.deepEqual(receipt.events, stored.events);
+  assert.equal(receipt.integrity.eventCount, receipt.events.length);
+  assert.equal(receipt.integrity.lastEventHash, receipt.events.at(-1).hash);
+  assert.equal(verifyEventChain(receipt.events), true);
+  assert.equal(hashObject(receipt.agreement), receipt.agreementHash);
+  assert.deepEqual(f.core.get(agreement.id).events, stored.events);
+  assert.deepEqual(f.core.list()[0].events, stored.events);
+  f.reopen();
+  assert.deepEqual(f.core.receipt(agreement.id).events, receipt.events);
+});
+
+for (const refunded of ['REFUNDED', 'PARTIALLY_REFUNDED']) {
+  for (const alreadyPaid of [false, true]) {
+    test(`${refunded} reconciliation preserves payout history, requires review and prevents every further spending action (paid=${alreadyPaid})`, async t => {
+      const f = fixture(t);
+      const agreement = await f.authorized();
+      await f.core.evaluate(agreement.id, { scenario: 'clear' });
+      await f.core.execute(agreement.id);
+      if (alreadyPaid) await f.core.payouts(agreement.id);
+      const payouts = f.core.get(agreement.id).payment.payouts;
+      f.adapter.reconcile = async () => ({ payment: { captureId: 'CAPTURE-1', status: refunded, captureStatus: refunded } });
+      const observed = await f.core.reconcile(agreement.id);
+      assert.equal(observed.status, refunded);
+      assert.equal(observed.payment.status, refunded);
+      assert.equal(observed.payment.captureStatus, refunded);
+      assert.equal(observed.payment.refundReviewRequired, true);
+      assert.ok(observed.payment.refundObservedAt);
+      assert.deepEqual(observed.payment.payouts, payouts);
+      const attempts = { capture: f.calls.capture, payouts: f.calls.payouts, order: f.calls.order, authorize: f.calls.authorize, void: f.calls.void };
+      for (const action of [
+        () => f.core.evaluate(agreement.id, { scenario: 'clear' }),
+        () => f.core.execute(agreement.id),
+        () => f.core.payouts(agreement.id),
+        () => f.core.armAutopilot(agreement.id, { scenario: 'clear' }),
+        () => f.core.createOrder(agreement.id),
+        () => f.core.authorize(agreement.id, { agreementHash: agreement.hash }),
+      ]) await assert.rejects(action(), { code: 'CAPTURE_REFUNDED' });
+      assert.deepEqual({ capture: f.calls.capture, payouts: f.calls.payouts, order: f.calls.order, authorize: f.calls.authorize, void: f.calls.void }, attempts);
+      f.reopen();
+      await assert.rejects(f.core.execute(agreement.id), { code: 'CAPTURE_REFUNDED' });
+      await assert.rejects(f.core.payouts(agreement.id), { code: 'CAPTURE_REFUNDED' });
+      f.adapter.reconcile = async () => ({ payment: { captureId: 'CAPTURE-1', status: 'COMPLETED', captureStatus: 'COMPLETED' } });
+      const stale = await f.core.reconcile(agreement.id);
+      assert.equal(stale.status, refunded);
+      assert.equal(stale.payment.captureStatus, refunded);
+      if (refunded === 'REFUNDED') {
+        f.adapter.reconcile = async () => ({ payment: { captureId: 'CAPTURE-1', status: 'PARTIALLY_REFUNDED', captureStatus: 'PARTIALLY_REFUNDED' } });
+        assert.equal((await f.core.reconcile(agreement.id)).status, 'REFUNDED');
+      }
+      const receipt = f.core.receipt(agreement.id);
+      assert.equal(receipt.status, refunded);
+      assert.equal(verifyEventChain(receipt.events), true);
+    });
+  }
+
+  test(`${refunded} returned during capture is never treated as capture pending or permission to disburse`, async t => {
+    const f = fixture(t, { captureStatus: refunded });
+    const agreement = await f.authorized();
+    await f.core.evaluate(agreement.id, { scenario: 'clear' });
+    const result = await f.core.execute(agreement.id);
+    assert.equal(result.status, refunded);
+    assert.equal(result.payment.status, refunded);
+    assert.equal(result.payment.refundReviewRequired, true);
+    await assert.rejects(f.core.payouts(agreement.id), { code: 'CAPTURE_REFUNDED' });
+    await assert.rejects(f.core.execute(agreement.id), { code: 'CAPTURE_REFUNDED' });
+    assert.equal(f.calls.capture, 1);
+    assert.equal(f.calls.payouts, 0);
+  });
+
+  test(`an armed job observes ${refunded} before starting and stops without capture or payouts`, async t => {
+    const f = fixture(t);
+    const agreement = await f.authorized();
+    await f.core.armAutopilot(agreement.id, { scenario: 'clear' });
+    f.adapter.reconcile = async () => ({ payment: { captureId: 'CAPTURE-1', status: refunded, captureStatus: refunded } });
+    await f.core.reconcile(agreement.id);
+    f.advance(3500);
+    await f.core.runDueAutopilots();
+    const result = f.core.get(agreement.id);
+    assert.equal(result.status, refunded);
+    assert.equal(result.autopilot.status, 'FAILED');
+    assert.equal(result.autopilot.lastError.code, 'CAPTURE_REFUNDED');
+    assert.equal(f.calls.capture, 0);
+    assert.equal(f.calls.payouts, 0);
+  });
+}
+
+test('legacy contradictory capture refund metadata also blocks spending until reconciled', async t => {
+  const f = fixture(t);
+  const agreement = await f.authorized();
+  await f.core.evaluate(agreement.id, { scenario: 'clear' });
+  await f.core.execute(agreement.id);
+  const stored = f.store.get(agreement.id);
+  stored.payment.captureStatus = 'REFUNDED';
+  f.store.save(stored);
+  await assert.rejects(f.core.execute(agreement.id), { code: 'CAPTURE_REFUNDED' });
+  await assert.rejects(f.core.evaluate(agreement.id, { scenario: 'clear' }), { code: 'CAPTURE_REFUNDED' });
+  await assert.rejects(f.core.payouts(agreement.id), { code: 'CAPTURE_REFUNDED' });
+  assert.equal(f.calls.capture, 1);
+  assert.equal(f.calls.payouts, 0);
+  f.adapter.reconcile = async () => ({ payment: { status: 'COMPLETED', captureStatus: 'REFUNDED' } });
+  const reconciled = await f.core.reconcile(agreement.id);
+  assert.equal(reconciled.status, 'REFUNDED');
+  assert.equal(reconciled.payment.refundReviewRequired, true);
 });
 
 test('expired agreement and out-of-budget negotiation do not reach payment adapters', async t => {

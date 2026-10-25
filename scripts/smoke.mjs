@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { startServer } from '../server/index.mjs';
+import { verifyReceipt } from './verify-receipt.mjs';
 import { setTimeout as delay } from 'node:timers/promises';
 
 // Start an isolated local server. Never use the operator's .env or existing database.
@@ -84,6 +85,8 @@ try {
     const receipt = await request(path + '/receipt');
     assert.equal(receipt.integrity.agreementHashValid, true);
     assert.equal(receipt.integrity.eventChainValid, true);
+    const report = verifyReceipt(receipt);
+    assert.equal(report.valid, true, JSON.stringify(report.checks.filter(check => !check.passed)));
     assert.equal(receipt.environment, 'demo');
     assert.equal(receipt.agreement.id, original.id);
     assert.equal(receipt.payment.authorizationId, original.authorizationId);

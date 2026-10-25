@@ -102,6 +102,17 @@ export function publicData(value, depth = 0) {
   return null;
 }
 
+// Audit payloads were sanitized before hashing in appendEvent. Serializing that
+// committed data again with input bounds would silently change the proof (for
+// example by dropping every event after number 100). Only trusted, validated
+// agreement/receipt records use this serializer; adapter/model input remains bounded.
+function publicRecord(value) {
+  const result = publicData(value);
+  if (Array.isArray(value?.events)) result.events = clone(value.events);
+  if (value?.schemaVersion === 'asterion.receipt.v1') result.agreement = clone(value.agreement);
+  return result;
+}
+
 function appendEvent(agreement, type, message, at, data = {}) {
   const payload = {
     id: randomUUID(), type, message, at,
@@ -310,6 +321,20 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
   const guardVoidPending = agreement => {
     if (isVoidPending(agreement)) fail(409, 'RECONCILE_REQUIRED', 'La anulación está pendiente de confirmación. Reconcilia su estado; no se reevaluará ni se enviará otra operación de pago.');
   };
+  const refundStatus = agreement => ['REFUNDED', 'PARTIALLY_REFUNDED'].find(status => agreement.payment.status === status || agreement.payment.captureStatus === status);
+  const guardRefunded = agreement => {
+    if (refundStatus(agreement)) fail(409, 'CAPTURE_REFUNDED', 'La captura tiene un reembolso registrado. Se bloquean nuevas operaciones y desembolsos; revisa las obligaciones de los proveedores.');
+  };
+  const recordRefund = (agreement, incoming) => {
+    // A stale COMPLETED response, or a partial refund observed after a full one,
+    // cannot restore permission to spend. Supplier recovery is a separate review.
+    const status = refundStatus(agreement) === 'REFUNDED' || incoming === 'REFUNDED' ? 'REFUNDED' : 'PARTIALLY_REFUNDED';
+    agreement.payment.status = status;
+    agreement.payment.captureStatus = status;
+    agreement.payment.refundReviewRequired = true;
+    agreement.payment.refundObservedAt ??= stamp();
+    agreement.status = status;
+  };
   const adapterCall = async (method, arguments_) => {
     if (typeof paymentAdapter[method] !== 'function') fail(503, 'CONNECTOR_UNAVAILABLE', 'La operación de pago no está disponible.');
     return publicData(await paymentAdapter[method](arguments_));
@@ -325,6 +350,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
   });
   const applyReconciliation = (agreement, result) => {
     const payment = result.payment ?? result;
+    const priorRefund = refundStatus(agreement);
     // Provider results cannot alter the approved terms, environment or operation keys.
     for (const key of ['orderId', 'authorizationId', 'captureId', 'authorizationStatus', 'captureStatus', 'authorizationExpiresAt']) {
       if (payment[key] !== undefined && payment[key] !== null) {
@@ -336,9 +362,13 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
       }
     }
     const incoming = String(payment.status ?? '').toUpperCase();
-    const final = ['COMPLETED', 'VOIDED'].includes(agreement.payment.status);
+    const incomingRefund = ['REFUNDED', 'PARTIALLY_REFUNDED'].find(status => incoming === status || payment.captureStatus === status);
+    const final = ['COMPLETED', 'VOIDED', 'REFUNDED', 'PARTIALLY_REFUNDED'].includes(agreement.payment.status);
     const voidPending = isVoidPending(agreement);
-    if (incoming === 'COMPLETED' && agreement.payment.captureId) {
+    if (incomingRefund || priorRefund) {
+      if (!agreement.payment.captureId) fail(502, 'PAYMENT_REFERENCE_MISMATCH', 'Un reembolso requiere la referencia de una captura conocida.');
+      recordRefund(agreement, priorRefund === 'REFUNDED' || incomingRefund === 'REFUNDED' ? 'REFUNDED' : 'PARTIALLY_REFUNDED');
+    } else if (incoming === 'COMPLETED' && agreement.payment.captureId) {
       agreement.payment.status = 'COMPLETED'; agreement.status = 'CAPTURED';
     } else if (!final && incoming === 'VOIDED') {
       agreement.payment.status = 'VOIDED'; agreement.status = 'VOIDED';
@@ -355,7 +385,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
     }
     const payouts = result.payouts ?? payment.payouts;
     if (payouts) agreement.payment.payouts = payouts;
-    if (agreement.payment.payouts) agreement.status = payoutComplete(agreement.payment.payouts) ? 'SETTLED' : 'PAYOUTS_PENDING';
+    if (agreement.payment.status === 'COMPLETED' && agreement.payment.payouts) agreement.status = payoutComplete(agreement.payment.payouts) ? 'SETTLED' : 'PAYOUTS_PENDING';
     agreement.payment.lastReconciledAt = stamp();
     return agreement;
   };
@@ -365,8 +395,8 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
     status() {
       return { ok: true, name: 'ASTERION', mode: provider, paymentProvider: provider, paymentMode: provider, sandboxOnly: true, sandboxAutopilotEnabled: provider === 'paypal-sandbox' && allowSandboxAutopilot === true, storage: 'sqlite', time: stamp(), agreements: store.list().length };
     },
-    list(ownerId) { return store.list(ownerId).map(agreement => publicData(agreement)); },
-    get(id) { return publicData(get(id)); },
+    list(ownerId) { return store.list(ownerId).map(agreement => publicRecord(agreement)); },
+    get(id) { return publicRecord(get(id)); },
 
     async negotiate(input = {}, context = {}) {
       const intent = text(input.intent);
@@ -412,7 +442,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
       };
       agreement.hash = computeAgreementHash(agreement);
       appendEvent(agreement, 'AGREEMENT_NEGOTIATED', 'Agentes y proveedores acordaron un paquete sujeto a condiciones verificables.', createdAt, { agreementHash: agreement.hash, totalMinor, negotiationProvider: agreement.negotiationProvider });
-      return publicData(store.insert(agreement));
+      return publicRecord(store.insert(agreement));
     },
 
     async consent(id, input = {}) {
@@ -421,12 +451,12 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
         ensureProvider(agreement);
         assertNotExpired(agreement, now());
         if (input.agreementHash !== agreement.hash) fail(409, 'HASH_MISMATCH', 'La aprobación no corresponde a esta versión del acuerdo.');
-        if (agreement.consent?.agreementHash === agreement.hash) return publicData(agreement);
+        if (agreement.consent?.agreementHash === agreement.hash) return publicRecord(agreement);
         if (agreement.payment.status !== 'NOT_CREATED') fail(409, 'INVALID_STATE', 'No se puede modificar el consentimiento de un pago iniciado.');
         agreement.consent = { agreementHash: agreement.hash, acceptedAt: stamp(), maxAmountMinor: agreement.totalMinor, currency: agreement.currency, provider };
         agreement.status = 'CONSENTED';
         appendEvent(agreement, 'CONSENT_RECORDED', 'El usuario aprobó el importe, las condiciones y la versión exacta del acuerdo.', stamp(), { agreementHash: agreement.hash });
-        return publicData(save(agreement));
+        return publicRecord(save(agreement));
       });
     },
 
@@ -434,7 +464,8 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
       return locked(id, async () => {
         let agreement = get(id);
         assertConsent(agreement); ensureProvider(agreement); assertNotExpired(agreement, now());
-        if (agreement.payment.orderId) return publicData(agreement);
+        guardRefunded(agreement);
+        if (agreement.payment.orderId) return publicRecord(agreement);
         if (agreement.payment.authorizationId || agreement.payment.captureId) fail(409, 'INVALID_STATE', 'Ya existe una operación de pago.');
         agreement.operations.order ??= randomUUID();
         agreement.payment.status = 'ORDER_REQUESTED';
@@ -452,7 +483,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
           agreement.status = 'ORDER_CREATED';
           agreement.payment.lastError = null;
           appendEvent(agreement, 'ORDER_CREATED', provider === 'demo' ? 'Orden de demostración creada; no mueve dinero real.' : 'Orden creada en PayPal Sandbox; pendiente de aprobación del comprador.', stamp(), { orderId: agreement.payment.orderId });
-          return publicData(save(agreement));
+          return publicRecord(save(agreement));
         } catch (error) {
           agreement.payment.lastError = errorInfo(error);
           appendEvent(agreement, 'ORDER_UNCONFIRMED', 'No se ha confirmado la creación de la orden.', stamp(), errorInfo(error));
@@ -466,9 +497,10 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
       return locked(id, async () => {
         let agreement = get(id);
         assertConsent(agreement); ensureProvider(agreement); assertNotExpired(agreement, now());
+        guardRefunded(agreement);
         if (input.agreementHash !== agreement.hash) fail(409, 'HASH_MISMATCH', 'La autorización requiere el hash exacto aprobado.');
         if (input.orderId && input.orderId !== agreement.payment.orderId) fail(409, 'ORDER_MISMATCH', 'La orden no pertenece a este acuerdo.');
-        if (agreement.payment.authorizationId) return publicData(agreement);
+        if (agreement.payment.authorizationId) return publicRecord(agreement);
         if (!agreement.payment.orderId) fail(409, 'ORDER_REQUIRED', 'Crea primero la orden de pago.');
         agreement.operations.authorize ??= randomUUID();
         agreement.payment.status = 'AUTHORIZATION_REQUESTED';
@@ -485,7 +517,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
           agreement.payment.lastError = null;
           agreement.status = 'AUTHORIZED';
           appendEvent(agreement, 'PAYMENT_AUTHORIZED', 'Importe autorizado. Todavía no se ha capturado el pago.', stamp(), { authorizationId: agreement.payment.authorizationId });
-          return publicData(save(agreement));
+          return publicRecord(save(agreement));
         } catch (error) {
           agreement.payment.lastError = errorInfo(error);
           appendEvent(agreement, 'AUTHORIZATION_UNCONFIRMED', 'No se ha confirmado la autorización. No se permite capturar.', stamp(), errorInfo(error));
@@ -501,6 +533,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
         assertConsent(agreement); ensureProvider(agreement);
         guardAutopilot(agreement, context);
         guardVoidPending(agreement);
+        guardRefunded(agreement);
         if (!agreement.payment.authorizationId || ['COMPLETED', 'VOIDED', 'CAPTURE_PENDING', 'CAPTURE_REQUESTED'].includes(agreement.payment.status)) fail(409, 'AUTHORIZATION_REQUIRED', 'Se requiere una autorización activa sin capturar.');
         const scenario = input.scenario ?? 'clear';
         if (!['clear', 'cloudy', 'stale', 'conflict', 'live'].includes(scenario)) fail(400, 'INVALID_SCENARIO', 'Escenario meteorológico desconocido.');
@@ -512,7 +545,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
         agreement.evaluation = assessEvidence(agreement, agreement.evidence, now());
         agreement.status = agreement.evaluation.eligible ? 'CONDITION_MET' : 'CONDITION_FAILED';
         appendEvent(agreement, agreement.evaluation.eligible ? 'CONDITION_MET' : 'CONDITION_FAILED', agreement.evaluation.eligible ? 'La evidencia satisface todos los umbrales aprobados.' : 'El motor de políticas bloquea el cobro.', stamp(), { ...agreement.evaluation, evidenceProvider: agreement.evidence?.provider, scenario });
-        return publicData(save(agreement));
+        return publicRecord(save(agreement));
       });
     },
 
@@ -521,7 +554,8 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
         let agreement = get(id);
         assertConsent(agreement); ensureProvider(agreement);
         guardAutopilot(agreement, context);
-        if (['COMPLETED', 'VOIDED'].includes(agreement.payment.status)) return publicData(agreement);
+        guardRefunded(agreement);
+        if (['COMPLETED', 'VOIDED'].includes(agreement.payment.status)) return publicRecord(agreement);
         guardVoidPending(agreement);
         if (['CAPTURE_PENDING', 'CAPTURE_REQUESTED'].includes(agreement.payment.status)) fail(409, 'RECONCILE_REQUIRED', 'La captura está pendiente. Reconcilia el estado; no se enviará otro cobro.');
         if (!agreement.payment.authorizationId) fail(409, 'AUTHORIZATION_REQUIRED', 'Autoriza el pago antes de ejecutarlo.');
@@ -547,9 +581,14 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
           if (capture) {
             agreement.payment.captureId = externalId(result.captureId ?? result.id, 'capture ID');
             agreement.payment.captureStatus = resultStatus;
-            agreement.payment.status = resultStatus === 'COMPLETED' ? 'COMPLETED' : resultStatus === 'DECLINED' || resultStatus === 'DENIED' || resultStatus === 'FAILED' ? 'DECLINED' : 'CAPTURE_PENDING';
-            agreement.status = agreement.payment.status === 'COMPLETED' ? 'CAPTURED' : agreement.payment.status === 'DECLINED' ? 'CAPTURE_FAILED' : 'CAPTURE_PENDING';
-            appendEvent(agreement, agreement.payment.status === 'COMPLETED' ? 'PAYMENT_CAPTURED' : agreement.payment.status === 'DECLINED' ? 'CAPTURE_DECLINED' : 'CAPTURE_PENDING', agreement.payment.status === 'COMPLETED' ? 'Captura completada. Los pagos a proveedores siguen siendo operaciones separadas.' : 'La captura no está completada. Los desembolsos permanecen bloqueados.', stamp(), { captureId: agreement.payment.captureId, status: resultStatus });
+            if (['REFUNDED', 'PARTIALLY_REFUNDED'].includes(resultStatus)) {
+              recordRefund(agreement, resultStatus);
+              appendEvent(agreement, 'CAPTURE_REFUND_DETECTED', 'El proveedor informa un reembolso de la captura. Los desembolsos y nuevas ejecuciones quedan bloqueados.', stamp(), { captureId: agreement.payment.captureId, status: resultStatus });
+            } else {
+              agreement.payment.status = resultStatus === 'COMPLETED' ? 'COMPLETED' : resultStatus === 'DECLINED' || resultStatus === 'DENIED' || resultStatus === 'FAILED' ? 'DECLINED' : 'CAPTURE_PENDING';
+              agreement.status = agreement.payment.status === 'COMPLETED' ? 'CAPTURED' : agreement.payment.status === 'DECLINED' ? 'CAPTURE_FAILED' : 'CAPTURE_PENDING';
+              appendEvent(agreement, agreement.payment.status === 'COMPLETED' ? 'PAYMENT_CAPTURED' : agreement.payment.status === 'DECLINED' ? 'CAPTURE_DECLINED' : 'CAPTURE_PENDING', agreement.payment.status === 'COMPLETED' ? 'Captura completada. Los pagos a proveedores siguen siendo operaciones separadas.' : 'La captura no está completada. Los desembolsos permanecen bloqueados.', stamp(), { captureId: agreement.payment.captureId, status: resultStatus });
+            }
           } else {
             if (resultStatus !== 'VOIDED' && resultStatus !== 'COMPLETED') fail(502, 'VOID_UNCONFIRMED', 'El proveedor no confirmó la anulación.');
             agreement.payment.status = 'VOIDED';
@@ -558,7 +597,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
             appendEvent(agreement, 'AUTHORIZATION_VOIDED', 'Autorización anulada sin captura; no es un reembolso.', stamp(), { authorizationId: agreement.payment.authorizationId });
           }
           agreement.payment.lastError = null;
-          return publicData(save(agreement));
+          return publicRecord(save(agreement));
         } catch (error) {
           // Ambiguous capture responses remain pending until reconciliation; never mark failed and charge again.
           agreement.payment.lastError = errorInfo(error);
@@ -575,7 +614,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
               if (agreement.payment.status === 'COMPLETED') {
                 agreement.payment.lastError = null;
                 appendEvent(agreement, 'CAPTURE_RECOVERED', 'La consulta al proveedor confirmó una captura cuya respuesta no había llegado. No se repitió el cobro.', stamp(), { captureId: agreement.payment.captureId });
-                return publicData(save(agreement));
+                return publicRecord(save(agreement));
               }
               appendEvent(agreement, 'CAPTURE_RECONCILIATION_PENDING', 'La consulta aún no confirma el cobro. Se conserva el estado financiero pendiente.', stamp(), { status: agreement.payment.status, captureId: agreement.payment.captureId });
               agreement = save(agreement);
@@ -591,8 +630,9 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
         let agreement = get(id);
         assertConsent(agreement); ensureProvider(agreement);
         guardAutopilot(agreement, context);
+        guardRefunded(agreement);
         if (agreement.payment.status !== 'COMPLETED' || !agreement.payment.captureId) fail(409, 'CAPTURE_NOT_COMPLETED', 'Los desembolsos requieren una captura COMPLETED.');
-        if (agreement.payment.payouts) return publicData(agreement);
+        if (agreement.payment.payouts) return publicRecord(agreement);
         if (agreement.operations.payoutsAttempted) fail(409, 'RECONCILE_REQUIRED', 'Ya se solicitó este lote. Reconcilia su estado antes de continuar.');
         agreement.operations.payouts ??= randomUUID();
         agreement.operations.payoutsAttempted = true;
@@ -604,7 +644,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
           agreement.payment.payouts = result;
           agreement.status = payoutComplete(result) ? 'SETTLED' : 'PAYOUTS_PENDING';
           appendEvent(agreement, agreement.status === 'SETTLED' ? 'PAYOUTS_COMPLETED' : 'PAYOUTS_PENDING', agreement.status === 'SETTLED' ? 'Los tres pagos a proveedores se han confirmado individualmente.' : 'Lote recibido. Se esperan los estados individuales de los proveedores.', stamp(), result);
-          return publicData(save(agreement));
+          return publicRecord(save(agreement));
         } catch (error) {
           agreement.payment.lastError = errorInfo(error);
           appendEvent(agreement, 'PAYOUTS_UNCONFIRMED', 'No se confirmó el lote de pagos. Los importes no se vuelven a enviar automáticamente.', stamp(), errorInfo(error));
@@ -622,7 +662,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
         const result = await adapterCall('reconcile', { agreement: clone(agreement) });
         applyReconciliation(agreement, result);
         appendEvent(agreement, 'PAYMENT_RECONCILED', 'Estado contrastado con el proveedor de pagos.', stamp(), { status: agreement.payment.status, payouts: agreement.payment.payouts });
-        return publicData(save(agreement));
+        return publicRecord(save(agreement));
       });
     },
 
@@ -630,13 +670,14 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
       return locked(id, () => {
         const agreement = get(id);
         assertConsent(agreement); ensureProvider(agreement); assertNotExpired(agreement, now());
+        guardRefunded(agreement);
         const scenario = input.scenario ?? 'clear';
         if (!['clear', 'cloudy', 'stale', 'conflict'].includes(scenario)) fail(400, 'INVALID_SCENARIO', 'Selecciona un escenario meteorológico de demostración válido.');
         if (provider === 'paypal-sandbox' && (!allowSandboxAutopilot || input.confirmSandboxAutopilot !== true || input.agreementHash !== agreement.hash)) {
           fail(403, 'SANDBOX_AUTOPILOT_DISABLED', 'La ejecución autónoma Sandbox requiere habilitación privada del operador y aprobación explícita del acuerdo.');
         }
         if (agreement.autopilot) {
-          if (['ARMED', 'RUNNING'].includes(agreement.autopilot.status) && agreement.autopilot.scenario === scenario) return publicData(agreement);
+          if (['ARMED', 'RUNNING'].includes(agreement.autopilot.status) && agreement.autopilot.scenario === scenario) return publicRecord(agreement);
           fail(409, 'AUTOPILOT_ALREADY_ARMED', 'Este acuerdo ya tiene una ejecución autónoma. No se creará otra.');
         }
         if (agreement.status !== 'AUTHORIZED' || agreement.payment.status !== 'AUTHORIZED' || !agreement.payment.authorizationId) fail(409, 'AUTHORIZATION_REQUIRED', 'Autoriza primero el acuerdo antes de armar su ejecución autónoma.');
@@ -647,7 +688,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
           notice: 'El servidor evaluará la evidencia y ejecutará captura o anulación sin otro clic. Si captura, solicitará los desembolsos separados.',
         };
         appendEvent(agreement, 'AUTOPILOT_ARMED', 'Ejecución autónoma armada por el usuario. El trabajo queda persistido antes de responder.', stamp(), { jobId: agreement.autopilot.id, scenario, runAt: agreement.autopilot.runAt, agreementHash: agreement.hash });
-        return publicData(save(agreement));
+        return publicRecord(save(agreement));
       });
     },
 
@@ -664,6 +705,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
             const job = agreement.autopilot;
             if (!job || !['ARMED', 'RUNNING'].includes(job.status) || Date.parse(job.runAt) > +now()) return null;
             assertConsent(agreement); ensureProvider(agreement);
+            guardRefunded(agreement);
             if (job.agreementHash !== agreement.hash) fail(409, 'HASH_MISMATCH', 'La delegación no corresponde al acuerdo aprobado.');
             const firstStart = job.status === 'ARMED';
             job.status = 'RUNNING';
@@ -717,7 +759,7 @@ export function createCore({ store, paymentAdapter, negotiate, evidenceProvider,
 
     receipt(id) {
       const agreement = get(id);
-      return publicData({
+      return publicRecord({
         schemaVersion: 'asterion.receipt.v1',
         exportedAt: stamp(),
         environment: provider,
