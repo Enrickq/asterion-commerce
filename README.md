@@ -2,7 +2,7 @@
 
 **Intent. Evidence. Payment.**
 
-[Open the public demo](https://asterion-mj13.onrender.com/) · [Verified CI run](https://github.com/Enrickq/asterion-commerce/actions/runs/39871251390)
+[Open the public demo](https://asterion-mj13.onrender.com/) · [Verified CI run](https://github.com/Enrickq/asterion-commerce/actions/runs/40079174416)
 
 ![ASTERION public demo](docs/assets/asterion-public.png)
 
@@ -10,7 +10,7 @@ ASTERION is a working prototype for conditional agentic commerce. A buyer agent 
 
 The product question is simple: **can an agent explain why money should move, and prove why it did not move when conditions failed?**
 
-The default experience runs locally without accounts or API keys. It uses reproducible negotiation, weather fixtures and simulated payments, clearly identified as demo data. **Actual PayPal Sandbox authorization, capture, separate supplier Payouts and a cloudy-condition void were verified on October 22, 2026** in a private local environment. Further approved mandates completed both outcomes autonomously. See the [sanitized provider evidence](docs/evidence/paypal-sandbox.json). On October 23, Canary Islands time, **three actual Gemini supplier calls produced a €1,650 agreement within a €1,700 mandate**; see [model evidence](docs/evidence/gemini-verification.json). Live weather and webhook delivery remain unverified.
+The default experience runs locally without accounts or API keys. It uses reproducible negotiation, weather fixtures and simulated payments, clearly identified as demo data. **Actual PayPal Sandbox authorization, capture, separate supplier Payouts and a cloudy-condition void were verified on October 22, 2026** in a private local environment. Further approved mandates completed both outcomes autonomously. See the [sanitized provider evidence](docs/evidence/paypal-sandbox.json). On October 23, Canary Islands time, **three actual Gemini supplier calls produced a €1,650 agreement within a €1,700 mandate**; see [model evidence](docs/evidence/gemini-verification.json). A separate MET Norway forecast preview was verified publicly on October 25; [record](docs/evidence/weather-preview.json). Complete local observations for settlement and webhook delivery remain unverified.
 
 The same Gemini-negotiated agreement subsequently completed buyer-approved PayPal Sandbox authorization, autonomous capture and three validated supplier payments. [Integrated AI → Sandbox evidence](docs/evidence/ai-sandbox-run.json) records the €1,650 capture and €425/€620/€425 Payouts. The public hosted demo retains simulated payments and deterministic agents.
 
@@ -79,7 +79,7 @@ The definitive implementation notes and account requirements are in [INTEGRATION
 
 ## Deployment
 
-The [public demo](https://asterion-mj13.onrender.com/) runs on Render Free with auto-deploy disabled. Application commit `18370ca` was deployed on October 23, 2026, Canary Islands time; its CI passed 71 tests, build, preflight and smoke. Private Sandbox runs use separate local credentials and data; their evidence records retain their historical application baseline. Verification records distinguish application revisions from documentation updates.
+The [public demo](https://asterion-mj13.onrender.com/) runs on Render Free with auto-deploy disabled. Application commit `8ab17b4` was deployed on October 24, 2026 and verified publicly on October 25, Canary Islands time; its CI passed 114 tests, build, preflight and smoke. Private Sandbox runs use separate local credentials and data; their evidence records retain their historical application baseline. Verification records distinguish application revisions from documentation updates.
 
 [render.yaml](render.yaml) prepares a free public demo with `PUBLIC_DEMO=true`, simulated payments and SQLite under `/tmp/asterion`. Guest sessions use signed HttpOnly cookies; agreements and receipts are scoped to that browser's session. The server blocks PayPal Sandbox payments and Kernel launches in public-demo mode.
 

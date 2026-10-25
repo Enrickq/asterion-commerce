@@ -66,6 +66,8 @@ An authorization hold is subject to PayPal and funding-source rules. This is nei
 
 Fixtures make clear, cloudy and stale-data paths reproducible without dependencies. They must remain labeled in the UI and recording. The optional AEMET adapter uses actual observations from an explicitly configured station; those observations alone may be insufficient for a complete astronomical quality decision, in which case capture stays blocked.
 
+The separate MET Norway preview is a cached, read-only model forecast. It never updates agreement evidence or calls payment methods. Policy 1.1 includes the approved coordinates and location tolerances; actual-evidence settlement requires complete local observations with explicit timestamps, provenance and distinct adapter-declared lineage groups. Forecasts retain an explicit settlement veto. See [weather evidence](WEATHER.md).
+
 Field operation requires a suitable observation location, licensed providers where applicable, a verified weather feed for that location, meaningful source freshness, contractual thresholds and customer cancellation terms. A municipality forecast cannot be silently treated as a mountaintop sensor.
 
 ## Work required before public financial use
@@ -83,6 +85,7 @@ The Render Blueprint deploys a web service only. It does not prove Render Workfl
 | Endpoint | Responsibility |
 | --- | --- |
 | `GET /api/status`, `GET /api/integrations` | Runtime modes and integration readiness |
+| `GET /api/weather/preview` | Fixed-location, cached model forecast for planning; no agreement or payment mutation |
 | `GET /api/agreements`, `GET /api/agreements/:id` | Read agreement state |
 | `POST /api/negotiate` | Propose a bundle from intent, `budgetMinor` and participants |
 | `POST /api/agreements/:id/consent` | Approve the exact `agreementHash` |

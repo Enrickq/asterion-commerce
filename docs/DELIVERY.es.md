@@ -1,6 +1,6 @@
 # ASTERION · Cierre de candidatura
 
-Estado actualizado el 24 de octubre de 2026. Esto es un plan de entrega; la candidatura no está enviada.
+Estado actualizado el 25 de octubre de 2026. Esto es un plan de entrega; la candidatura no está enviada.
 
 ## Lo obligatorio pendiente
 
@@ -24,11 +24,11 @@ Las bases no conceden un bono automático por sumar tres sponsors. Permiten como
 ## Ya verificable
 
 - Demo pública y repositorio MIT accesibles.
-- 71 pruebas automáticas, build, preflight y smoke aprobados en CI para el commit de aplicación desplegado `18370ca`.
+- 114 pruebas automáticas, build, preflight y smoke aprobados en CI para el commit de aplicación desplegado `8ab17b4`.
 - Tres llamadas reales de Gemini produjeron un acuerdo de 1.650 EUR dentro de un mandato de 1.700 EUR.
 - Ese mismo acuerdo completó captura y tres Payouts en PayPal Sandbox mediante Autopilot; [evidencia](evidence/ai-sandbox-run.json).
 - Otra ejecución verificó anulación autónoma con condición nublada, sin captura; [evidencia](evidence/paypal-sandbox.json).
 
 El catálogo, disponibilidad y clima siguen simulados. No hay reserva con un operador real ni garantía de premio. La demo pública conserva pagos simulados; las pruebas Sandbox privadas usan fondos ficticios.
 
-La nueva revisión meteorológica pasó **114 pruebas locales**, compilación y preflight. El smoke verificó captura y anulación en los escenarios simulados. La consulta externa de previsión está registrada por separado; no reejecuta ni amplía las pruebas históricas de PayPal o Gemini.
+La revisión meteorológica pasó **114 pruebas locales y CI**, compilación y preflight. El smoke y la verificación pública comprobaron captura y anulación en los escenarios simulados. La consulta externa de previsión también está verificada en Render y [registrada por separado](evidence/weather-preview.json); no reejecuta ni amplía las pruebas históricas de PayPal o Gemini.

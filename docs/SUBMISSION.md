@@ -57,11 +57,11 @@ Complete the real oracle and operator integrations, then pilot with an actual op
 
 ## Built with
 
-Node.js 24, React, Vite, SQLite, AG Grid Community. Optional implemented adapters: PayPal Sandbox REST APIs, Gemini generateContent, Anthropic Messages API, AEMET OpenData, Kernel browser sessions. Deployment configuration: Render Blueprint. Do not list planned integrations as technologies used.
+Node.js 24, React, Vite, SQLite, AG Grid Community, MET Norway Locationforecast. Optional implemented adapters: PayPal Sandbox REST APIs, Gemini generateContent, Anthropic Messages API, AEMET OpenData, Kernel browser sessions. Deployment configuration: Render Blueprint. Do not list planned integrations as technologies used.
 
 ## Evidence to add before submission
 
-- Public repository: https://github.com/Enrickq/asterion-commerce; deployed application commit: `18370ca49e5f8c9dcc0a3899414c4da0835e323d`.
+- Public repository: https://github.com/Enrickq/asterion-commerce; deployed application commit: `8ab17b42fe2d38752fe3ad3bef6be5cfa5968e04`.
 - Public demo: https://asterion-mj13.onrender.com/; hosted flows verified, see [record](VERIFICATION.es.md).
 - Video URL and final runtime: **pending**.
 - Actual PayPal Sandbox authorization/capture/void and three individual Payouts: **verified**, [sanitized record](evidence/paypal-sandbox.json). Autonomous clear and cloudy Sandbox outcomes: **verified**. Webhook delivery: **pending**.

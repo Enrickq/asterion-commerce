@@ -1,6 +1,6 @@
 {
-  "verifiedAt": "2026-10-24T08:42:42.627Z",
-  "origin": "http://localhost:8790",
+  "verifiedAt": "2026-10-25T09:16:01.453Z",
+  "origin": "https://asterion-mj13.onrender.com",
   "httpStatus": 200,
   "environment": "public-demo",
   "usage": "planning-only",
@@ -11,11 +11,11 @@
     "evidenceType": "model-forecast",
     "scenario": "forecast-preview",
     "observedAt": null,
-    "issuedAt": "2026-10-24T08:20:02.000Z",
-    "modelUpdatedAt": "2026-10-24T08:20:02.000Z",
-    "validAt": "2026-10-24T09:00:00.000Z",
-    "fetchedAt": "2026-10-24T08:41:26.432Z",
-    "dataHash": "cbd14ec82cbd822ce07b14f006d6f69e1614f6cc7ce602eea040bf4e55d4859f",
+    "issuedAt": "2026-10-25T08:18:14.000Z",
+    "modelUpdatedAt": "2026-10-25T08:18:14.000Z",
+    "validAt": "2026-10-25T09:00:00.000Z",
+    "fetchedAt": "2026-10-25T09:16:01.608Z",
+    "dataHash": "43737af57ed867d0177b83a1423550a65701c0da4ee814ff659a1f3229883a08",
     "dataHashAlgorithm": "sha256-json",
     "sourceUrl": "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=28.754&lon=-17.885&altitude=2396",
     "simulated": false,
@@ -44,9 +44,9 @@
       "termsUrl": "https://docs.api.met.no/doc/TermsOfService.html",
       "changes": "Selected a forecast time, renamed fields and converted wind speed from m/s to km/h."
     },
-    "cloudPercent": 93,
-    "humidityPercent": 97.8,
-    "windKph": 41.8,
+    "cloudPercent": 80.5,
+    "humidityPercent": 95.2,
+    "windKph": 34.6,
     "sources": [
       {
         "id": "met-norway-locationforecast",
@@ -55,11 +55,11 @@
         "type": "model-forecast",
         "independenceGroup": "met-norway-locationforecast",
         "observedAt": null,
-        "issuedAt": "2026-10-24T08:20:02.000Z",
-        "modelUpdatedAt": "2026-10-24T08:20:02.000Z",
-        "validAt": "2026-10-24T09:00:00.000Z",
-        "fetchedAt": "2026-10-24T08:41:26.432Z",
-        "dataHash": "cbd14ec82cbd822ce07b14f006d6f69e1614f6cc7ce602eea040bf4e55d4859f",
+        "issuedAt": "2026-10-25T08:18:14.000Z",
+        "modelUpdatedAt": "2026-10-25T08:18:14.000Z",
+        "validAt": "2026-10-25T09:00:00.000Z",
+        "fetchedAt": "2026-10-25T09:16:01.608Z",
+        "dataHash": "43737af57ed867d0177b83a1423550a65701c0da4ee814ff659a1f3229883a08",
         "dataHashAlgorithm": "sha256-json",
         "sourceUrl": "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=28.754&lon=-17.885&altitude=2396",
         "simulated": false,
@@ -88,16 +88,16 @@
           "termsUrl": "https://docs.api.met.no/doc/TermsOfService.html",
           "changes": "Selected a forecast time, renamed fields and converted wind speed from m/s to km/h."
         },
-        "cloudPercent": 93,
-        "humidityPercent": 97.8,
-        "windKph": 41.8
+        "cloudPercent": 80.5,
+        "humidityPercent": 95.2,
+        "windKph": 34.6
       }
     ],
     "conflict": false,
     "cache": {
       "minimumTtlSeconds": 10800,
-      "expiresAt": "2026-10-24T11:41:26.050Z",
-      "providerExpiresAt": "2026-10-24T09:07:49.000Z"
+      "expiresAt": "2026-10-25T12:16:01.304Z",
+      "providerExpiresAt": "2026-10-25T09:47:12.000Z"
     },
     "note": "Previsión numérica para planificación; no es una observación local ni una garantía de cielo despejado. Una sola fuente de modelo no habilita captura."
   }

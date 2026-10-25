@@ -1,17 +1,17 @@
 # Verificación de la entrega pública
 
-Verificación pública actualizada el **23 de octubre de 2026**, hora de Canarias. Las pruebas privadas abarcan el 22 y el 23 de octubre; los registros técnicos conservan sus marcas de tiempo UTC.
+Verificación pública actualizada el **25 de octubre de 2026**, hora de Canarias. Las pruebas privadas de PayPal y Gemini abarcan el 22 y el 23 de octubre; sus registros conservan las marcas de tiempo UTC y la revisión histórica.
 
 - Demo: https://asterion-mj13.onrender.com/
 - Repositorio: https://github.com/Enrickq/asterion-commerce
-- Commit de aplicación desplegado: `18370ca49e5f8c9dcc0a3899414c4da0835e323d`.
-- CI: [ejecución completa en verde](https://github.com/Enrickq/asterion-commerce/actions/runs/39871251390).
+- Commit de aplicación desplegado: `8ab17b42fe2d38752fe3ad3bef6be5cfa5968e04`.
+- CI: [ejecución completa en verde](https://github.com/Enrickq/asterion-commerce/actions/runs/40079174416).
 - Render: servicio `asterion`, región Frankfurt, plan **Free**, auto-deploy desactivado.
-- Despliegue `dep-dbd9l5nb9u1s738tlb1g`, estado confirmado **live**.
+- Despliegue `dep-dbe6vr0ae00c73c4c0og`, estado confirmado **live**, finalizado el 24 de octubre a las 08:45:35 UTC.
 
 ## Comprobaciones realizadas
 
-GitHub Actions instaló dependencias, ejecutó preflight, **71 pruebas**, compiló el frontend y completó el smoke del sistema. La verificación local obtuvo el mismo resultado. Las pruebas automatizadas de conectores utilizan mocks; las llamadas PayPal y Gemini reales se documentan por separado a continuación.
+GitHub Actions instaló dependencias, ejecutó preflight, **114 pruebas**, compiló el frontend y completó el smoke del sistema. La verificación local obtuvo el mismo resultado. Las pruebas automatizadas de conectores utilizan mocks; las llamadas externas se documentan por separado.
 
 En la URL pública, `/api/status` devolvió HTTP 200, `mode=demo`, `publicDemo=true`, almacenamiento SQLite y Render desplegado. El frontend de producción cargó y se probó en navegador.
 
@@ -26,13 +26,15 @@ Los dos recibos confirmaron `agreementHashValid=true` y `eventChainValid=true`. 
 
 ## Alcance de esta evidencia
 
-El servidor, la orquestación autónoma y AG Grid funcionan en Render. Los precios, el inventario, el clima y los pagos de esta demo pública son simulados y así se muestran en la interfaz. En un entorno local privado, Gemini completó una negociación de tres proveedores y el mismo acuerdo terminó liquidado mediante PayPal Sandbox. Anthropic, AEMET y Kernel continúan sin ejecución externa.
+El servidor, la orquestación autónoma y AG Grid funcionan en Render. Los precios, el inventario, el clima usado para liquidación y los pagos de esta demo pública son simulados. Una consulta separada de previsión MET Norway usa datos externos modelados, sin modificar el acuerdo ni habilitar cobros. En un entorno local privado, Gemini completó una negociación de tres proveedores y el mismo acuerdo terminó liquidado mediante PayPal Sandbox. Anthropic, AEMET y Kernel continúan sin ejecución externa.
 
 El plan gratuito usa SQLite temporal. Un reinicio, reemplazo o suspensión por inactividad puede eliminar acuerdos y claves de sesión. La persistencia local probada no convierte ese alojamiento gratuito en almacenamiento durable. No se han contratado recursos de pago.
 
 La entrega del hackathon y el vídeo siguen pendientes. Este documento acredita la versión pública del prototipo, no su elegibilidad final ni un resultado en el concurso.
 
 ## Revisión de recuperación PayPal Sandbox
+
+Esta sección y las siguientes pruebas de PayPal/Gemini describen la revisión histórica del 23 de octubre, con 71 pruebas en ese momento. La revisión meteorológica desplegada posteriormente pasó 114; no se han reetiquetado los cobros históricos como ejecuciones de código nuevo.
 
 Una revisión posterior añadió recuperación de respuestas perdidas mediante GET de autorización, orden y captura, validación de importes y referencias del proveedor, y exposición del control privado de Autopilot únicamente tras el opt-in del servidor. El recorrido de autorización conserva por separado el estado de la orden y el de la autorización.
 
@@ -70,3 +72,11 @@ Ese mismo acuerdo se aprobó mediante checkout Sandbox y se autorizó por 1.650 
 La revisión añade validación de lote, asignación, moneda e importe por Payout y rechaza duplicados o referencias ajenas. Los lotes parciales conservan estado pendiente. **71 pruebas locales pasan** con esta revisión; las consultas externas también verificaron los lotes históricos con el nuevo adaptador. La configuración privada vuelve a negociación determinista para nuevas misiones, sin alterar la procedencia Gemini del acuerdo ya guardado. No se activó facturación de Google.
 
 El catálogo, el inventario y el clima siguen siendo de prueba. Las explicaciones del modelo no pueden modificar el catálogo de servicios, las asignaciones validadas ni la política financiera. Esta ejecución no demuestra una reserva real, meteorología externa, entrega de webhooks o uso de dinero real.
+
+## Previsión externa y procedencia de observaciones
+
+El 25 de octubre se verificó `GET /api/weather/preview` en la URL pública: HTTP 200, previsión MET Norway real, `observedAt:null` y `settlementReady:false`. El listado de acuerdos de la sesión permaneció idéntico antes y después. El [registro saneado](evidence/weather-preview.json) separa hora de validez, actualización del modelo y consulta. La [captura de interfaz](assets/asterion-weather-preview.png) muestra datos, atribución y límite de uso.
+
+En la misma versión desplegada, dos nuevos mandatos públicos completaron Autopilot: cielo de fixture → `SETTLED`, nubes de fixture → `VOIDED`, con hashes de recibos válidos. Los pagos permanecen simulados. Ninguna de estas consultas repite Gemini o mueve fondos Sandbox.
+
+La política 1.1 añade coordenadas, radio y tolerancia de altitud a los términos aprobados. Las observaciones reales deben aportar fechas con zona, mediciones completas y procedencia; duplicados renombrados, datos ajenos al sitio y previsiones no habilitan la captura. La independencia se declara por el adaptador y todavía necesita validación de campo. Ver [contrato meteorológico](WEATHER.md).

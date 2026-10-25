@@ -2,7 +2,7 @@
 
 **Purpose:** English slide text and speaker notes for a ten-slide jury presentation. This document is alternative presentation material. It does **not** modify the existing live deck and is **not** a finished visual presentation. The live deck could not be inspected because ArtifactSession returned a host-access error, so this manuscript does not claim a word-for-word translation of that inaccessible artifact.
 
-**Evidence baseline:** application commit `18370ca49e5f8c9dcc0a3899414c4da0835e323d`, with **71 automated tests** recorded in [the verification record](VERIFICATION.es.md). Private provider verification took place on October 22–23, 2026, Canary Islands time. Later test counts or results are outside this manuscript's claims.
+**Current software verification:** application commit `8ab17b42fe2d38752fe3ad3bef6be5cfa5968e04`, with **114 automated tests** and public verification recorded in [the verification record](VERIFICATION.es.md). Private PayPal/Gemini verification took place on October 22–23 and retains its historical software baseline in the provider records. A separate public forecast preview was verified on October 25, 2026, Canary Islands time.
 
 The public demo uses deterministic negotiation, fixture weather and simulated payments. The separately verified private run used actual Gemini API requests and actual PayPal **Sandbox APIs with test funds**. Inventory, weather and booking availability remained simulated in that private run.
 
@@ -192,7 +192,7 @@ Sources: [PayPal authorization guidance](https://developer.paypal.com/docs/check
 
 ### On-screen text
 
-**71 automated tests at the verified application baseline**
+**114 automated tests at the deployed application revision**
 
 **Actual private provider run:** three Gemini quotes, buyer-approved PayPal Sandbox authorization, autonomous capture and three successful supplier Payouts.
 
@@ -200,17 +200,19 @@ Sources: [PayPal authorization guidance](https://developer.paypal.com/docs/check
 
 **Public demo:** hosted on Render with deterministic agents, fixture weather and simulated payments.
 
-Live weather, real bookings, webhook delivery and production payments remain unverified.
+**Read-only MET Norway forecast:** externally verified. Complete local observations for settlement, real bookings, webhook delivery and production payments remain unverified.
 
 ### Speaker notes
 
-The recorded application baseline is commit `18370ca49e5f8c9dcc0a3899414c4da0835e323d`. Its verification record reports 71 automated tests, preflight, a frontend build and system smoke checks locally and in CI. This slide deliberately uses that baseline rather than making a claim about later revisions.
+The deployed application revision is commit `8ab17b42fe2d38752fe3ad3bef6be5cfa5968e04`. Its verification record reports 114 automated tests, preflight, a frontend build and system smoke checks locally and in CI. Public clear and cloudy Autopilot flows were checked on this revision. The historical private model and payment runs retain their own baselines; they are not represented as new transactions performed by this release.
 
 Automated connector tests use mocks. Real-provider claims come from separate private runs followed by authenticated provider queries. The sanitized records retain transaction references and status metadata without credentials. They are local evidence summaries, not digitally signed attestations by PayPal or Google.
 
 The integrated agreement completed three real Gemini quote requests and subsequently settled through PayPal Sandbox using fictitious funds. The separate cloudy agreement demonstrates an authorization void. Both weather scenarios used fixtures. Earlier Gemini errors stopped without creating an agreement or payment, and the successful run does not imply guaranteed model availability.
 
 The public demo is available at [asterion-mj13.onrender.com](https://asterion-mj13.onrender.com/). Its free service has cold starts and ephemeral SQLite/session storage. It blocks Sandbox payments and Kernel launches for public visitors.
+
+The separate **Read forecast** view retrieves a MET Norway model forecast with attribution, original model update time and forecast validity. It does not change an agreement or authorize capture. New policy checks reject renamed duplicate sources and incomplete or non-local actual observations. Declared source lineage is not a field-validated proof of independence.
 
 Sources: [verification record and CI reference](VERIFICATION.es.md), [integrated provider evidence](evidence/ai-sandbox-run.json), [Gemini request metadata](evidence/gemini-verification.json), [baseline PayPal outcomes](evidence/paypal-sandbox.json), [public repository](https://github.com/Enrickq/asterion-commerce).
 

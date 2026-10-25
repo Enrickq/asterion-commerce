@@ -29,7 +29,7 @@ Missing timestamps or required measurements, stale data, location mismatch, mixe
 
 The current adapters do not provide two complete local observations. Thus the end-to-end successful payment examples still use fixture weather, including the actual PayPal Sandbox runs. Real weather authorization remains a milestone rather than a completed claim.
 
-An actual application preview was checked on October 24, 2026; see the [normalized API record](evidence/weather-preview.json). Its origin field identifies the environment tested. Automated tests use synthetic responses and are not evidence that the provider was contacted.
+An actual application preview was checked locally on October 24 and publicly on Render on October 25, 2026; see the [normalized API record](evidence/weather-preview.json). Its origin field identifies the environment tested. Automated tests use synthetic responses and are not evidence that the provider was contacted.
 
 ## Other sources investigated
 
