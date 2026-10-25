@@ -61,12 +61,13 @@ Node.js 24, React, Vite, SQLite, AG Grid Community, MET Norway Locationforecast.
 
 ## Evidence to add before submission
 
-- Public repository: https://github.com/Enrickq/asterion-commerce; deployed application commit: `8ab17b42fe2d38752fe3ad3bef6be5cfa5968e04`.
+- Public repository: https://github.com/Enrickq/asterion-commerce; deployed application commit: `c4428e9e1342ad4ad64b6198a7233da6ccebaf2a`.
 - Public demo: https://asterion-mj13.onrender.com/; hosted flows verified, see [record](VERIFICATION.es.md).
 - Video URL and final runtime: **pending**.
 - Actual PayPal Sandbox authorization/capture/void and three individual Payouts: **verified**, [sanitized record](evidence/paypal-sandbox.json). Autonomous clear and cloudy Sandbox outcomes: **verified**. Webhook delivery: **pending**.
 - Complete three-supplier Gemini negotiation and subsequent autonomous Sandbox settlement: **verified**, [integrated record](evidence/ai-sandbox-run.json).
 - Completed sponsor integrations and proof of meaningful use: **pending**.
+- Recorded private outcomes are visible in the hosted **Verified runs** view. Complete receipt exports can be checked offline with `pnpm verify:receipt`; this checks internal consistency, not provider authenticity.
 - Submission requirements, prize compatibility and cutoff checked against the [official rules](https://paypalaihackathon.devpost.com/rules) on October 23, 2026. Personal eligibility, Devpost registration and final submission remain **pending**; see the [delivery checklist](DELIVERY.es.md).
 
 The official cutoff is **November 12, 2026, 12:00 PST (20:00 Canary Islands time)**. Submission materials need English or an English translation. Prepare the [English video script](DEMO.en.md), record the functional application, and provide a publicly visible YouTube URL. The target runtime is 2:50; the video has not yet been recorded. The current Spanish deck still needs translation if included in the submission.

@@ -104,7 +104,7 @@ The definitive implementation notes and account requirements are in [INTEGRATION
 
 ## Deployment
 
-The [public demo](https://asterion-mj13.onrender.com/) runs on Render Free with auto-deploy disabled. Application commit `8ab17b4` was deployed on October 24, 2026 and verified publicly on October 25, Canary Islands time; its CI passed 114 tests, build, preflight and smoke. Private Sandbox runs use separate local credentials and data; their evidence records retain their historical application baseline. Verification records distinguish application revisions from documentation updates.
+The [public demo](https://asterion-mj13.onrender.com/) runs on Render Free with auto-deploy disabled. Application commit `c4428e9` was deployed and verified publicly on October 25, 2026, Canary Islands time; its CI passed 142 tests, build, preflight and smoke, including offline receipt checks. Private Sandbox runs retain their historical application baseline. Verification records distinguish application revisions from documentation and CI updates.
 
 [render.yaml](render.yaml) prepares a free public demo with `PUBLIC_DEMO=true`, simulated payments and SQLite under `/tmp/asterion`. Guest sessions use signed HttpOnly cookies; agreements and receipts are scoped to that browser's session. The server blocks PayPal Sandbox payments and Kernel launches in public-demo mode.
 
@@ -123,6 +123,8 @@ Weather thresholds are demo policy parameters, not a scientific guarantee of a p
 ## Project notes
 
 - [Architecture and trust boundaries](docs/ARCHITECTURE.md)
+- [Changes and release history](CHANGELOG.md)
+- [Offline receipt verifier](docs/RECEIPTS.md)
 - [Integration matrix and configuration](docs/INTEGRATIONS.md)
 - [APIMatic installation and review evidence](docs/APIMATIC-CONTEXT.md)
 - [Spanish demo narration](docs/DEMO.es.md)

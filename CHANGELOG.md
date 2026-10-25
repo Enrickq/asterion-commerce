@@ -1,0 +1,20 @@
+# Changelog
+
+## 2026-10-25 · Recorded evidence and receipt integrity
+
+- Added **Verified runs**, a public read-only view of the historical Gemini → PayPal Sandbox agreement, individual supplier payments, source records and a separate cloudy-condition void. The interface labels test funds and simulated settlement weather.
+- Separated capture and supplier distribution milestones. Uncertain voids, declined captures and refunds no longer produce a generic capture-success message.
+- Preserved complete exported event histories beyond 100 events and added an offline receipt consistency verifier. The smoke check now validates exported receipts, including their event chains and financial references.
+- Added explicit full/partial refund reconciliation states and blocked further spending actions after a refund. Existing supplier transfers remain separate obligations to review.
+- Bound Payout results to the actual privately configured recipient as well as amount, currency, allocation and provider references. Returned records expose a match flag, not addresses.
+- Improved decision-text readability, responsive layouts and native modal keyboard/focus behavior. Prevented an old polling response from restoring a previously selected agreement.
+- Reorganized the README around reproducible behavior and recorded evidence, with a live CI badge and reviewer path.
+- Updated CI to verified Node.js 24 action releases pinned by commit SHA, disabled persisted checkout credentials, and fixed the Linux runner version for reproducibility.
+
+These changes do not create new provider verification runs. Historical evidence retains its original dates and software baselines. The public payment walkthrough remains a simulation.
+
+## 2026-10-24 · Forecast preview and local evidence policy
+
+- Added a cached MET Norway forecast preview for fixed Roque-area coordinates with timestamps, attribution and a settlement veto.
+- Versioned the location and altitude tolerances in new agreement terms. Actual-evidence checks reject stale, incomplete, duplicated or non-local observations.
+- Kept forecasts separate from local observations and approved financial authority. Recorded actual forecast retrieval through the public application on October 25.

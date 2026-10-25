@@ -4,14 +4,14 @@ Verificación pública actualizada el **25 de octubre de 2026**, hora de Canaria
 
 - Demo: https://asterion-mj13.onrender.com/
 - Repositorio: https://github.com/Enrickq/asterion-commerce
-- Commit de aplicación desplegado: `8ab17b42fe2d38752fe3ad3bef6be5cfa5968e04`.
-- CI: [ejecución completa en verde](https://github.com/Enrickq/asterion-commerce/actions/runs/40079174416).
+- Commit de aplicación desplegado: `c4428e9e1342ad4ad64b6198a7233da6ccebaf2a`.
+- CI: [ejecución completa en verde](https://github.com/Enrickq/asterion-commerce/actions/runs/40229233696).
 - Render: servicio `asterion`, región Frankfurt, plan **Free**, auto-deploy desactivado.
-- Despliegue `dep-dbe6vr0ae00c73c4c0og`, estado confirmado **live**, finalizado el 24 de octubre a las 08:45:35 UTC.
+- Despliegue `dep-dbf63cvavr4c73cuqhng`, estado confirmado **live**, finalizado el 25 de octubre a las 20:09:18 UTC.
 
 ## Comprobaciones realizadas
 
-GitHub Actions instaló dependencias, ejecutó preflight, **114 pruebas**, compiló el frontend y completó el smoke del sistema. La verificación local obtuvo el mismo resultado. Las pruebas automatizadas de conectores utilizan mocks; las llamadas externas se documentan por separado.
+GitHub Actions instaló dependencias, ejecutó preflight, **142 pruebas**, compiló el frontend y completó el smoke del sistema, que ahora incluye el verificador offline de recibos. La verificación local obtuvo el mismo resultado. Las pruebas automatizadas de conectores utilizan mocks; las llamadas externas se documentan por separado.
 
 En la URL pública, `/api/status` devolvió HTTP 200, `mode=demo`, `publicDemo=true`, almacenamiento SQLite y Render desplegado. El frontend de producción cargó y se probó en navegador.
 
@@ -80,3 +80,13 @@ El 25 de octubre se verificó `GET /api/weather/preview` en la URL pública: HTT
 En la misma versión desplegada, dos nuevos mandatos públicos completaron Autopilot: cielo de fixture → `SETTLED`, nubes de fixture → `VOIDED`, con hashes de recibos válidos. Los pagos permanecen simulados. Ninguna de estas consultas repite Gemini o mueve fondos Sandbox.
 
 La política 1.1 añade coordenadas, radio y tolerancia de altitud a los términos aprobados. Las observaciones reales deben aportar fechas con zona, mediciones completas y procedencia; duplicados renombrados, datos ajenos al sitio y previsiones no habilitan la captura. La independencia se declara por el adaptador y todavía necesita validación de campo. Ver [contrato meteorológico](WEATHER.md).
+
+## Evidencias visibles, recibos completos y reembolsos
+
+La vista pública [Verified runs](https://asterion-mj13.onrender.com/#verified-runs) muestra los registros históricos Gemini/Sandbox, sus fechas, fuentes JSON, importes y referencias. Conserva la etiqueta de fondos de prueba, inventario y clima simulado; no ejecuta un pago nuevo. La [captura publicada](assets/asterion-verified-runs.png) acredita la nueva interfaz.
+
+En esta versión se repitieron los dos recorridos públicos de Autopilot: cielo de fixture → `SETTLED`, nubes → `VOIDED`. Ambos recibos conservaron su integridad y pasaron además el verificador offline. La negociación, los pagos y el clima de estos recorridos son simulados.
+
+Las pruebas reproducen recibos con más de 100 eventos sin recorte, reembolsos completos/parciales que bloquean nuevas operaciones y Payouts cuyo destinatario no coincide con la configuración privada. Estas pruebas nuevas son sintéticas; no amplían las verificaciones externas históricas de PayPal.
+
+Se revisaron las vistas a 390, 768 y 1440 px sin desbordamiento horizontal del documento. La navegación conserva nombres accesibles al ocultar etiquetas. El diálogo nativo se comprobó en móvil: foco inicial, cierre con Escape, contenido de fondo inerte y restauración del foco. Se verificó un recorrido completo de autorización y Autopilot en el navegador local. La vista de evidencias pública no registró errores de consola durante la revisión.

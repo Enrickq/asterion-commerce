@@ -2,7 +2,7 @@
 
 **Purpose:** English slide text and speaker notes for a ten-slide jury presentation. This document is alternative presentation material. It does **not** modify the existing live deck and is **not** a finished visual presentation. The live deck could not be inspected because ArtifactSession returned a host-access error, so this manuscript does not claim a word-for-word translation of that inaccessible artifact.
 
-**Current software verification:** application commit `8ab17b42fe2d38752fe3ad3bef6be5cfa5968e04`, with **114 automated tests** and public verification recorded in [the verification record](VERIFICATION.es.md). Private PayPal/Gemini verification took place on October 22–23 and retains its historical software baseline in the provider records. A separate public forecast preview was verified on October 25, 2026, Canary Islands time.
+**Current software verification:** application commit `c4428e9e1342ad4ad64b6198a7233da6ccebaf2a`, with **142 automated tests** and public verification recorded in [the verification record](VERIFICATION.es.md). Private PayPal/Gemini verification took place on October 22–23 and retains its historical software baseline in the provider records. A separate public forecast preview was verified on October 25, 2026, Canary Islands time.
 
 The public demo uses deterministic negotiation, fixture weather and simulated payments. The separately verified private run used actual Gemini API requests and actual PayPal **Sandbox APIs with test funds**. Inventory, weather and booking availability remained simulated in that private run.
 
@@ -192,7 +192,7 @@ Sources: [PayPal authorization guidance](https://developer.paypal.com/docs/check
 
 ### On-screen text
 
-**114 automated tests at the deployed application revision**
+**142 automated tests at the deployed application revision**
 
 **Actual private provider run:** three Gemini quotes, buyer-approved PayPal Sandbox authorization, autonomous capture and three successful supplier Payouts.
 
@@ -204,7 +204,7 @@ Sources: [PayPal authorization guidance](https://developer.paypal.com/docs/check
 
 ### Speaker notes
 
-The deployed application revision is commit `8ab17b42fe2d38752fe3ad3bef6be5cfa5968e04`. Its verification record reports 114 automated tests, preflight, a frontend build and system smoke checks locally and in CI. Public clear and cloudy Autopilot flows were checked on this revision. The historical private model and payment runs retain their own baselines; they are not represented as new transactions performed by this release.
+The deployed application revision is commit `c4428e9e1342ad4ad64b6198a7233da6ccebaf2a`. Its verification record reports 142 automated tests, preflight, a frontend build and system smoke checks locally and in CI, including offline receipt verification. Public clear and cloudy Autopilot flows were checked on this revision. The historical private model and payment runs retain their own baselines; they are not represented as new transactions performed by this release.
 
 Automated connector tests use mocks. Real-provider claims come from separate private runs followed by authenticated provider queries. The sanitized records retain transaction references and status metadata without credentials. They are local evidence summaries, not digitally signed attestations by PayPal or Google.
 

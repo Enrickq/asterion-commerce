@@ -60,6 +60,10 @@ The evidence receipt records the information used for a decision. A hash detects
 
 The organizer is the merchant for one customer transaction. PayPal Orders v2 authorizes the order; Payments v2 captures or voids that authorization. Supplier allocations are an application ledger followed by separate Payouts requests. The system does not promise distributed atomicity between the capture and three supplier transfers.
 
+Reconciliation retains explicit `REFUNDED` and `PARTIALLY_REFUNDED` capture states. Further capture, authorization and supplier payment actions are blocked after either is observed, including after restart. A later stale `COMPLETED` result cannot restore spending permission. Existing supplier transfers remain in the record for separate recovery review; a customer refund does not reverse them atomically.
+
+Complete receipt exports preserve every committed event. The [offline verifier](RECEIPTS.md) recomputes hashes and checks internal consistency without contacting a provider. A valid report does not authenticate an external transaction.
+
 An authorization hold is subject to PayPal and funding-source rules. This is neither escrow nor blockchain settlement. See [PayPal authorization guidance](https://developer.paypal.com/docs/checkout/standard/customize/authorization/) and [Payouts documentation](https://developer.paypal.com/docs/payouts/standard/).
 
 ## Demo evidence versus field deployment
