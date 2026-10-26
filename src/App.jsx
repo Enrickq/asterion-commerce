@@ -43,6 +43,7 @@ import {
 } from "lucide-react";
 import AccessibleModal from "./AccessibleModal.jsx";
 import { getExecutionMessage, getPaymentSteps } from "./payment-view.mjs";
+import { api } from "./api.mjs";
 
 const ProviderGrid = lazy(() => import("./ProviderGrid.jsx"));
 const EvidenceRoom = lazy(() => import("./EvidenceRoom.jsx"));
@@ -92,24 +93,6 @@ const CHECK_LABELS = {
   sources: "Sources identified",
   agreement: "Source agreement",
 };
-
-async function api(path, body) {
-  const response = await fetch(`/api${path}`, {
-    method: body === undefined ? "GET" : "POST",
-    headers: body === undefined ? {} : { "Content-Type": "application/json" },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok)
-    throw new Error(
-      typeof data.error === "string"
-        ? data.error
-        : data.error?.message ||
-            data.message ||
-            `Request failed (${response.status})`,
-    );
-  return data.agreement || data;
-}
 
 function Star({ size = 22, className = "" }) {
   return (

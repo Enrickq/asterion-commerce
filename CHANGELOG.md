@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-26 · Complete browser receipt downloads
+
+- Fixed the browser API client returning only a receipt's nested agreement. Downloads now preserve payment references, consent, evidence, events and integrity metadata alongside the approved terms.
+- Added an HTTP regression covering settled and voided receipts through the same client used by the interface, then checking both with the offline verifier.
+
 ## 2026-10-25 · English jury presentation
 
 - Added a ten-slide editable English PowerPoint with native allocation, architecture and roadmap tables, presenter notes and source references.
