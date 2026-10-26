@@ -315,6 +315,9 @@ function App() {
   const canArmAutopilot = isDemo || system?.sandboxAutopilotEnabled === true;
   const paymentSteps = getPaymentSteps(agreement);
   const suppliersConfirmed = paymentSteps.find(step => step.id === "payouts")?.complete === true;
+  const recordedScenario = agreement?.evidence?.scenario || agreement?.autopilot?.scenario;
+  const displayedScenario = (terminal || autonomous) && ["clear", "cloudy", "stale", "conflict"].includes(recordedScenario)
+    ? recordedScenario : scenario;
 
   useEffect(() => {
     const readLocation = () => setView(window.location.hash === "#verified-runs" ? "evidence" : "mission");
@@ -334,6 +337,10 @@ function App() {
       /* Surface connection state through primary status request. */
     }
   }, []);
+
+  useEffect(() => {
+    if (view === "agreements") refreshList();
+  }, [view, refreshList]);
 
   useEffect(() => {
     api("/status")
@@ -1158,7 +1165,7 @@ function App() {
                     </label>
                     <select
                       id="scenario"
-                      value={scenario}
+                      value={displayedScenario}
                       onChange={(e) => setScenario(e.target.value)}
                       disabled={
                         Boolean(busy) || hasCaptured || terminal || autonomous
