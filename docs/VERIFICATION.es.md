@@ -1,17 +1,17 @@
 # Verificación de la entrega pública
 
-Verificación pública actualizada el **25 de octubre de 2026**, hora de Canarias. Las pruebas privadas de PayPal y Gemini abarcan el 22 y el 23 de octubre; sus registros conservan las marcas de tiempo UTC y la revisión histórica.
+Verificación pública actualizada el **26 de octubre de 2026**, hora de Canarias. Las pruebas privadas de PayPal y Gemini abarcan el 22 y el 23 de octubre; sus registros conservan las marcas de tiempo UTC y la revisión histórica.
 
 - Demo: https://asterion-mj13.onrender.com/
 - Repositorio: https://github.com/Enrickq/asterion-commerce
-- Commit de aplicación desplegado: `c4428e9e1342ad4ad64b6198a7233da6ccebaf2a`.
-- CI: [ejecución completa en verde](https://github.com/Enrickq/asterion-commerce/actions/runs/40229233696).
+- Commit de aplicación desplegado: `a23e4cd5d049dd4e4de1a55768bd46e5b3e0a48c`.
+- CI: [ejecución completa en verde](https://github.com/Enrickq/asterion-commerce/actions/runs/40310939358).
 - Render: servicio `asterion`, región Frankfurt, plan **Free**, auto-deploy desactivado.
-- Despliegue `dep-dbf63cvavr4c73cuqhng`, estado confirmado **live**, finalizado el 25 de octubre a las 20:09:18 UTC.
+- Despliegue `dep-dbfj3svb9u1s73d51570`, estado confirmado **live**, finalizado el 26 de octubre a las 10:57:54 UTC.
 
 ## Comprobaciones realizadas
 
-GitHub Actions instaló dependencias, ejecutó preflight, **142 pruebas**, compiló el frontend y completó el smoke del sistema, que ahora incluye el verificador offline de recibos. La verificación local obtuvo el mismo resultado. Las pruebas automatizadas de conectores utilizan mocks; las llamadas externas se documentan por separado.
+GitHub Actions instaló dependencias, ejecutó preflight, **143 pruebas**, compiló el frontend y completó el smoke del sistema, que ahora incluye el verificador offline de recibos. La verificación local obtuvo el mismo resultado. Las pruebas automatizadas de conectores utilizan mocks; las llamadas externas se documentan por separado.
 
 En la URL pública, `/api/status` devolvió HTTP 200, `mode=demo`, `publicDemo=true`, almacenamiento SQLite y Render desplegado. El frontend de producción cargó y se probó en navegador.
 
@@ -30,7 +30,13 @@ El servidor, la orquestación autónoma y AG Grid funcionan en Render. Los preci
 
 El plan gratuito usa SQLite temporal. Un reinicio, reemplazo o suspensión por inactividad puede eliminar acuerdos y claves de sesión. La persistencia local probada no convierte ese alojamiento gratuito en almacenamiento durable. No se han contratado recursos de pago.
 
-La entrega del hackathon y el vídeo siguen pendientes. Este documento acredita la versión pública del prototipo, no su elegibilidad final ni un resultado en el concurso.
+El montaje local de revisión de 2:50 está generado con capturas de pasos reales, voz sintética y subtítulos. El propietario pidió revisarlo antes de publicarlo. La entrega del hackathon y la publicación del vídeo siguen pendientes. Este documento acredita la versión pública del prototipo, no su elegibilidad final ni un resultado en el concurso.
+
+## Descarga de recibos desde el navegador
+
+La grabación de pasos detectó un error del cliente: al recibir un objeto con una sección `agreement`, devolvía solo esa sección. El servidor ya generaba el recibo completo. La corrección conserva todo el JSON, y una regresión HTTP valida tanto liquidación como anulación mediante el mismo cliente de la interfaz.
+
+Después del despliegue se ejecutaron dos acuerdos nuevos en el navegador público. Se descargaron ambos recibos mediante **Export receipt** y se comprobaron offline. El claro terminó `SETTLED`, con 14 eventos; el nublado `VOIDED`, con 12. El registro mostró ambos estados actualizados. Al reabrir el acuerdo claro después del nublado, la etiqueta volvió al escenario claro realmente evaluado. [Resumen sanitizado de la verificación](evidence/browser-receipt-verification.json).
 
 ## Revisión de recuperación PayPal Sandbox
 

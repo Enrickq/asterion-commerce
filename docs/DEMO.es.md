@@ -1,6 +1,6 @@
 # ASTERION · Guion de demo de 2:50
 
-Guion de ensayo en español y variantes privadas. Para la grabación final, el [guion inglés](DEMO.en.md), el [plan de tomas](VIDEO-RECORDING.en.md) y el [deck inglés](presentation/ASTERION-Pitch.en-2026-10-25.pptx) separan la ejecución pública nueva de la inspección de pruebas históricas.
+Guion de ensayo en español y variantes privadas. Para la grabación final, el [guion inglés](DEMO.en.md), el [plan de tomas](VIDEO-RECORDING.en.md) y el [deck inglés](presentation/ASTERION-Pitch.en-2026-10-26.pptx) separan la ejecución pública nueva de la inspección de pruebas históricas.
 
 ## Preparación
 

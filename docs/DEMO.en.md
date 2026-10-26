@@ -1,6 +1,6 @@
 # ASTERION · English recording script · target 2:50
 
-This is a recording plan, not a completed video. Record the working public application, then inspect the separately recorded Gemini and PayPal Sandbox evidence. The [production shot list](VIDEO-RECORDING.en.md) contains capture setup, persistent labels and pickup instructions. The [English deck](presentation/ASTERION-Pitch.en-2026-10-25.pptx) follows the same scope.
+This is the narration and scene plan. A local 2:50 review montage now uses actual captured application steps, synthetic English narration and aligned subtitles. Owner review and public video publication remain pending. The montage is not a continuous screen recording. The [production shot list](VIDEO-RECORDING.en.md) contains capture setup, persistent labels and pickup instructions. The [English deck](presentation/ASTERION-Pitch.en-2026-10-26.pptx) follows the same scope.
 
 ## Recording sequence
 
@@ -27,4 +27,4 @@ This is a recording plan, not a completed video. Record the working public appli
 - The optional offline verifier shot checks a complete receipt exported from the fresh walkthrough. It does not authenticate provider records or accept the sanitized evidence-summary format.
 - Record original footage without unlicensed music or third-party promotional assets. Review the final duration, subtitles and legibility before upload. Keep the next milestone, complete local weather observations, distinct from a read-only model forecast.
 
-The [official rules](https://paypalaihackathon.devpost.com/rules), checked on October 23, 2026, call for English materials or translations, a publicly visible YouTube demonstration, and a video shorter than three minutes. The final video and its YouTube URL are still pending.
+The [official rules](https://paypalaihackathon.devpost.com/rules), checked on October 25, 2026, call for English materials or translations, a publicly visible YouTube demonstration, and a video shorter than three minutes. The local review cut is 2:50. Approval of the final edit and its public YouTube URL remain pending.

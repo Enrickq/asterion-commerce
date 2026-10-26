@@ -1,8 +1,8 @@
 # ASTERION: English pitch manuscript
 
-**Purpose:** English slide text and extended speaker notes for the [editable ten-slide jury presentation](presentation/ASTERION-Pitch.en-2026-10-25.pptx). The PowerPoint uses the established ASTERION palette and current evidence. It is a separate English edition; the earlier Spanish live deck is preserved.
+**Purpose:** English slide text and extended speaker notes for the [editable ten-slide jury presentation](presentation/ASTERION-Pitch.en-2026-10-26.pptx). The PowerPoint uses the established ASTERION palette and current evidence. It is a separate English edition; the earlier Spanish live deck is preserved.
 
-**Current software verification:** application commit `c4428e9e1342ad4ad64b6198a7233da6ccebaf2a`, with **142 automated tests** and public verification recorded in [the verification record](VERIFICATION.es.md). Private PayPal/Gemini verification took place on October 22–23 and retains its historical software baseline in the provider records. A separate public forecast preview was verified on October 25, 2026, Canary Islands time.
+**Current software verification:** application commit `a23e4cd5d049dd4e4de1a55768bd46e5b3e0a48c`, with **143 automated tests** and public verification recorded in [the verification record](VERIFICATION.es.md). Private PayPal/Gemini verification took place on October 22–23 and retains its historical software baseline in the provider records. A separate public forecast preview was verified on October 25, 2026, Canary Islands time.
 
 The public demo uses deterministic negotiation, fixture weather and simulated payments. The separately verified private run used actual Gemini API requests and actual PayPal **Sandbox APIs with test funds**. Inventory, weather and booking availability remained simulated in that private run.
 
@@ -150,7 +150,7 @@ Public payments are simulated. Historical private evidence uses Sandbox test fun
 
 ### Speaker notes
 
-Follow the [English recording script](DEMO.en.md) and [shot list](VIDEO-RECORDING.en.md). Record the working public application first, then inspect the historical private provider evidence. The video remains pending.
+Follow the [English recording script](DEMO.en.md) and [shot list](VIDEO-RECORDING.en.md). Record the working public application first, then inspect the historical private provider evidence. A local captured-step review montage is ready. Owner review and public posting remain pending.
 
 Open the public application with two guests, 20-minute flexibility and a €1,500 ceiling. Show the deterministic €1,480 agreement, its allocations and evidence policy. Record buyer consent, simulated authorization and clear-fixture Autopilot, then a visibly separate cloudy agreement that voids without capture. This public execution uses simulated payments.
 
@@ -192,7 +192,7 @@ Sources: [PayPal authorization guidance](https://developer.paypal.com/docs/check
 
 ### On-screen text
 
-**142 automated tests at the deployed application revision**
+**143 automated tests at the deployed application revision**
 
 **Actual private provider run:** three Gemini quotes, buyer-approved PayPal Sandbox authorization, autonomous capture and three successful supplier Payouts.
 
@@ -204,7 +204,7 @@ Sources: [PayPal authorization guidance](https://developer.paypal.com/docs/check
 
 ### Speaker notes
 
-The deployed application revision is commit `c4428e9e1342ad4ad64b6198a7233da6ccebaf2a`. Its verification record reports 142 automated tests, preflight, a frontend build and system smoke checks locally and in CI, including offline receipt verification. Public clear and cloudy Autopilot flows were checked on this revision. The historical private model and payment runs retain their own baselines; they are not represented as new transactions performed by this release.
+The deployed application revision is commit `a23e4cd5d049dd4e4de1a55768bd46e5b3e0a48c`. Its verification record reports 143 automated tests, preflight, a frontend build and system smoke checks locally and in CI, including offline receipt verification. Public clear and cloudy Autopilot flows were checked on this revision. The historical private model and payment runs retain their own baselines; they are not represented as new transactions performed by this release.
 
 Automated connector tests use mocks. Real-provider claims come from separate private runs followed by authenticated provider queries. The sanitized records retain transaction references and status metadata without credentials. They are local evidence summaries, not digitally signed attestations by PayPal or Google.
 
@@ -270,4 +270,4 @@ Sources: [current submission draft](SUBMISSION.md), [architecture and field requ
 
 ## Presentation files
 
-The [English PowerPoint](presentation/ASTERION-Pitch.en-2026-10-25.pptx) contains editable text and native tables, source references and presenter notes. This manuscript retains longer explanations for rehearsal. Keep the public/private scene transition, allocation arithmetic and environment disclosures intact when adapting it for a live pitch.
+The [English PowerPoint](presentation/ASTERION-Pitch.en-2026-10-26.pptx) contains editable text and native tables, source references and presenter notes. This manuscript retains longer explanations for rehearsal. Keep the public/private scene transition, allocation arithmetic and environment disclosures intact when adapting it for a live pitch.

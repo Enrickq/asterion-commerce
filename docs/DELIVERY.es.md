@@ -1,11 +1,11 @@
 # ASTERION · Cierre de candidatura
 
-Estado actualizado el 25 de octubre de 2026. Esto es un plan de entrega; la candidatura no está enviada.
+Estado actualizado el 26 de octubre de 2026. Esto es un plan de entrega; la candidatura no está enviada.
 
 ## Lo obligatorio pendiente
 
-1. Grabar el recorrido funcional, editarlo a menos de tres minutos y publicar el vídeo en YouTube. [Guion en inglés](DEMO.en.md) y [plan de tomas](VIDEO-RECORDING.en.md) preparados. La ejecución pública simulada y las pruebas históricas de proveedores aparecen en escenas distintas.
-2. Revisar el paquete final en inglés. Descripción, instrucciones, guion y [PowerPoint editable de diez diapositivas](presentation/ASTERION-Pitch.en-2026-10-25.pptx) disponibles. El [manuscrito](PITCH.en.md) aporta notas ampliadas. La edición inglesa conserva el deck español anterior.
+1. Revisar el montaje local de 2:50, con capturas de pasos reales, voz inglesa sintética y subtítulos. El propietario ha pedido revisarlo antes de publicarlo. La subida a YouTube sigue pendiente de autorización. [Guion](DEMO.en.md) y [plan de tomas](VIDEO-RECORDING.en.md) disponibles. Una grabación continua de la interfaz puede sustituir las capturas de pasos en una edición posterior.
+2. Revisar el paquete final en inglés. Descripción, instrucciones, guion y [PowerPoint editable de diez diapositivas](presentation/ASTERION-Pitch.en-2026-10-26.pptx) disponibles. El [manuscrito](PITCH.en.md) aporta notas ampliadas. La edición inglesa conserva el deck español anterior.
 3. Confirmar elegibilidad e identidad del participante, registro en Devpost y campos de candidatura. La revisión técnica de las bases no confirma la elegibilidad personal.
 4. Revisar y enviar la candidatura; comprobar que vídeo, repositorio, licencia e instrucciones permiten al jurado evaluar el proyecto.
 
@@ -24,7 +24,7 @@ Las bases no conceden un bono automático por sumar tres sponsors. Permiten como
 ## Ya verificable
 
 - Demo pública y repositorio MIT accesibles.
-- 142 pruebas automáticas, build, preflight y smoke aprobados en CI para el commit de aplicación desplegado `c4428e9`, incluida la verificación offline de recibos.
+- 143 pruebas automáticas, build, preflight y smoke aprobados en CI para el commit de aplicación desplegado `a23e4cd`, incluida la verificación de recibos a través del cliente utilizado por la interfaz.
 - Tres llamadas reales de Gemini produjeron un acuerdo de 1.650 EUR dentro de un mandato de 1.700 EUR.
 - Ese mismo acuerdo completó captura y tres Payouts en PayPal Sandbox mediante Autopilot; [evidencia](evidence/ai-sandbox-run.json).
 - Otra ejecución verificó anulación autónoma con condición nublada, sin captura; [evidencia](evidence/paypal-sandbox.json).
@@ -33,4 +33,4 @@ El catálogo, disponibilidad y clima siguen simulados. No hay reserva con un ope
 
 La revisión meteorológica pasó **114 pruebas locales y CI**, compilación y preflight. El smoke y la verificación pública comprobaron captura y anulación en los escenarios simulados. La consulta externa de previsión también está verificada en Render y [registrada por separado](evidence/weather-preview.json); no reejecuta ni amplía las pruebas históricas de PayPal o Gemini.
 
-La revisión posterior de experiencia e integridad pasó **142 pruebas** y está desplegada. Añade la vista pública **Verified runs**, recibos completos y verificables offline, estados de reembolso seguros y mejoras de lectura y teclado. La presentación visual inglesa está terminada. El vídeo y su publicación siguen pendientes.
+La revisión de experiencia e integridad del 25 de octubre pasó **142 pruebas** y añadió la vista pública **Verified runs**, recibos verificables offline, estados de reembolso seguros y mejoras de lectura y teclado. El 26 de octubre una descarga real de la interfaz detectó que su cliente extraía solo los términos del recibo. La corrección conserva todas las secciones, pasa **143 pruebas** y está desplegada. El recibo descargado desde la interfaz corregida pasó el verificador offline. La presentación inglesa está actualizada. El montaje de vídeo está generado y su publicación espera la revisión del propietario.

@@ -1,0 +1,42 @@
+{
+  "verifiedDate": "2026-10-26",
+  "applicationCommit": "a23e4cd5d049dd4e4de1a55768bd46e5b3e0a48c",
+  "ci": "https://github.com/Enrickq/asterion-commerce/actions/runs/40310939358",
+  "method": "Actual public browser walkthroughs, Export receipt downloads, then the offline verifier. No provider payments or model requests were performed.",
+  "environment": "demo",
+  "automatedTests": 143,
+  "results": [
+    {
+      "scenario": "clear",
+      "agreementId": "e78f77d4-bb48-41f1-8300-2e73ef8c3370",
+      "exportedAt": "2026-10-26T11:04:46.396Z",
+      "schemaVersion": "asterion.receipt.v1",
+      "status": "SETTLED",
+      "environment": "demo",
+      "eventCount": 14,
+      "declaredEventCount": 14,
+      "completeSections": true,
+      "offlineConsistencyValid": true,
+      "receiptSha256": "01a47a47b1205eac4a1346c35c8811de15b74802a9575aec649148926fa54b1c"
+    },
+    {
+      "scenario": "cloudy",
+      "agreementId": "6ee4b811-dbfe-416b-94f6-df4f93077c3a",
+      "exportedAt": "2026-10-26T11:08:51.218Z",
+      "schemaVersion": "asterion.receipt.v1",
+      "status": "VOIDED",
+      "environment": "demo",
+      "eventCount": 12,
+      "declaredEventCount": 12,
+      "completeSections": true,
+      "offlineConsistencyValid": true,
+      "receiptSha256": "adc7023133d63164551cb430e5403eafb866d59d1d34d82cb42c90702e37176e"
+    }
+  ],
+  "registryStatesObserved": [
+    "Distribution complete",
+    "Authorization voided"
+  ],
+  "restoredClearScenarioObserved": true,
+  "limitations": "Public payment and settlement weather simulation. Hash and consistency checks do not establish provider authenticity, actual weather or fulfillment. Complete local receipts remain in ignored artifacts; this file is a sanitized summary."
+}

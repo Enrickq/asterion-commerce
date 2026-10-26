@@ -1,8 +1,8 @@
 # ASTERION · functional video production plan
 
-**Status:** recording and upload pending. This plan produces a 2 minute 50 second English demonstration from actual application footage. It does not certify that a video has been recorded.
+**Status:** a local 2 minute 50 second review montage has been generated from actual captured application steps with synthetic English narration and aligned captions. It preserves the environment labels below. It is not continuous screen footage. The owner requested review before public posting; YouTube publication remains pending. This plan also supports replacing the captured steps with continuous original footage.
 
-Use two visibly different evidence lanes. First, record the working public application with its simulated payment adapter. Then inspect the separately recorded Gemini and PayPal Sandbox proof. This is the practical route that needs no new credentials, model quota or Sandbox balance. The [narration script](DEMO.en.md) and [English deck](presentation/ASTERION-Pitch.en-2026-10-25.pptx) follow the same sequence. Any future private Sandbox checkout or €1,650 execution scene requires fresh original footage before it can be presented as a new run.
+Use two visibly different evidence lanes. First, record the working public application with its simulated payment adapter. Then inspect the separately recorded Gemini and PayPal Sandbox proof. This is the practical route that needs no new credentials, model quota or Sandbox balance. The [narration script](DEMO.en.md) and [English deck](presentation/ASTERION-Pitch.en-2026-10-26.pptx) follow the same sequence. Any future private Sandbox checkout or €1,650 execution scene requires fresh original footage before it can be presented as a new run.
 
 ## Capture setup
 

@@ -4,7 +4,7 @@
 
 [![Verify ASTERION](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml) · [MIT license](LICENSE) · Node.js 24 / React / PayPal Sandbox
 
-[Try the public demo](https://asterion-mj13.onrender.com/) · [Inspect recorded provider runs](https://asterion-mj13.onrender.com/#verified-runs) · [English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-25.pptx) · [English video script](docs/DEMO.en.md)
+[Try the public demo](https://asterion-mj13.onrender.com/) · [Inspect recorded provider runs](https://asterion-mj13.onrender.com/#verified-runs) · [English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-26.pptx) · [English video script](docs/DEMO.en.md)
 
 ASTERION coordinates a complete stargazing experience in La Palma under one customer-approved mandate. Supplier agents propose a bundle; the application enforces the budget and evidence policy, then autonomously captures or voids an authorization. Supplier payments follow capture as separate operations.
 
@@ -36,7 +36,7 @@ The public **Verified runs** view makes the model/payment agreement linkage, tra
 pnpm verify:receipt path/to/asterion-receipt.json
 ```
 
-The free Render service may need a cold start. Default local mode needs no accounts or keys. No real bookings or production funds are involved. The final demonstration video is still pending; the recording script is preparation material.
+The free Render service may need a cold start. Default local mode needs no accounts or keys. No real bookings or production funds are involved. A local 2:50 review montage of actual captured application steps and synthetic English narration is ready for owner review. Public video publication and the final submission remain pending.
 
 ## Run locally
 
@@ -104,7 +104,7 @@ The definitive implementation notes and account requirements are in [INTEGRATION
 
 ## Deployment
 
-The [public demo](https://asterion-mj13.onrender.com/) runs on Render Free with auto-deploy disabled. Application commit `c4428e9` was deployed and verified publicly on October 25, 2026, Canary Islands time; its CI passed 142 tests, build, preflight and smoke, including offline receipt checks. Private Sandbox runs retain their historical application baseline. Verification records distinguish application revisions from documentation and CI updates.
+The [public demo](https://asterion-mj13.onrender.com/) runs on Render Free with auto-deploy disabled. Application commit `a23e4cd` was deployed on October 26, 2026, Canary Islands time; its CI passed 143 tests, build, preflight and smoke. The browser's complete receipt download also passed the offline verifier. Private Sandbox runs retain their historical application baseline. Verification records distinguish application revisions from documentation and CI updates.
 
 [render.yaml](render.yaml) prepares a free public demo with `PUBLIC_DEMO=true`, simulated payments and SQLite under `/tmp/asterion`. Guest sessions use signed HttpOnly cookies; agreements and receipts are scoped to that browser's session. The server blocks PayPal Sandbox payments and Kernel launches in public-demo mode.
 
@@ -131,7 +131,7 @@ Weather thresholds are demo policy parameters, not a scientific guarantee of a p
 - [English video recording script](docs/DEMO.en.md)
 - [Functional video shot list and editing plan](docs/VIDEO-RECORDING.en.md)
 - [English narration and draft subtitles](docs/video/)
-- [Editable English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-25.pptx)
+- [Editable English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-26.pptx)
 - [English pitch manuscript](docs/PITCH.en.md)
 - [Delivery checklist, in Spanish](docs/DELIVERY.es.md)
 - [Devpost submission draft](docs/SUBMISSION.md)

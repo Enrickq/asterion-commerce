@@ -5,6 +5,8 @@
 - Fixed the browser API client returning only a receipt's nested agreement. Downloads now preserve payment references, consent, evidence, events and integrity metadata alongside the approved terms.
 - Added an HTTP regression covering settled and voided receipts through the same client used by the interface, then checking both with the offline verifier.
 - Restored the recorded weather-scenario label for completed or running agreements and refreshed the registry when opening it, so prior selections and cached rows do not misdescribe another agreement.
+- Verified actual browser exports after deployment and updated the English deck to 143 tests and application revision `a23e4cd`. Recorded private provider evidence retains its historical baselines.
+- Prepared a local 2:50 captured-step review montage with synthetic English narration and aligned captions. The owner requested review before public posting, so the MP4 remains unpublished.
 
 ## 2026-10-25 · English jury presentation
 
