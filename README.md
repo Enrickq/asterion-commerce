@@ -78,17 +78,15 @@ After building, `pnpm start` serves the application and API from port 8787. Node
 ## How authority becomes execution
 
 ```mermaid
-flowchart LR
-    A[Customer intent and budget] --> B[Supplier agent proposals]
-    B --> C[Approved agreement and consent]
-    C --> D[Authorization]
-    D --> E{Evidence policy}
-    E -->|Pass| F[Capture]
-    F --> G[Separate supplier Payouts]
-    E -->|Fail or incomplete| H[Void authorization]
-    F --> I[Receipt and reconciliation]
-    G --> I
-    H --> I
+flowchart TD
+    A[Intent, budget and agent proposals] --> B[Customer approves agreement]
+    B --> C[Authorization]
+    C --> D{Evidence policy}
+    D -->|Pass| E[Capture]
+    E --> F[Separate supplier Payouts]
+    D -->|Fail or incomplete| G[Void authorization]
+    F --> H[Receipt and reconciliation]
+    G --> H
 ```
 
 The application validates model proposals before persisting the agreement. Autopilot saves a scheduled job before acknowledging the arm request, then evaluates evidence and settles on the server. Jobs resume after a restart **when the database survives**. Model contexts receive quote tools; payment tools and credentials stay on the server.
