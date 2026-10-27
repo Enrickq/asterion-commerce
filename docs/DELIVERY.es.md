@@ -1,10 +1,10 @@
 # ASTERION · Cierre de candidatura
 
-Estado actualizado el 26 de octubre de 2026. Esto es un plan de entrega; la candidatura no está enviada.
+Estado actualizado el 27 de octubre de 2026. Esto es un plan de entrega; la candidatura no está enviada.
 
 ## Lo obligatorio pendiente
 
-1. Revisar el montaje local de 2:50, con capturas de pasos reales, voz inglesa sintética y subtítulos. El propietario ha pedido revisarlo antes de publicarlo. La subida a YouTube sigue pendiente de autorización. [Guion](DEMO.en.md) y [plan de tomas](VIDEO-RECORDING.en.md) disponibles. Una grabación continua de la interfaz puede sustituir las capturas de pasos en una edición posterior.
+1. Revisar el nuevo vídeo de lanzamiento de **2:45, The Right to Spend**: animación original, paisaje ilustrado de La Palma, capturas de la aplicación, voz neuronal local, música original y 64 subtítulos alineados. [Guion inglés](video/ASTERION-Launch-Script.en.md), [traducción española](video/ASTERION-Launch-Script.es.md) y [producción](video/ASTERION-Launch-Production.en.md) disponibles. La publicación espera la revisión del propietario. El vídeo conserva las etiquetas de simulación, evidencia histórica Sandbox y previsión de planificación.
 2. Revisar el paquete final en inglés. Descripción, instrucciones, guion y [PowerPoint editable de diez diapositivas](presentation/ASTERION-Pitch.en-2026-10-26.pptx) disponibles. El [manuscrito](PITCH.en.md) aporta notas ampliadas. La edición inglesa conserva el deck español anterior.
 3. Confirmar elegibilidad e identidad del participante, registro en Devpost y campos de candidatura. La revisión técnica de las bases no confirma la elegibilidad personal.
 4. Revisar y enviar la candidatura; comprobar que vídeo, repositorio, licencia e instrucciones permiten al jurado evaluar el proyecto.

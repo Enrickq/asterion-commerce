@@ -4,7 +4,7 @@
 
 [![Verify ASTERION](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml) · [MIT license](LICENSE) · Node.js 24 / React / PayPal Sandbox
 
-[Try the public demo](https://asterion-mj13.onrender.com/) · [Inspect recorded provider runs](https://asterion-mj13.onrender.com/#verified-runs) · [English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-26.pptx) · [English video script](docs/DEMO.en.md)
+[Try the public demo](https://asterion-mj13.onrender.com/) · [Inspect recorded provider runs](https://asterion-mj13.onrender.com/#verified-runs) · [English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-26.pptx) · [English launch-film script](docs/video/ASTERION-Launch-Script.en.md)
 
 ASTERION coordinates a complete stargazing experience in La Palma under one customer-approved mandate. Supplier agents propose a bundle; the application enforces the budget and evidence policy, then autonomously captures or voids an authorization. Supplier payments follow capture as separate operations.
 
@@ -36,7 +36,7 @@ The public **Verified runs** view makes the model/payment agreement linkage, tra
 pnpm verify:receipt path/to/asterion-receipt.json
 ```
 
-The free Render service may need a cold start. Default local mode needs no accounts or keys. No real bookings or production funds are involved. A local 2:50 review montage of actual captured application steps and synthetic English narration is ready for owner review. Public video publication and the final submission remain pending.
+The free Render service may need a cold start. Default local mode needs no accounts or keys. No real bookings or production funds are involved. A new local **2:45 launch film, The Right to Spend**, combines original motion, an illustrated La Palma landscape, actual captured application steps, neural narration and an original score. It is ready for owner review. Public video publication and the final submission remain pending.
 
 ## Run locally
 
@@ -128,9 +128,10 @@ Weather thresholds are demo policy parameters, not a scientific guarantee of a p
 - [Integration matrix and configuration](docs/INTEGRATIONS.md)
 - [APIMatic installation and review evidence](docs/APIMATIC-CONTEXT.md)
 - [Spanish demo narration](docs/DEMO.es.md)
-- [English video recording script](docs/DEMO.en.md)
+- [English launch-film script and storyboard](docs/video/ASTERION-Launch-Script.en.md)
+- [Spanish launch-film translation](docs/video/ASTERION-Launch-Script.es.md)
 - [Functional video shot list and editing plan](docs/VIDEO-RECORDING.en.md)
-- [English narration and draft subtitles](docs/video/)
+- [Narration, aligned captions and media provenance](docs/video/)
 - [Editable English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-26.pptx)
 - [English pitch manuscript](docs/PITCH.en.md)
 - [Delivery checklist, in Spanish](docs/DELIVERY.es.md)

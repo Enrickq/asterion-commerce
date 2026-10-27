@@ -1,6 +1,16 @@
-# ASTERION · English narration and draft subtitles
+# ASTERION · Launch film, narration and captions
 
-**Status:** a local 2:50 review montage has been generated from actual captured application steps, synthetic English narration and aligned captions. The owner requested review before publication. The MP4 remains outside the public repository and YouTube upload is pending. This is a montage of captured states, rather than a continuous screen recording or footage of a new private Sandbox execution.
+**Status, 27 October 2026:** the new **2:45 launch film, The Right to Spend**, is exported locally for owner review. It combines original motion graphics, an illustrated La Palma landscape, actual captured application steps, local neural narration, original score and 64 aligned English captions. The former review sidebar is removed. The MP4 remains outside the public repository; YouTube upload is pending owner review.
+
+- [New English script and storyboard](ASTERION-Launch-Script.en.md) · [Spanish translation](ASTERION-Launch-Script.es.md).
+- [Exact launch narration](ASTERION-Launch-Narration.en.txt) · [Aligned launch captions](ASTERION-Launch-Captions.en.srt).
+- [Production and media provenance](ASTERION-Launch-Production.en.md) · [Prepared YouTube copy](YOUTUBE-LAUNCH.en.md).
+
+This is an edited launch film, not continuous footage of a fresh private Sandbox execution. Public simulation and historical Sandbox proof remain explicitly separate.
+
+## Earlier 2:50 planning materials
+
+The files below preserve the previous eight-scene edit. They do not contain the narration or timings of the new launch film.
 
 - [Narration transcript](ASTERION-Narration.en.txt): exactly the spoken text from the eight scenes in the [canonical English demo script](../DEMO.en.md), with one paragraph per scene.
 - [Draft SRT captions](ASTERION-Captions.en.srt): the same words, split into one or two lines per cue with a maximum of 42 characters per line. Timings are estimated within the planned 2:50 scene windows; they are not aligned to recorded speech.
