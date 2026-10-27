@@ -1,142 +1,138 @@
 # ASTERION
 
-**Agents negotiate. Evidence unlocks payment.**
+![ASTERION. The right to spend. Agents negotiate. Evidence unlocks payment.](docs/assets/asterion-repository-hero.svg)
 
-[![Verify ASTERION](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml) · [MIT license](LICENSE) · Node.js 24 / React / PayPal Sandbox
+[![Verify ASTERION](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml) · [MIT](LICENSE) · Node.js 24 · React · PayPal Sandbox
 
-[Try the public demo](https://asterion-mj13.onrender.com/) · [Inspect recorded provider runs](https://asterion-mj13.onrender.com/#verified-runs) · [English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-26.pptx) · [English launch-film script](docs/video/ASTERION-Launch-Script.en.md)
+**[Try the demo](https://asterion-mj13.onrender.com/) · [Inspect verified runs](https://asterion-mj13.onrender.com/#verified-runs) · [Pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-27.pptx) · [Launch-film script](docs/video/ASTERION-Launch-Script.en.md)**
 
-ASTERION coordinates a complete stargazing experience in La Palma under one customer-approved mandate. Supplier agents propose a bundle; the application enforces the budget and evidence policy, then autonomously captures or voids an authorization. Supplier payments follow capture as separate operations.
+ASTERION helps experience organizers coordinate one outcome across several suppliers, with payment governed by the buyer's approved conditions. Its first mission is a private stargazing experience in La Palma: guide, telescope and transport under one spending mandate.
 
-The foundation model proposes. The customer approves. A deterministic policy owns financial execution.
+Agents propose the bundle. The customer approves its exact price, allocations and evidence policy. The server then checks the evidence and autonomously captures or voids the authorization. Supplier Payouts follow capture as separate operations.
 
-![ASTERION public workspace](docs/assets/asterion-public.png)
+**The model can negotiate. It cannot grant itself permission to spend.**
 
-## What you can verify
+## The proof
 
-| Evidence | Demonstrated outcome | Scope |
+Three actual Gemini supplier requests produced a **€1,650 agreement within a €1,700 mandate**. That same buyer-approved agreement completed PayPal Sandbox capture and three individually confirmed supplier Payouts: **€425 + €620 + €425**. The organizer retained a **€180 gross remainder before fees and taxes**.
+
+[Inspect the agreement, provider references and allocations](docs/evidence/ai-sandbox-run.json).
+
+![Recorded Gemini and PayPal Sandbox results in the ASTERION application](docs/assets/asterion-verified-runs.png)
+
+| Run | Observed result | Evidence and scope |
 | --- | --- | --- |
-| [Public walkthrough](https://asterion-mj13.onrender.com/) | Server Autopilot completes both capture/distribution and failed-condition void paths | Deterministic agents, fixture weather, simulated payments |
-| [Same-agreement Gemini → Sandbox run](docs/evidence/ai-sandbox-run.json) | Three actual model quotes produced a €1,650 agreement within €1,700; autonomous capture and three successful supplier Payouts of €425 / €620 / €425 | Recorded private Sandbox run; test funds, simulated inventory and settlement weather |
-| [Separate cloudy run](docs/evidence/paypal-sandbox.json) | Authorization voided without capture or supplier Payouts | Different approved agreement; deterministic negotiation and fixture weather |
-| [MET Norway preview](docs/evidence/weather-preview.json) | Actual model forecast retrieved by the public application with timestamps and attribution | Read-only planning view; does not authorize a charge |
+| Gemini and PayPal Sandbox | Actual quotes, completed capture, three `SUCCESS` Payouts | [Recorded private run](docs/evidence/ai-sandbox-run.json). Test funds, simulated inventory and settlement weather. |
+| Separate cloudy agreement | Authorization voided, no capture or supplier Payouts | [Sandbox record](docs/evidence/paypal-sandbox.json). A different approved agreement with fixture weather. |
+| Public walkthrough | Server Autopilot completes clear and cloudy paths | [Try it](https://asterion-mj13.onrender.com/). Deterministic agents, fixture weather, simulated payments. |
+| Browser receipt export | Complete settled and voided receipts pass the offline verifier | [Browser verification](docs/evidence/browser-receipt-verification.json). Internal consistency, not provider authentication. |
+| External forecast preview | Model forecast with validity, update and retrieval times | [MET Norway record](docs/evidence/weather-preview.json). Read-only planning data. |
 
-The public **Verified runs** view makes the model/payment agreement linkage, transaction references, allocations and historical screenshot inspectable. Source records retain their dates, historical software baselines and verification methods. They are sanitized local summaries, not signed provider attestations. Complete local observations for settlement, actual bookings, webhook delivery and production-money use remain unverified.
+Records retain their original dates and software baselines. They summarize private runs and authenticated provider queries; they are not signed provider attestations. Complete local observations, actual operator bookings and webhook delivery remain unverified.
 
-## A quick route for reviewers
+## Try the complete flow
 
-1. Open **Verified runs** to inspect the recorded Gemini/Sandbox outcome and its JSON sources.
-2. In **Mission control**, keep the default two-person brief and €1,500 ceiling; negotiate the €1,480 demo bundle.
-3. Review and approve the exact mandate, then simulate authorization.
-4. Select clear skies and **Arm autonomous execution**. The server continues without another payment click.
-5. Create a separate mission with the cloudy scenario; verify an authorization void without capture.
-6. Export the receipt and run the [offline consistency verifier](docs/RECEIPTS.md):
+1. Open **Mission control**. Keep the two-person brief, €1,500 ceiling and 20-minute flexibility.
+2. Negotiate the **€1,480** bundle. Inspect the approved terms and supplier allocations.
+3. Grant consent and simulate authorization. Select clear skies, then **Arm autonomous execution**.
+4. Watch the server evaluate the evidence, complete capture and confirm the three supplier states without another payment click.
+5. Start a **new mission** with the cloudy scenario. Arm it and inspect the voided authorization and absent capture.
+6. Export either receipt and check it locally:
 
 ```sh
 pnpm verify:receipt path/to/asterion-receipt.json
 ```
 
-The free Render service may need a cold start. Default local mode needs no accounts or keys. No real bookings or production funds are involved. A new local **2:45 launch film, The Right to Spend**, combines original motion, an illustrated La Palma landscape, actual captured application steps, neural narration and an original score. It is ready for owner review. Public video publication and the final submission remain pending.
+No account or keys are needed for the public walkthrough. The free Render service can take a cold start, and its storage is ephemeral. Start a fresh mission if an old session has expired. Public payments, offers and weather scenarios are explicitly simulated.
+
+The [2:45 launch film](docs/video/ASTERION-Launch-Production.en.md) is exported locally for owner review. Its script, aligned captions and [human voice recording guide](docs/video/RECORD-YOUR-VOICE.es.md) are available. The public YouTube URL and final Devpost submission are pending.
 
 ## Run locally
 
-Requirements: Node.js **24 or newer** and pnpm **11**. Node's built-in SQLite module stores agreements and their audit history.
+Install **Node.js 24 or newer** and **pnpm 11**. Default mode needs no environment file or paid service.
 
-```powershell
+```sh
 pnpm install --frozen-lockfile
 node scripts/preflight.mjs
 pnpm dev
 ```
 
-Open [localhost:5173](http://localhost:5173). The API listens on [localhost:8787](http://localhost:8787). Keep the terminal running.
+Open [localhost:5173](http://localhost:5173). The frontend proxies requests to the API at [localhost:8787](http://localhost:8787). Keep the terminal running.
 
-The commands work on Windows, macOS and Linux. Default mode does not need an environment file. For optional adapters, copy `.env.example` to `.env` with `Copy-Item .env.example .env` in PowerShell or `cp .env.example .env` in a POSIX shell; configure only the selected integrations.
+Run checks in a second terminal:
 
-```powershell
+```sh
 pnpm test
 pnpm build
 pnpm smoke
+```
+
+For a production-style local preview, stop the development server and run:
+
+```sh
 pnpm start
 ```
 
-After a production build, the Node server serves the application and API from port 8787. The development frontend proxies API requests to the backend.
+After building, `pnpm start` serves the application and API from port 8787. Node's built-in SQLite stores agreements, audit events and scheduled jobs. Commands work on Windows, macOS and Linux. Optional adapters use [.env.example](.env.example); see [configuration](docs/INTEGRATIONS.md).
 
-## What to try
+## How authority becomes execution
 
-1. Submit a mandate for a private La Palma stargazing experience within the displayed budget.
-2. Review supplier offers and the negotiated bundle in the AG Grid operations table.
-3. Accept the mandate and authorize payment. In demo mode these are local simulations; in PayPal Sandbox the buyer must approve through PayPal.
-4. Select a clear-sky fixture and arm Autopilot. A job is saved in SQLite and scheduled three seconds later; watch the server evaluate, capture and disburse without another action.
-5. Start a separate agreement with cloudy or stale evidence and arm it. The server voids the authorization without capture; inspect the audit receipt and job outcome.
+```mermaid
+flowchart LR
+    A[Customer intent and budget] --> B[Supplier agent proposals]
+    B --> C[Approved agreement and consent]
+    C --> D[Authorization]
+    D --> E{Evidence policy}
+    E -->|Pass| F[Capture]
+    F --> G[Separate supplier Payouts]
+    E -->|Fail or incomplete| H[Void authorization]
+    F --> I[Receipt and reconciliation]
+    G --> I
+    H --> I
+```
 
-The default two-person scenario trades 20 minutes of schedule flexibility for a €1,480 bundle within a €1,500 mandate. With fixed timing the €1,680 opening offer cannot fit that mandate. These are simulated commercial offers, not quotes from actual La Palma operators.
+The application validates model proposals before persisting the agreement. Autopilot saves a scheduled job before acknowledging the arm request, then evaluates evidence and settles on the server. Jobs resume after a restart **when the database survives**. Model contexts receive quote tools; payment tools and credentials stay on the server.
 
-The Spanish [demo script](docs/DEMO.es.md) includes a 2 minute 50 second presentation and the boundary between fixtures and external services.
+**One organizer is the merchant.** Authorization, capture, void and Payouts are separate operations. Payouts use the organizer's available balance. The prototype provides neither escrow nor an atomic multi-seller split. Uncertain provider results remain unresolved until reconciliation. [Architecture](docs/ARCHITECTURE.md) · [Receipts](docs/RECEIPTS.md).
 
-**Read forecast** in the evidence panel offers a separate MET Norway forecast for the Roque area. It does not alter the selected scenario or authorize payment. Forecast time, model update time and retrieval time are shown with attribution. See the [weather evidence contract](docs/WEATHER.md).
+## Integrations that are evidenced
 
-Autopilot is a real server scheduler, including in the simulated-payment demo. Jobs are persisted before the arm request returns and can resume after a process restart if the database survives. This does not make the free hosting filesystem durable. Manual controls remain available for diagnostics when an autonomous job is not active.
+| Component | Current use |
+| --- | --- |
+| PayPal Sandbox REST APIs | Buyer approval, authorization, conditional capture or void, separate Payouts and reconciliation. Recorded outcomes are linked above. |
+| Google Gemini | Three isolated supplier contexts produced the agreement that subsequently settled in Sandbox. [Request metadata](docs/evidence/gemini-verification.json). |
+| AG Grid Community | Actual React operations grid for offers and supplier obligations. |
+| Render | Free public web service in Frankfurt. Hosted clear/cloudy execution and complete receipt downloads verified. [Deployment record](docs/VERIFICATION.es.md). |
+| APIMatic | PayPal Context Plugin installed and consulted during development. [Context evidence](docs/APIMATIC-CONTEXT.md). Development tooling, not a generated runtime SDK. |
+| MET Norway | External model forecast for planning, with attribution and an explicit settlement veto. |
 
-## Payment model
+Anthropic, AEMET and Kernel have optional adapters with separate verification requirements. Astropods, Elastic and Channel3 are planned extensions. The [full integration matrix](docs/INTEGRATIONS.md) distinguishes implemented adapters from verified external execution. Sponsor eligibility follows the [official rules](https://paypalaihackathon.devpost.com/rules).
 
-This prototype uses **one organizer merchant** for the customer transaction. PayPal authorization and capture are separate operations. Supplier disbursements are subsequent Payouts operations from the organizer's prefunded balance, or a visibly simulated ledger in demo mode. They are **not an atomic split of a checkout payment**.
+<details>
+<summary><strong>Deployment, payment windows and field validation</strong></summary>
 
-An authorization is not an escrow service. Voiding an authorization is not refunding a captured payment, and the issuing provider controls when an authorization hold disappears. ASTERION evaluates an application policy; it does not install a smart contract inside PayPal. PayPal documents a 29-day authorization window and recommends capture within its initial three-day honor period; later capture is not guaranteed. See the [official authorize and capture guide](https://developer.paypal.com/docs/checkout/standard/customize/authorization/).
+The public service has auto-deploy disabled. Application revision `a23e4cd` was deployed on 26 October 2026 and passed 143 tests, build, preflight, smoke and actual browser receipt checks. Documentation revisions do not create new provider runs. The [verification record](docs/VERIFICATION.es.md) preserves these distinctions.
 
-## Integrations and current scope
+[render.yaml](render.yaml) configures `PUBLIC_DEMO=true`, simulated payments and SQLite under `/tmp/asterion`. Signed HttpOnly guest cookies scope agreements and receipts to one browser session. Public mode blocks PayPal Sandbox execution and Kernel launches. Guest sessions are not verified operator identities. The free filesystem and signing keys can disappear on restart, redeployment or idle spin-down; see [Render's limits](https://render.com/docs/free).
 
-| Component | Repository status | External verification |
-| --- | --- | --- |
-| AG Grid Community | Real React operations grid | No cloud account required |
-| Local agent negotiation | Reproducible deterministic execution | No foundation model used in default mode |
-| PayPal | Sandbox-only order, authorization, capture/void and Payouts adapter | Actual capture, void and three individual Payouts verified; autonomous clear and cloudy outcomes verified; webhooks pending |
-| Anthropic | Optional model adapter | Requires API key and explicit model choice |
-| Google Gemini | Optional model adapter with three isolated supplier contexts | Complete private negotiation verified with `gemini-3.1-flash-lite`; [evidence](docs/evidence/gemini-verification.json) |
-| AEMET | Optional observation adapter | Requires API key and station ID; incomplete evidence fails closed |
-| Render | Free public demo deployed in Frankfurt | Hosted Autopilot clear/cloudy flows verified; [verification record](docs/VERIFICATION.es.md) |
-| APIMatic | PayPal Context Plugin installed and used for implementation review | Development aid; [evidence](docs/APIMATIC-CONTEXT.md), no generated SDK or runtime integration claim |
-| Kernel | Optional browser-session adapter | Requires credentials and server-configured destination; no booking claim |
-| Astropods, Elastic, Channel3 | Planned extensions | Not active integrations |
+[render.persistent.yaml](render.persistent.yaml) is an optional paid template, not an active service. Review compute and disk charges before use. Private Sandbox testing belongs in `PUBLIC_DEMO=false` environments. No production-money deployment is claimed.
 
-The definitive implementation notes and account requirements are in [INTEGRATIONS](docs/INTEGRATIONS.md) and [ACCOUNTS.es](docs/ACCOUNTS.es.md). A planned integration does not qualify as a completed sponsor submission.
+PayPal documents a 29-day authorization window and recommends capture within the initial three-day honor period. Later capture is not guaranteed. Voiding an authorization differs from refunding a captured payment, and the issuing provider determines when a hold disappears. [Official authorization guide](https://developer.paypal.com/docs/checkout/standard/customize/authorization/).
 
-![Gemini agreement settled through private PayPal Sandbox](docs/assets/asterion-ai-sandbox-settled.png)
+The use case is set near Roque de los Muchachos. A real nighttime experience needs an operator-confirmed permitted location and the operator's equipment. The prototype does not imply an IAC partnership or access to research telescopes. [IAC visitor information](https://iac.es/es/observatorios-de-canarias/observatorio-del-roque-de-los-muchachos/visitas).
 
-## Deployment
+Weather thresholds are illustrative policy parameters. A model forecast cannot establish a perfect sky or replace complete local observations. **Read forecast** does not change an agreement or authorize capture. [Weather contract](docs/WEATHER.md).
 
-The [public demo](https://asterion-mj13.onrender.com/) runs on Render Free with auto-deploy disabled. Application commit `a23e4cd` was deployed on October 26, 2026, Canary Islands time; its CI passed 143 tests, build, preflight and smoke. The browser's complete receipt download also passed the offline verifier. Private Sandbox runs retain their historical application baseline. Verification records distinguish application revisions from documentation and CI updates.
+</details>
 
-[render.yaml](render.yaml) prepares a free public demo with `PUBLIC_DEMO=true`, simulated payments and SQLite under `/tmp/asterion`. Guest sessions use signed HttpOnly cookies; agreements and receipts are scoped to that browser's session. The server blocks PayPal Sandbox payments and Kernel launches in public-demo mode.
+## Delivery materials
 
-**The free hosted demo has ephemeral storage:** agreements and session signing keys can disappear on redeploy, restart or idle spin-down. A cold start can delay the first visit. Local SQLite persists under `DATA_DIR`; this does not make the free hosted filesystem persistent. See [Render free-service limits](https://render.com/docs/free).
+| For reviewers | For builders |
+| --- | --- |
+| [English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-27.pptx) and [manuscript](docs/PITCH.en.md) | [Architecture](docs/ARCHITECTURE.md) |
+| [English launch script](docs/video/ASTERION-Launch-Script.en.md) and [Spanish translation](docs/video/ASTERION-Launch-Script.es.md) | [Integration matrix](docs/INTEGRATIONS.md) |
+| [Narration, captions and production provenance](docs/video/) | [Receipt verifier](docs/RECEIPTS.md) |
+| [Devpost copy](docs/SUBMISSION.md) and [readiness review](docs/SUBMISSION-READINESS.en.md) | [Verification history](docs/VERIFICATION.es.md) and [changelog](CHANGELOG.md) |
+| [Delivery checklist](docs/DELIVERY.es.md) | [Optional account setup](docs/ACCOUNTS.es.md) |
 
-[render.persistent.yaml](render.persistent.yaml) is an optional paid template with one `0.5c-512mb` service and a 1 GB persistent disk at `/var/data`. Applying it incurs compute and disk charges and requires separate budget approval. Neither file deploys resources by itself. Review [Render pricing](https://render.com/pricing) before selecting a paid option.
-
-Sandbox testing belongs in a private environment with `PUBLIC_DEMO=false`. Guest sessions are not verified user identities or an operator authorization system. The [architecture notes](docs/ARCHITECTURE.md) describe the production work still required.
-
-## Location and evidence
-
-The story is set around Roque de los Muchachos, La Palma. Public telescope visits are offered during daylight; the nighttime experience must use a permitted nearby site and the operator's own equipment. The prototype does not imply an IAC partnership or access to research telescopes. See [IAC visits](https://iac.es/es/observatorios-de-canarias/observatorio-del-roque-de-los-muchachos/visitas) and [La Palma tourism guidance](https://visitlapalma.es/observacion-de-estrellas/la-palma/roque-de-los-muchachos/).
-
-Weather thresholds are demo policy parameters, not a scientific guarantee of a perfect sky. Forecasts, local observations, freshness and availability have different meanings. Missing or stale evidence must not become a positive observation.
-
-## Project notes
-
-- [Architecture and trust boundaries](docs/ARCHITECTURE.md)
-- [Changes and release history](CHANGELOG.md)
-- [Offline receipt verifier](docs/RECEIPTS.md)
-- [Integration matrix and configuration](docs/INTEGRATIONS.md)
-- [APIMatic installation and review evidence](docs/APIMATIC-CONTEXT.md)
-- [Spanish demo narration](docs/DEMO.es.md)
-- [English launch-film script and storyboard](docs/video/ASTERION-Launch-Script.en.md)
-- [Spanish launch-film translation](docs/video/ASTERION-Launch-Script.es.md)
-- [Functional video shot list and editing plan](docs/VIDEO-RECORDING.en.md)
-- [Narration, aligned captions and media provenance](docs/video/)
-- [Editable English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-26.pptx)
-- [English pitch manuscript](docs/PITCH.en.md)
-- [Delivery checklist, in Spanish](docs/DELIVERY.es.md)
-- [Devpost submission draft](docs/SUBMISSION.md)
-- [Accounts and user setup, in Spanish](docs/ACCOUNTS.es.md)
-- [Public deployment verification](docs/VERIFICATION.es.md)
-
-MIT licensed. Built as a hackathon prototype; no real-money or production readiness claim.
+MIT licensed. Built for the PayPal AI Hackathon 2026. Video publication, participant eligibility and final submission remain pending owner review.

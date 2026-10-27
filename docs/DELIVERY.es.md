@@ -4,12 +4,12 @@ Estado actualizado el 27 de octubre de 2026. Esto es un plan de entrega; la cand
 
 ## Lo obligatorio pendiente
 
-1. Revisar el nuevo vídeo de lanzamiento de **2:45, The Right to Spend**: animación original, paisaje ilustrado de La Palma, capturas de la aplicación, voz neuronal local, música original y 64 subtítulos alineados. [Guion inglés](video/ASTERION-Launch-Script.en.md), [traducción española](video/ASTERION-Launch-Script.es.md) y [producción](video/ASTERION-Launch-Production.en.md) disponibles. La publicación espera la revisión del propietario. El vídeo conserva las etiquetas de simulación, evidencia histórica Sandbox y previsión de planificación.
-2. Revisar el paquete final en inglés. Descripción, instrucciones, guion y [PowerPoint editable de diez diapositivas](presentation/ASTERION-Pitch.en-2026-10-26.pptx) disponibles. El [manuscrito](PITCH.en.md) aporta notas ampliadas. La edición inglesa conserva el deck español anterior.
+1. Grabar la [locución exacta](video/RECORD-YOUR-VOICE.es.md), comparar la voz humana con la neuronal y revisar el nuevo vídeo de lanzamiento de **2:45, The Right to Spend**: animación original, paisaje ilustrado de La Palma, capturas de la aplicación, voz neuronal local, música original y 64 subtítulos alineados. [Guion inglés](video/ASTERION-Launch-Script.en.md), [traducción española](video/ASTERION-Launch-Script.es.md) y [producción](video/ASTERION-Launch-Production.en.md) disponibles. La publicación espera la revisión del propietario. El vídeo conserva las etiquetas de simulación, evidencia histórica Sandbox y previsión de planificación.
+2. Revisar el paquete final en inglés. Descripción, instrucciones, guion y [PowerPoint editable de diez diapositivas](presentation/ASTERION-Pitch.en-2026-10-27.pptx) disponibles. El [manuscrito](PITCH.en.md) aporta notas ampliadas. La edición inglesa conserva el deck español anterior.
 3. Confirmar elegibilidad e identidad del participante, registro en Devpost y campos de candidatura. La revisión técnica de las bases no confirma la elegibilidad personal.
 4. Revisar y enviar la candidatura; comprobar que vídeo, repositorio, licencia e instrucciones permiten al jurado evaluar el proyecto.
 
-Según las [bases oficiales](https://paypalaihackathon.devpost.com/rules), consultadas el 23 de octubre, el cierre es el **12 de noviembre de 2026 a las 12:00 PST: 20:00 en Canarias**. Objetivo interno: dejar la entrega lista el 9 de noviembre. Debe mantenerse acceso para el jurado hasta que termine la evaluación.
+Según las [bases oficiales](https://paypalaihackathon.devpost.com/rules), consultadas el 27 de octubre, el cierre es el **12 de noviembre de 2026 a las 12:00 PST: 20:00 en Canarias**. Objetivo interno: dejar la entrega lista el 9 de noviembre. Debe mantenerse acceso para el jurado hasta que termine la evaluación.
 
 ## Mejoras que aportan evidencia
 

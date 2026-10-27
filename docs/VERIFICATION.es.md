@@ -1,5 +1,13 @@
 # Verificación de la entrega pública
 
+## Revisión del paquete del 27 de octubre de 2026
+
+Sobre el código del baseline `9a2ecff` volvieron a pasar **143/143 pruebas**, build, preflight y smoke. El smoke cubrió captura clara, anulación con nubes o datos obsoletos, Autopilot claro y nublado y recibos íntegros. La consulta de solo lectura al despliegue devolvió HTTP 200 en la interfaz y en `/api/status`, con `mode=demo` y `publicDemo=true`. No se ejecutaron nuevas transacciones ni solicitudes privadas a Gemini o PayPal. La revisión de credenciales buscó patrones precisos y coincidencias con valores locales sin publicarlos.
+
+El paquete actual añade el deck inglés del 27 de octubre y alinea su secuencia con el vídeo de 165 segundos. Las diez diapositivas y seis tablas nativas se conservan; solo cambia visualmente la diapositiva 6. Las notas 6, 8 y 10 corrigen tiempos y enlaces. La comparación de píxeles no encontró cambios en las otras nueve diapositivas. Esta verificación utiliza renders y estructura del archivo, sin afirmar una inspección en PowerPoint.
+
+El README, el manuscrito y la candidatura separan el recorrido público de 1.480 EUR de la prueba histórica privada de 1.650 EUR. La locución humana, la elección final del vídeo, su publicación y la entrega en Devpost siguen pendientes de la revisión del propietario.
+
 Verificación pública actualizada el **26 de octubre de 2026**, hora de Canarias. Las pruebas privadas de PayPal y Gemini abarcan el 22 y el 23 de octubre; sus registros conservan las marcas de tiempo UTC y la revisión histórica.
 
 - Demo: https://asterion-mj13.onrender.com/

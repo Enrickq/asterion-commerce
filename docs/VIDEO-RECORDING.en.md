@@ -2,7 +2,7 @@
 
 **Current edit:** the new local [2:45 launch film](video/ASTERION-Launch-Production.en.md), with [English script](video/ASTERION-Launch-Script.en.md) and [aligned captions](video/ASTERION-Launch-Captions.en.srt), supersedes the first montage for owner review. Public posting is still pending. The 2:50 plan below is retained as the earlier editorial version and as guidance for a future continuous recording.
 
-Use two visibly different evidence lanes. First, record the working public application with its simulated payment adapter. Then inspect the separately recorded Gemini and PayPal Sandbox proof. This is the practical route that needs no new credentials, model quota or Sandbox balance. The [narration script](DEMO.en.md) and [English deck](presentation/ASTERION-Pitch.en-2026-10-26.pptx) follow the same sequence. Any future private Sandbox checkout or €1,650 execution scene requires fresh original footage before it can be presented as a new run.
+Use two visibly different evidence lanes. First, record the working public application with its simulated payment adapter. Then inspect the separately recorded Gemini and PayPal Sandbox proof. This is the practical route that needs no new credentials, model quota or Sandbox balance. The [earlier narration plan](DEMO.en.md) is retained below. The current [launch script](video/ASTERION-Launch-Script.en.md) and [English deck](presentation/ASTERION-Pitch.en-2026-10-27.pptx) use the revised 2:45 sequence. Any future private Sandbox checkout or €1,650 execution scene requires fresh original footage before it can be presented as a new run.
 
 ## Capture setup
 

@@ -1,6 +1,6 @@
 # ASTERION: English pitch manuscript
 
-**Purpose:** English slide text and extended speaker notes for the [editable ten-slide jury presentation](presentation/ASTERION-Pitch.en-2026-10-26.pptx). The PowerPoint uses the established ASTERION palette and current evidence. It is a separate English edition; the earlier Spanish live deck is preserved.
+**Purpose:** English slide text and extended speaker notes for the [editable ten-slide jury presentation](presentation/ASTERION-Pitch.en-2026-10-27.pptx). The current edition follows the 2:45 launch film and retains the established ASTERION palette and provider evidence. Earlier English and Spanish editions are preserved.
 
 **Current software verification:** application commit `a23e4cd5d049dd4e4de1a55768bd46e5b3e0a48c`, with **143 automated tests** and public verification recorded in [the verification record](VERIFICATION.es.md). Private PayPal/Gemini verification took place on October 22–23 and retains its historical software baseline in the provider records. A separate public forecast preview was verified on October 25, 2026, Canary Islands time.
 
@@ -133,34 +133,34 @@ Kernel has an implemented session adapter but no recorded external run. It does 
 
 Sources: [integration matrix](INTEGRATIONS.md), [APIMatic evidence](APIMATIC-CONTEXT.md), [public deployment verification](VERIFICATION.es.md), [official partner announcement](https://developer.paypal.com/community/blog/PayPal_AI_Hackathon/).
 
-## Slide 6: The 2:50 demonstration
+## Slide 6: The launch film in 2:45
 
 ### On-screen text
 
 | Time | Visible action | What the audience should understand |
 | --- | --- | --- |
-| 0:00–0:30 | Public mandate and negotiation | A €1,500 ceiling produces a €1,480 simulated agreement |
-| 0:30–1:15 | Consent and clear-fixture Autopilot | The server continues after arming |
-| 1:15–1:40 | Separate public cloudy agreement | Failed conditions prevent capture |
-| 1:40–2:18 | Recorded Gemini and Sandbox evidence | A historical €1,650 capture and three confirmed Payouts |
-| 2:18–2:38 | Receipt and read-only forecast | Inspectable decisions and a visible oracle boundary |
-| 2:38–2:50 | Next milestone and product vision | Actual operators and local observations |
+| 0:00–0:24 | Hook and La Palma illustration | Three services under one mandate |
+| 0:24–0:51 | Mandate and agent negotiation | €1,500 ceiling. €1,480 demo bundle. |
+| 0:51–1:31 | Consent, evidence and Autopilot | Capture then separate Payouts |
+| 1:31–1:44 | Separate public cloudy agreement | Failed conditions void authorization |
+| 1:44–2:19 | Recorded Gemini and Sandbox | €1,650 capture. Three Payouts succeed. |
+| 2:19–2:45 | Receipt, forecast and product vision | Inspectable decisions. Field pilot next. |
 
 Public payments are simulated. Historical private evidence uses Sandbox test funds. Inventory and settlement weather remain simulated in both environments.
 
 ### Speaker notes
 
-Follow the [English recording script](DEMO.en.md) and [shot list](VIDEO-RECORDING.en.md). Record the working public application first, then inspect the historical private provider evidence. A local captured-step review montage is ready. Owner review and public posting remain pending.
+Follow the [English launch-film script](video/ASTERION-Launch-Script.en.md) and [production notes](video/ASTERION-Launch-Production.en.md). The 165-second film contains twelve scenes, summarized in the six rows above. Original motion graphics and an illustrated La Palma use case introduce actual captured application steps and historical provider evidence. The opening question is when an agent should refuse to complete a payment. Owner review, a human-voice comparison and public YouTube posting remain pending.
 
-Open the public application with two guests, 20-minute flexibility and a €1,500 ceiling. Show the deterministic €1,480 agreement, its allocations and evidence policy. Record buyer consent, simulated authorization and clear-fixture Autopilot, then a visibly separate cloudy agreement that voids without capture. This public execution uses simulated payments.
+The public application sequence uses two guests, 20-minute flexibility and a €1,500 ceiling. It shows the deterministic €1,480 agreement, its allocations and evidence policy. Buyer consent precedes simulated authorization and clear-fixture Autopilot. At 1:31 a visibly separate cloudy agreement voids without capture. Public payments and settlement weather are simulated.
 
-Switch to **Verified runs** with an explicit recorded-private-run label. The historical agreement used three actual Gemini requests, a €1,700 mandate and a €1,650 quote. It completed PayPal Sandbox capture and three separate successful Payouts: €425, €620 and €425. The organizer allocation remains separate from those transfers. This is inspection of recorded evidence, rather than footage of a new private execution.
+At 1:44 the film switches to **Verified runs** with an explicit recorded-Sandbox label. The historical agreement used three actual Gemini requests, a €1,700 mandate and a €1,650 quote. It completed PayPal Sandbox capture and three separate successful Payouts: €425, €620 and €425. The €180 organizer allocation is a gross remainder before costs. Inventory and settlement weather remain fixtures. This is inspection of recorded evidence rather than footage of a new private execution.
 
 The separately recorded cloudy Sandbox agreement also shows a void with no capture or supplier Payouts. It is a different agreement. Do not depict a completed capture being reversed by changing the main agreement's weather selector.
 
-Label removed public execution waits. The historical Gemini run took about 55 seconds, but that delay must not be attributed to the public deterministic negotiation. A still image of a completed run is evidence of that run. Keep `PENDING` visible until a provider confirms success. A newly recorded private execution would need its own footage and narration matching the actual amounts. Keep credentials and account-management pages out of frame.
+The film identifies edited application captures, simulation and Sandbox test funds. Its protocol animations explain the model; they do not manufacture new application or provider results. The historical Gemini run took about 55 seconds, while the public negotiation is deterministic. A fresh private execution would require its own footage, matching narration and evidence. Keep credentials and account-management pages out of frame.
 
-Sources: [English recording script](DEMO.en.md), [integrated main agreement](evidence/ai-sandbox-run.json), [separate cloudy outcome](evidence/paypal-sandbox.json).
+Sources: [launch-film script](video/ASTERION-Launch-Script.en.md), [film verification](evidence/launch-film.json), [integrated main agreement](evidence/ai-sandbox-run.json), [separate cloudy outcome](evidence/paypal-sandbox.json).
 
 ## Slide 7: The PayPal Edge
 
@@ -211,6 +211,8 @@ Automated connector tests use mocks. Real-provider claims come from separate pri
 The integrated agreement completed three real Gemini quote requests and subsequently settled through PayPal Sandbox using fictitious funds. The separate cloudy agreement demonstrates an authorization void. Both weather scenarios used fixtures. Earlier Gemini errors stopped without creating an agreement or payment, and the successful run does not imply guaranteed model availability.
 
 The public demo is available at [asterion-mj13.onrender.com](https://asterion-mj13.onrender.com/). Its free service has cold starts and ephemeral SQLite/session storage. It blocks Sandbox payments and Kernel launches for public visitors.
+
+The local launch film runs for 165 seconds and has 64 aligned English caption cues. It combines original motion and score with actual captured application steps and recorded private proof. The owner will compare a human narration against the local neural version before approving publication. This media update does not create new private model or payment verification.
 
 The separate **Read forecast** view retrieves a MET Norway model forecast with attribution, original model update time and forecast validity. It does not change an agreement or authorize capture. New policy checks reject renamed duplicate sources and incomplete or non-local actual observations. Declared source lineage is not a field-validated proof of independence.
 
@@ -270,4 +272,4 @@ Sources: [current submission draft](SUBMISSION.md), [architecture and field requ
 
 ## Presentation files
 
-The [English PowerPoint](presentation/ASTERION-Pitch.en-2026-10-26.pptx) contains editable text and native tables, source references and presenter notes. This manuscript retains longer explanations for rehearsal. Keep the public/private scene transition, allocation arithmetic and environment disclosures intact when adapting it for a live pitch.
+The [English PowerPoint](presentation/ASTERION-Pitch.en-2026-10-27.pptx) contains editable text and native tables, source references and presenter notes. This manuscript retains longer explanations for rehearsal. Keep the public/private scene transition, allocation arithmetic and environment disclosures intact when adapting it for a live pitch.

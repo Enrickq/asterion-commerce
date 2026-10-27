@@ -4,6 +4,7 @@
 
 - [New English script and storyboard](ASTERION-Launch-Script.en.md) · [Spanish translation](ASTERION-Launch-Script.es.md).
 - [Exact launch narration](ASTERION-Launch-Narration.en.txt) · [Aligned launch captions](ASTERION-Launch-Captions.en.srt).
+- [Record the founder narration](RECORD-YOUR-VOICE.es.md): exact English text, scene windows, pauses and a fair comparison with the neural version.
 - [Production and media provenance](ASTERION-Launch-Production.en.md) · [Prepared YouTube copy](YOUTUBE-LAUNCH.en.md).
 
 This is an edited launch film, not continuous footage of a fresh private Sandbox execution. Public simulation and historical Sandbox proof remain explicitly separate.

@@ -1,6 +1,6 @@
 # ASTERION · English recording script · target 2:50
 
-This is the narration and scene plan. A local 2:50 review montage now uses actual captured application steps, synthetic English narration and aligned subtitles. Owner review and public video publication remain pending. The montage is not a continuous screen recording. The [production shot list](VIDEO-RECORDING.en.md) contains capture setup, persistent labels and pickup instructions. The [English deck](presentation/ASTERION-Pitch.en-2026-10-26.pptx) follows the same scope.
+This is the earlier 2:50 rehearsal plan and private-demo reference. The current [2:45 launch-film script](video/ASTERION-Launch-Script.en.md), [human voice guide](video/RECORD-YOUR-VOICE.es.md) and [English deck](presentation/ASTERION-Pitch.en-2026-10-27.pptx) are the materials for the final voice comparison. Both versions preserve the public simulation and historical Sandbox boundary. The earlier scene timings below are retained as a reference.
 
 ## Recording sequence
 

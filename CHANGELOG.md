@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-27 · Jury package and founder narration
+
+- Reorganized the README around the organizer, one approved mandate and inspectable Gemini/PayPal Sandbox evidence. Added an original repository banner and an editable architecture diagram.
+- Aligned the English pitch, presentation notes and current delivery links with the 165-second launch film. Preserved the earlier dated decks and rehearsal plans.
+- Added the exact founder recording guide and a local teleprompter for a fair human/neural voice comparison. The narration remains 307 words across 12 scenes.
+- Rechecked 143 tests, build, preflight, smoke, hosted read-only health, repository links and tracked/history credential patterns. These checks create no new private provider runs.
+- Final voice selection, public video upload, participant details and Devpost submission remain pending owner review.
+
 ## 2026-10-26 · Complete browser receipt downloads
 
 - Fixed the browser API client returning only a receipt's nested agreement. Downloads now preserve payment references, consent, evidence, events and integrity metadata alongside the approved terms.
