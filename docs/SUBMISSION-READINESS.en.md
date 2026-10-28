@@ -1,8 +1,8 @@
 # ASTERION submission readiness
 
-Reviewed 27 October 2026. The technical package is ready for final owner review. The entry is **not yet submitted**: the final narration, public YouTube URL and participant/Devpost completion remain open.
+Updated 28 October 2026. The owner compared both narration versions and selected the **2:45 neural launch film**. The entry is **not yet submitted**: the public YouTube URL and participant/Devpost completion remain open.
 
-This review compares the submission copy, English pitch manuscript, current film script, captions, provider evidence, integration matrix and PowerPoint text/notes. It does not claim a new private provider run, a human listening review or inspection in PowerPoint. The owner must select the final voice and review the resulting edit.
+This review compares the submission copy, English pitch manuscript, current film script, captions, provider evidence, integration matrix and PowerPoint text/notes. The owner's voice selection follows their comparison of the two local films. Automated media checks do not claim subjective listening or phonetic verification. No new private provider run or inspection in PowerPoint is claimed.
 
 ## Entry requirements and evidence
 
@@ -14,9 +14,9 @@ The [official rules](https://paypalaihackathon.devpost.com/rules), checked 27 Oc
 | Working build and access | [Public demo](https://asterion-mj13.onrender.com/), local setup in [README](../README.md), [deployment verification](VERIFICATION.es.md) | Ready for review. Keep hosting and local instructions available through judging. Allow for a free-service cold start. |
 | Public source and license | [GitHub repository](https://github.com/Enrickq/asterion-commerce), [MIT license](../LICENSE) | Source and license present. Keep the public repository accessible. |
 | Features and audience | [Submission copy](SUBMISSION.md), [pitch manuscript](PITCH.en.md) | Ready for copy review. First proposed buyer is an experience organizer. No customer traction is claimed. |
-| Video and final narration | [165-second film record](evidence/launch-film.json), [English script](video/ASTERION-Launch-Script.en.md), [aligned captions](video/ASTERION-Launch-Captions.en.srt) | Local film verified. Human-voice comparison and owner listening/editorial review pending. |
+| Video and final narration | [165-second film record](evidence/launch-film.json), [English script](video/ASTERION-Launch-Script.en.md), [aligned captions](video/ASTERION-Launch-Captions.en.srt) | Neural film selected by the owner on October 28. Keep this film and its 64-cue caption file together. |
 | Public video URL | [Prepared YouTube copy](video/YOUTUBE-LAUNCH.en.md) | Owner approval and upload pending. Check the actual public link before entering it in Devpost. |
-| English materials | English README, submission, deck, script, captions and setup instructions | Prepared. A new human narration requires newly aligned captions if its timing changes. |
+| English materials | English README, submission, deck, script, captions and setup instructions | Prepared for the selected neural film. The human comparison has different caption timings and remains a local alternative. |
 | Participant and submission | Owner's Devpost account, eligibility, identity, team representation and final entry fields | Unverified. Complete personally required details and confirm the final submission receipt. |
 | Original work and third-party rights | Repository history, license, [film media provenance](video/ASTERION-Launch-Production.en.md) | Sources and production choices documented. Owner confirmation of eligibility and rights remains necessary. |
 
@@ -45,7 +45,7 @@ The five criteria carry equal weight under the [official rules](https://paypalai
 | Product design | Mandate approval, offer inspection, visible evidence and separate financial states within one application. | Free hosting has ephemeral data. Verified operator identities and durable production operation are future work. |
 | Potential impact | A specific organizer coordinates guide, telescope and transport under one shared condition. | Coordination savings, customer understanding, willingness to pay and dispute reduction need operator interviews and a supervised pilot. |
 | Novelty | A bounded purchasing mandate connects agent proposals to inspectable evidence and a refusal decision. | Do not claim that conditional payments, authorization/capture or agent commerce were invented by this project. |
-| Presentation | A 12-scene launch narrative, explicit failed-condition turn, readable financial proof and linked sources. | Select the strongest voice through listening, then check the final public upload and caption alignment. |
+| Presentation | A 12-scene launch narrative, explicit failed-condition turn, readable financial proof and linked sources. | Neural voice selected after owner comparison. Check the final public upload, captions and access while signed out. |
 
 ## Package consistency
 
@@ -65,8 +65,8 @@ The current [deck](presentation/ASTERION-Pitch.en-2026-10-27.pptx), [manuscript]
 
 ## Close the entry
 
-1. Record the exact narration, compare the human and neural versions at similar loudness, and select the clearest delivery. Refit the edit and captions to the chosen recording as needed.
-2. Approve that final film, publish it publicly on YouTube, and verify playback, sound, captions and access while signed out. Enter the verified URL in the [submission copy](SUBMISSION.md).
+1. Upload the selected 2:45 neural film using the [prepared title and description](video/YOUTUBE-LAUNCH.en.md). Select **AI use: Yes** and preserve the simulation/Sandbox context. [Publication checks](video/VOICE-PUBLICATION.en.md) document the reviewed sources.
+2. Make the video public and verify playback, sound, the matching 64-cue captions and access while signed out. Enter the actual verified URL in the [submission copy](SUBMISSION.md) and the README; do not substitute a local file or placeholder.
 3. Complete participant eligibility, team/representative details and the remaining Devpost fields. Review the exact final entry, submit before the cutoff and retain its confirmation.
 
 Complete local settlement observations, real operator inventory, webhook delivery and commercial authorization are development milestones. They are not represented as finished features or as prerequisites that the hackathon explicitly imposes on every prototype. No prize outcome is guaranteed.

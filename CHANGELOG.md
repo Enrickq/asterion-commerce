@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-28 · Selected film and submission handoff
+
+- Selected the original 2:45 neural launch film after the owner's comparison with their recorded alternative. Kept the private recording outside the repository.
+- Clarified the README's customer problem, placed simulation context before the walkthrough and added the clone command for a first local run.
+- Aligned delivery materials with the selected film, prepared the YouTube title and description, and recorded the voice-license and disclosure sources reviewed. Publication and final submission remain pending.
+
 ## 2026-10-27 · Jury package and founder narration
 
 - Reorganized the README around the organizer, one approved mandate and inspectable Gemini/PayPal Sandbox evidence. Added an original repository banner and an editable architecture diagram.

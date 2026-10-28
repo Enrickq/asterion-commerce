@@ -1,14 +1,20 @@
-# YouTube publication copy — owner review pending
+# YouTube publication copy — selected neural film
+
+The owner compared narration versions and selected the original 2:45 neural edit on 28 October 2026. Publication and the public YouTube URL are pending. Chapters below match that 165-second edit.
 
 ## Title
 
-What if your AI refused to pay? | ASTERION
+What If Your AI Refused to Pay? | ASTERION — PayPal AI Hackathon
 
 ## Description
 
 The most important button in autonomous commerce is the one an agent refuses to press.
 
-ASTERION turns a complex purchase into one approved mandate: agents negotiate a private stargazing experience in La Palma, and a deterministic evidence policy decides whether the application may capture or must void an authorization. An agent can propose a deal. The customer's consent defines its authority to spend.
+One night under the stars. A guide, a telescope and transport. Three suppliers — one customer-approved agreement.
+
+ASTERION helps experience organizers coordinate a complete experience. AI agents propose the bundle; the customer approves its price and conditions; a server-enforced evidence policy decides whether a PayPal authorization may be captured or must be voided.
+
+Our recorded private test connects three real Gemini requests to one €1,650 agreement, autonomous PayPal Sandbox capture and three individually confirmed supplier Payouts. A separate cloudy agreement demonstrates the other decision: refuse to capture.
 
 Try the prototype: https://asterion-mj13.onrender.com/
 Inspect the source: https://github.com/Enrickq/asterion-commerce
@@ -27,12 +33,16 @@ Recorded provider evidence: https://github.com/Enrickq/asterion-commerce/blob/ma
 02:19 Inspectable receipts and planning forecasts
 02:31 Act. Wait. Explain.
 
-Prototype context: the public walkthrough uses deterministic agents, fixture weather and simulated payments. The historical private run used three actual Gemini requests and PayPal Sandbox test funds; inventory, availability and settlement weather remained simulated. The recorded €1,650 agreement completed capture and three individually confirmed supplier Payouts. A different cloudy agreement demonstrates refusal. One organizer is the merchant; Payouts are separate subsequent operations, not an atomic split or escrow. The real MET Norway forecast shown is read-only planning data, not sufficient authority to capture. Actual operators and complete local observations are the next milestone.
+Demo scope: the public walkthrough uses deterministic agents, fixture weather and simulated payments. The recorded private run used actual Gemini and PayPal Sandbox APIs with test funds; inventory, availability and settlement weather remained simulated. One organizer is the merchant; supplier Payouts are separate operations after capture. This prototype does not provide escrow or an atomic split. The MET Norway forecast is read-only planning data. Actual operators and complete local observations are the next validation milestone.
 
 Production: edited actual application captures, original motion graphics, an AI-generated landscape illustration, local Kokoro neural narration and an original synthesized score. This is not continuous footage of a fresh Sandbox execution. Forecast data attribution: MET Norway, CC BY 4.0; retrieved 26 October 2026. No endorsement or affiliation with an observatory is claimed.
+
+Narration generated locally with Kokoro af_heart using kokoro-js 1.2.1 and Kokoro-82M v1.0 ONNX (Apache-2.0). No named speaker is represented. Model: https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX
 
 Built for the PayPal AI Hackathon. #PayPalAIHackathon #AgenticCommerce #ASTERION
 
 ## Publication state
 
-Copy prepared. The owner requested review before upload. No public video URL exists yet.
+The narration choice is complete. No public video URL has been supplied yet; upload and final submission remain pending.
+
+During upload, set **AI use / Uso de IA: Yes / Sí**. The film includes a realistic generated landscape and neural narration disclosed above. YouTube applies its own disclosure labels; no permanent review sidebar needs to be added to the edit. See the [official YouTube guidance](https://support.google.com/youtube/answer/14328491?hl=en&co=GENIE.Platform%3DDesktop) and [voice publication review](VOICE-PUBLICATION.en.md). Keep the film's simulation, historical Sandbox and fixture-weather context labels.

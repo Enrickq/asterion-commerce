@@ -1,6 +1,6 @@
 # ASTERION — The Right to Spend
 
-Launch film produced 26 October 2026 · delivery verification 27 October 2026 · owner review before publication.
+Launch film produced 26 October 2026 · delivery verification 27 October 2026 · neural version selected by the owner after comparison on 28 October 2026 · publication pending.
 
 The story opens on a financial boundary: the most important button in autonomous commerce is the one an agent refuses to press. A private La Palma stargazing mandate becomes a negotiated agreement. Clear fixture conditions unlock a simulated capture and subsequent supplier transfers. A **different agreement** fails its weather policy and voids its authorization. The film then changes explicitly to the historical Gemini and PayPal Sandbox results.
 
@@ -12,7 +12,8 @@ The production combines original animated typography, a rotating procedural glob
 - [Aligned English captions](ASTERION-Launch-Captions.en.srt), also beside the local MP4 as `output/ASTERION-The-Right-to-Spend-2026-10-26.en.srt`.
 - [English script and storyboard](ASTERION-Launch-Script.en.md): 307 spoken words, 12 scenes, 2:45.
 - [Spanish script](ASTERION-Launch-Script.es.md): translation for reviewing the story.
-- [Prepared YouTube description](YOUTUBE-LAUNCH.en.md): copy only; upload remains pending owner review.
+- [Prepared YouTube description](YOUTUBE-LAUNCH.en.md): copy for the selected neural film; upload and the public URL remain pending.
+- [Voice choice and publication checks](VOICE-PUBLICATION.en.md): provenance, bounded rules review and YouTube disclosure settings.
 
 The MP4, raw captures, narration stems, model files and production tools remain local and outside the public Git repository. No video upload or final hackathon submission is implied by these documents.
 
@@ -22,7 +23,9 @@ The MP4, raw captures, narration stems, model files and production tools remain 
 
 **Motion graphics:** original Canvas artwork, rendered at 1920 × 1080 and 30 fps. Globe geography is stylized design geometry, not an observational or geographic dataset. Agent connections, evidence rings and receipt diagrams explain the protocol; they are distinct from captured UI.
 
-**Voice:** local Kokoro `af_heart` neural synthesis through `kokoro-js 1.2.1`, q8 ONNX on CPU. No cloned speaker or claim that a named person narrates. Model and inference source are Apache-2.0: [Kokoro](https://github.com/hexgrad/kokoro), [ONNX model card](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX).
+**Voice:** local Kokoro `af_heart` neural synthesis through `kokoro-js 1.2.1`, q8 ONNX on CPU. No custom voice cloning was performed and no named speaker is represented. Model and inference source are Apache-2.0: [Kokoro](https://github.com/hexgrad/kokoro), [ONNX model card](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX).
+
+The preset file's SHA-256 matches the [published ONNX `af_heart.bin`](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX/blob/main/voices/af_heart.bin). The local package license is retained with the private production artifacts. The owner compared narration versions and selected this existing 165-second neural edit on 28 October. The [publication copy](YOUTUBE-LAUNCH.en.md) includes the voice credit; set YouTube's **AI use / Uso de IA** field to **Yes / Sí**, including for the realistic generated landscape, as explained in [YouTube's official disclosure guidance](https://support.google.com/youtube/answer/14328491?hl=en&co=GENIE.Platform%3DDesktop).
 
 **Score:** original deterministic oscillator/noise composition and effects. No stock music, downloaded song or third-party sample. The instrumental bed stops from 1:31 to 1:40.5 to emphasize the refusal. Speech takes priority in the mix.
 
@@ -36,6 +39,6 @@ The MP4, raw captures, narration stems, model files and production tools remain 
 
 ## Verification scope
 
-The narration and soundtrack have automated duration, caption, waveform and loudness checks. The uncompressed final mix measures −16.00 LUFS and −3.18 dBTP. Visual review covers scene composition, legibility, caption placement and consistency with source captures. Automated checks and visual inspection do not substitute for the owner's listening and editorial review.
+The narration and soundtrack have automated duration, caption, waveform and loudness checks. The uncompressed final mix measures −16.00 LUFS and −3.18 dBTP. Visual review covers scene composition, legibility, caption placement and consistency with source captures. The owner's comparison and selection are recorded above; automated checks and visual inspection do not constitute individual approval by YouTube or the hackathon organizers.
 
 The public €1,480 simulation and historical €1,650 Sandbox execution remain separate. One organizer is the merchant; supplier Payouts follow capture as separate operations. Forecasts support planning. Local observations and actual operators remain the next field-validation milestone. [Provider evidence](../evidence/ai-sandbox-run.json) and [browser receipt verification](../evidence/browser-receipt-verification.json) retain their own scopes and dates.

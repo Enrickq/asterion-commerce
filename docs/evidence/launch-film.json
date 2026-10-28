@@ -3,7 +3,8 @@
   "title": "ASTERION — The Right to Spend",
   "produced": "2026-10-26",
   "deliveryVerified": "2026-10-27",
-  "publication": "Owner review pending; no public video URL",
+  "publication": "Neural film selected by owner on 2026-10-28; public YouTube URL pending",
+  "ownerSelectionDate": "2026-10-28",
   "mediaFile": "ASTERION-The-Right-to-Spend-2026-10-26.mp4",
   "sha256": "1addd5a781190d1b4474aa75a7b24a1dee348c4ef8464b139ad17ad6e0f6f2cb",
   "bytes": 29657432,
@@ -23,7 +24,7 @@
   "audioMasterLUFS": -16,
   "audioMasterTruePeakDBTP": -3.18,
   "visualChecks": "27 scene preview frames, independent evidence/caption review, and selected final encoded frames",
-  "listeningReview": "Pending owner review; no human listening review claimed",
+  "listeningReview": "Owner compared the neural and human films and selected the neural version. Automated checks do not claim subjective listening or phonetic verification.",
   "scope": "Launch film combining original animated protocol visualization and edited authentic application captures. Not a continuous or fresh private Sandbox execution.",
   "providerEvidenceReexecuted": false,
   "sourceReferences": [

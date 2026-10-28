@@ -6,13 +6,13 @@
 
 **[Try the demo](https://asterion-mj13.onrender.com/) · [Inspect verified runs](https://asterion-mj13.onrender.com/#verified-runs) · [Pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-27.pptx) · [Launch-film script](docs/video/ASTERION-Launch-Script.en.md)**
 
-ASTERION helps experience organizers coordinate one outcome across several suppliers, with payment governed by the buyer's approved conditions. Its first mission is a private stargazing experience in La Palma: guide, telescope and transport under one spending mandate.
+Coordinating a guide, telescope and transport creates several booking decisions for one night under the stars. ASTERION gives experience organizers one customer-approved agreement: a bundle, a spending ceiling and conditions that determine whether payment may proceed. Its first mission is private stargazing in La Palma.
 
-Agents propose the bundle. The customer approves its exact price, allocations and evidence policy. The server then checks the evidence and autonomously captures or voids the authorization. Supplier Payouts follow capture as separate operations.
+Supplier agents propose the bundle. The customer approves its exact price, allocations and evidence policy. Once armed, the server evaluates that policy and captures or voids the PayPal authorization. Separate supplier Payouts follow capture.
 
 **The model can negotiate. It cannot grant itself permission to spend.**
 
-## The proof
+## From agent proposal to Sandbox settlement
 
 Three actual Gemini supplier requests produced a **€1,650 agreement within a €1,700 mandate**. That same buyer-approved agreement completed PayPal Sandbox capture and three individually confirmed supplier Payouts: **€425 + €620 + €425**. The organizer retained a **€180 gross remainder before fees and taxes**.
 
@@ -30,7 +30,9 @@ Three actual Gemini supplier requests produced a **€1,650 agreement within a �
 
 Records retain their original dates and software baselines. They summarize private runs and authenticated provider queries; they are not signed provider attestations. Complete local observations, actual operator bookings and webhook delivery remain unverified.
 
-## Try the complete flow
+## Try both payment decisions
+
+The public walkthrough runs without accounts or keys, using deterministic agents, fixture weather and simulated payments. Follow a clear-condition capture, then a separate cloudy agreement that voids its authorization.
 
 1. Open **Mission control**. Keep the two-person brief, €1,500 ceiling and 20-minute flexibility.
 2. Negotiate the **€1,480** bundle. Inspect the approved terms and supplier allocations.
@@ -43,15 +45,17 @@ Records retain their original dates and software baselines. They summarize priva
 pnpm verify:receipt path/to/asterion-receipt.json
 ```
 
-No account or keys are needed for the public walkthrough. The free Render service can take a cold start, and its storage is ephemeral. Start a fresh mission if an old session has expired. Public payments, offers and weather scenarios are explicitly simulated.
+The free Render service can take a cold start, and its storage is ephemeral. Start a fresh mission if an old session has expired.
 
-The [2:45 launch film](docs/video/ASTERION-Launch-Production.en.md) is exported locally for owner review. Its script, aligned captions and [human voice recording guide](docs/video/RECORD-YOUR-VOICE.es.md) are available. The public YouTube URL and final Devpost submission are pending.
+The **2:45 launch film** combines the working application, protocol animation and recorded Sandbox evidence. The owner selected its neural narration after comparing both voice versions. [Script and media provenance](docs/video/ASTERION-Launch-Production.en.md) · [Aligned English captions](docs/video/ASTERION-Launch-Captions.en.srt). The public YouTube link and final Devpost submission are pending.
 
 ## Run locally
 
 Install **Node.js 24 or newer** and **pnpm 11**. Default mode needs no environment file or paid service.
 
 ```sh
+git clone https://github.com/Enrickq/asterion-commerce.git
+cd asterion-commerce
 pnpm install --frozen-lockfile
 node scripts/preflight.mjs
 pnpm dev
@@ -130,7 +134,7 @@ Weather thresholds are illustrative policy parameters. A model forecast cannot e
 | [English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-27.pptx) and [manuscript](docs/PITCH.en.md) | [Architecture](docs/ARCHITECTURE.md) |
 | [English launch script](docs/video/ASTERION-Launch-Script.en.md) and [Spanish translation](docs/video/ASTERION-Launch-Script.es.md) | [Integration matrix](docs/INTEGRATIONS.md) |
 | [Narration, captions and production provenance](docs/video/) | [Receipt verifier](docs/RECEIPTS.md) |
-| [Devpost copy](docs/SUBMISSION.md) and [readiness review](docs/SUBMISSION-READINESS.en.md) | [Verification history](docs/VERIFICATION.es.md) and [changelog](CHANGELOG.md) |
+| [Devpost copy](docs/SUBMISSION.md) and [submission guide](docs/SUBMISSION-READINESS.en.md) | [Verification history](docs/VERIFICATION.es.md) and [changelog](CHANGELOG.md) |
 | [Delivery checklist](docs/DELIVERY.es.md) | [Optional account setup](docs/ACCOUNTS.es.md) |
 
 MIT licensed. Built for the PayPal AI Hackathon 2026. Video publication, participant eligibility and final submission remain pending owner review.

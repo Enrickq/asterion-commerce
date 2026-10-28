@@ -1,6 +1,6 @@
 # Devpost submission draft
 
-Reviewed 27 October 2026. This is the submission copy for owner review. The public YouTube URL, participant details and final Devpost submission remain pending.
+Reviewed 28 October 2026. This is the submission copy for owner review. The 2:45 neural film has been selected; the public YouTube URL, participant details and final Devpost submission remain pending.
 
 ## Project name
 
@@ -61,17 +61,21 @@ Complete the real oracle and operator integrations, then pilot with an actual op
 
 ## Built with
 
-Node.js 24, React, Vite, SQLite, AG Grid Community, MET Norway Locationforecast. Optional implemented adapters: PayPal Sandbox REST APIs, Gemini generateContent, Anthropic Messages API, AEMET OpenData, Kernel browser sessions. Deployment configuration: Render Blueprint. Do not list planned integrations as technologies used.
+Node.js 24, React, Vite, SQLite, PayPal Sandbox REST APIs, Gemini generateContent, AG Grid Community, MET Norway Locationforecast and Render. APIMatic's PayPal Context Plugin supported development review.
+
+## Submission desk
+
+The sections above contain the project description. The notes below track evidence and remaining submission fields; they are not part of the public pitch.
 
 ## Evidence to add before submission
 
 - Public repository: https://github.com/Enrickq/asterion-commerce; deployed application commit: `a23e4cd5d049dd4e4de1a55768bd46e5b3e0a48c`.
 - Public demo: https://asterion-mj13.onrender.com/; hosted flows verified, see [record](VERIFICATION.es.md).
-- Launch-film runtime: **verified, 165 seconds (2:45)**; [media verification](evidence/launch-film.json). Public YouTube URL and final voice choice: **pending owner review**.
+- Launch-film runtime: **verified, 165 seconds (2:45)**; [media verification](evidence/launch-film.json). The owner selected the neural narration on October 28 after comparing both versions. Public YouTube URL: **pending**. [Prepared title and description](video/YOUTUBE-LAUNCH.en.md).
 - Actual PayPal Sandbox authorization/capture/void and three individual Payouts: **verified**, [sanitized record](evidence/paypal-sandbox.json). Autonomous clear and cloudy Sandbox outcomes: **verified**. Webhook delivery: **pending**.
 - Complete three-supplier Gemini negotiation and subsequent autonomous Sandbox settlement: **verified**, [integrated record](evidence/ai-sandbox-run.json).
 - AG Grid Community and Render Web Service usage: **verified**. APIMatic Context Plugin: installed and consulted during development. Kernel external execution and the proposed Astropods, Elastic and Channel3 integrations: **pending**. Sponsor-category eligibility and selection require a separate review of the final entry.
 - Recorded private outcomes are visible in the hosted **Verified runs** view. Complete receipt exports can be checked offline with `pnpm verify:receipt`; this checks internal consistency, not provider authenticity.
 - Submission requirements, prize compatibility and cutoff checked against the [official rules](https://paypalaihackathon.devpost.com/rules) on October 27, 2026. Personal eligibility, Devpost registration and final submission remain **pending**; see the [readiness review](SUBMISSION-READINESS.en.md).
 
-The official cutoff is **November 12, 2026, 12:00 PST (20:00 Canary Islands time)**. Submission materials need English or an English translation. The [English pitch deck](presentation/ASTERION-Pitch.en-2026-10-27.pptx), [launch-film script](video/ASTERION-Launch-Script.en.md) and [aligned captions](video/ASTERION-Launch-Captions.en.srt) support the entry. The 2:45 local film combines original motion and score, an illustrated landscape, actual captured application steps and local neural narration. The owner will record a human-voice alternative before selecting the final cut. Publication remains pending that review.
+The official cutoff is **November 12, 2026, 12:00 PST (20:00 Canary Islands time)**. Submission materials need English or an English translation. The [English pitch deck](presentation/ASTERION-Pitch.en-2026-10-27.pptx), [launch-film script](video/ASTERION-Launch-Script.en.md) and [aligned captions](video/ASTERION-Launch-Captions.en.srt) support the entry. The selected 2:45 film combines original motion and score, an illustrated landscape, actual captured application steps and local neural narration. [Voice and publication checks](video/VOICE-PUBLICATION.en.md) record the sources reviewed and the YouTube disclosure setting. Publication and final submission remain pending.
