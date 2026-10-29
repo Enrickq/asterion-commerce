@@ -3,7 +3,7 @@
   "title": "ASTERION — The Right to Spend",
   "produced": "2026-10-26",
   "deliveryVerified": "2026-10-27",
-  "publication": "Neural film selected by owner on 2026-10-28; public YouTube URL pending",
+  "publication": "Public YouTube film; anonymous access and browser checks recorded separately",
   "ownerSelectionDate": "2026-10-28",
   "mediaFile": "ASTERION-The-Right-to-Spend-2026-10-26.mp4",
   "sha256": "1addd5a781190d1b4474aa75a7b24a1dee348c4ef8464b139ad17ad6e0f6f2cb",
@@ -31,5 +31,7 @@
     "docs/evidence/ai-sandbox-run.json",
     "docs/evidence/browser-receipt-verification.json",
     "docs/evidence/weather-preview.json"
-  ]
+  ],
+  "publicUrl": "https://www.youtube.com/watch?v=l_cS_-SIsdQ",
+  "publicationEvidence": "docs/evidence/youtube-publication.json"
 }

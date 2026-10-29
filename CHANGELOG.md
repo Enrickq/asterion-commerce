@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-29 · Public film and reviewer package
+
+- Linked the owner's published 2:45 film from the README, submission materials and editable pitch deck. Recorded anonymous public access, duration, metadata and the earlier browser disclosure checks.
+- Added a focused reviewer guide connecting the working demo, same-agreement Gemini/PayPal Sandbox evidence, complete receipts and local setup.
+- Refined the original repository banner and created an editable video-cover asset. Preserved the selected film's exact 64-cue SRT for the channel's caption update.
+- Aligned the current delivery status while retaining earlier dated plans as history. Participant eligibility, final Devpost fields and submission confirmation remain open.
+
 ## 2026-10-28 · Selected film and submission handoff
 
 - Selected the original 2:45 neural launch film after the owner's comparison with their recorded alternative. Kept the private recording outside the repository.

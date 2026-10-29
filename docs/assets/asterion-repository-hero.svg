@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="460" viewBox="0 0 1280 460" role="img" aria-labelledby="title desc">
   <title id="title">ASTERION. The right to spend.</title>
-  <desc id="desc">Agents negotiate. Evidence unlocks payment. One customer-approved mandate connects intent, agreement, evidence and payment.</desc>
+  <desc id="desc">Watch the 2 minute 45 second demonstration. Agents negotiate. Evidence unlocks payment. One customer-approved mandate connects intent, agreement, evidence and payment.</desc>
   <defs>
     <radialGradient id="sky" cx="82%" cy="38%" r="85%"><stop stop-color="#173741"/><stop offset="1" stop-color="#071016"/></radialGradient>
     <linearGradient id="path"><stop stop-color="#a8edd8"/><stop offset="1" stop-color="#e8c48a"/></linearGradient>
@@ -25,4 +25,7 @@
   <path d="M79 352H1185" stroke="url(#path)" opacity=".45"/>
   <g fill="#a8edd8"><circle cx="79" cy="352" r="4"/><circle cx="405" cy="352" r="4"/><circle cx="773" cy="352" r="4"/><circle cx="1185" cy="352" r="4" fill="#e8c48a"/></g>
   <g font-family="Arial, Helvetica, sans-serif" font-size="15" letter-spacing="2" fill="#b8cdd0"><text x="66" y="383">01 INTENT</text><text x="335" y="383">02 AGREEMENT</text><text x="697" y="383">03 EVIDENCE</text><text x="1063" y="383" fill="#e8c48a">04 PAYMENT</text></g>
+  <rect x="1020" y="401" width="194" height="37" rx="18.5" fill="#a8edd8"/>
+  <path d="m1037 411 0 17 14-8.5Z" fill="#071016"/>
+  <text x="1065" y="425" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="1" fill="#071016">WATCH 2:45</text>
 </svg>

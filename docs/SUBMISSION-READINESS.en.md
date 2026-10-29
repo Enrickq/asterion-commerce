@@ -1,6 +1,6 @@
 # ASTERION submission readiness
 
-Updated 28 October 2026. The owner compared both narration versions and selected the **2:45 neural launch film**. The entry is **not yet submitted**: the public YouTube URL and participant/Devpost completion remain open.
+Updated 28 October 2026. The owner selected the **2:45 neural launch film** after comparing both narration versions. Its [YouTube publication](https://www.youtube.com/watch?v=l_cS_-SIsdQ) has passed anonymous-access and browser checks, recorded in [publication verification](evidence/youtube-publication.json). The entry is **not yet submitted**: participant/Devpost completion remains open. Replacing the automatic caption track with the exact SRT is a remaining presentation improvement.
 
 This review compares the submission copy, English pitch manuscript, current film script, captions, provider evidence, integration matrix and PowerPoint text/notes. The owner's voice selection follows their comparison of the two local films. Automated media checks do not claim subjective listening or phonetic verification. No new private provider run or inspection in PowerPoint is claimed.
 
@@ -15,7 +15,8 @@ The [official rules](https://paypalaihackathon.devpost.com/rules), checked 27 Oc
 | Public source and license | [GitHub repository](https://github.com/Enrickq/asterion-commerce), [MIT license](../LICENSE) | Source and license present. Keep the public repository accessible. |
 | Features and audience | [Submission copy](SUBMISSION.md), [pitch manuscript](PITCH.en.md) | Ready for copy review. First proposed buyer is an experience organizer. No customer traction is claimed. |
 | Video and final narration | [165-second film record](evidence/launch-film.json), [English script](video/ASTERION-Launch-Script.en.md), [aligned captions](video/ASTERION-Launch-Captions.en.srt) | Neural film selected by the owner on October 28. Keep this film and its 64-cue caption file together. |
-| Public video URL | [Prepared YouTube copy](video/YOUTUBE-LAUNCH.en.md) | Owner approval and upload pending. Check the actual public link before entering it in Devpost. |
+| Public video | [YouTube film](https://www.youtube.com/watch?v=l_cS_-SIsdQ), [publication verification](evidence/youtube-publication.json) | Anonymous request returned playable status, 165 seconds and public visibility on October 28. Browser checks confirmed playback, matching metadata/chapters and visible AI disclosure. No subjective listening assessment is claimed. |
+| Caption quality | [Exact English SRT](video/ASTERION-Launch-Captions.en.srt) | English automatic captions are available but contain a “La Palma” recognition error. Publishing the exact 64-cue track remains pending. This improves presentation quality; a separate caption-upload requirement is not inferred from the rules. |
 | English materials | English README, submission, deck, script, captions and setup instructions | Prepared for the selected neural film. The human comparison has different caption timings and remains a local alternative. |
 | Participant and submission | Owner's Devpost account, eligibility, identity, team representation and final entry fields | Unverified. Complete personally required details and confirm the final submission receipt. |
 | Original work and third-party rights | Repository history, license, [film media provenance](video/ASTERION-Launch-Production.en.md) | Sources and production choices documented. Owner confirmation of eligibility and rights remains necessary. |
@@ -33,7 +34,7 @@ This is a review route, not a claim that every manual interaction or cold start 
 | 1:10–2:20 | [Mission control](https://asterion-mj13.onrender.com/) | Negotiate the default €1,480 public bundle, approve the mandate, authorize in simulation and arm the clear fixture. Use a separate agreement for cloudy refusal. |
 | 2:20–3:00 | [Receipt guide](RECEIPTS.md) and [browser receipt record](evidence/browser-receipt-verification.json) | Complete export, 14 clear-run events / 12 void-run events in the recorded browser check, and offline internal-consistency verification. |
 
-The final 2:45 video offers a separate, self-contained introduction to the same story. A reviewer can use the repository instructions to explore the full functioning build without accounts or keys.
+The [selected 2:45 video](https://www.youtube.com/watch?v=l_cS_-SIsdQ) offers a separate, self-contained introduction to the same story. A reviewer can use the repository instructions to explore the full functioning build without accounts or keys.
 
 ## Evidence for the judging criteria
 
@@ -45,7 +46,7 @@ The five criteria carry equal weight under the [official rules](https://paypalai
 | Product design | Mandate approval, offer inspection, visible evidence and separate financial states within one application. | Free hosting has ephemeral data. Verified operator identities and durable production operation are future work. |
 | Potential impact | A specific organizer coordinates guide, telescope and transport under one shared condition. | Coordination savings, customer understanding, willingness to pay and dispute reduction need operator interviews and a supervised pilot. |
 | Novelty | A bounded purchasing mandate connects agent proposals to inspectable evidence and a refusal decision. | Do not claim that conditional payments, authorization/capture or agent commerce were invented by this project. |
-| Presentation | A 12-scene launch narrative, explicit failed-condition turn, readable financial proof and linked sources. | Neural voice selected after owner comparison. Check the final public upload, captions and access while signed out. |
+| Presentation | A 12-scene launch narrative, explicit failed-condition turn, readable financial proof and linked sources. | Public video access, metadata and AI disclosure verified. Replace the automatic caption track with the exact SRT for accurate names and phrasing. |
 
 ## Package consistency
 
@@ -65,8 +66,9 @@ The current [deck](presentation/ASTERION-Pitch.en-2026-10-27.pptx), [manuscript]
 
 ## Close the entry
 
-1. Upload the selected 2:45 neural film using the [prepared title and description](video/YOUTUBE-LAUNCH.en.md). Select **AI use: Yes** and preserve the simulation/Sandbox context. [Publication checks](video/VOICE-PUBLICATION.en.md) document the reviewed sources.
-2. Make the video public and verify playback, sound, the matching 64-cue captions and access while signed out. Enter the actual verified URL in the [submission copy](SUBMISSION.md) and the README; do not substitute a local file or placeholder.
-3. Complete participant eligibility, team/representative details and the remaining Devpost fields. Review the exact final entry, submit before the cutoff and retain its confirmation.
+1. Enter the verified video, repository and runnable-demo URLs from the [submission desk](SUBMISSION.md#entry-links-and-evidence-status). Complete the participant's eligibility, registration, identity, team/representative details and remaining Devpost fields.
+2. Review the exact final entry, submit before the cutoff and retain the submission confirmation. A public video or a saved Devpost draft is not a submitted entry.
+
+For the final presentation polish, publish the selected film's exact 64-cue SRT in the owning YouTube channel and recheck that track. The automatic captions observed on October 28 are not that exact SRT. The [publication reference](video/YOUTUBE-LAUNCH.en.md) and [voice checks](video/VOICE-PUBLICATION.en.md) preserve the selected edit, AI disclosure and simulation/Sandbox context.
 
 Complete local settlement observations, real operator inventory, webhook delivery and commercial authorization are development milestones. They are not represented as finished features or as prerequisites that the hackathon explicitly imposes on every prototype. No prize outcome is guaranteed.

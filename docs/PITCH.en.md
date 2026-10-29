@@ -150,7 +150,7 @@ Public payments are simulated. Historical private evidence uses Sandbox test fun
 
 ### Speaker notes
 
-Follow the [English launch-film script](video/ASTERION-Launch-Script.en.md) and [production notes](video/ASTERION-Launch-Production.en.md). The 165-second film contains twelve scenes, summarized in the six rows above. Original motion graphics and an illustrated La Palma use case introduce actual captured application steps and historical provider evidence. The opening question is when an agent should refuse to complete a payment. Owner review, a human-voice comparison and public YouTube posting remain pending.
+Watch the [public 2:45 demonstration](https://www.youtube.com/watch?v=l_cS_-SIsdQ), with its [English script](video/ASTERION-Launch-Script.en.md) and [production notes](video/ASTERION-Launch-Production.en.md). The film contains twelve scenes, summarized in the six rows above. Original motion graphics and an illustrated La Palma use case introduce actual captured application steps and historical provider evidence. The opening question is when an agent should refuse to complete a payment. The owner selected the neural narration after comparing both versions. [Publication checks](evidence/youtube-publication.json) distinguish public playback verification from listening and caption review.
 
 The public application sequence uses two guests, 20-minute flexibility and a €1,500 ceiling. It shows the deterministic €1,480 agreement, its allocations and evidence policy. Buyer consent precedes simulated authorization and clear-fixture Autopilot. At 1:31 a visibly separate cloudy agreement voids without capture. Public payments and settlement weather are simulated.
 
@@ -212,7 +212,7 @@ The integrated agreement completed three real Gemini quote requests and subseque
 
 The public demo is available at [asterion-mj13.onrender.com](https://asterion-mj13.onrender.com/). Its free service has cold starts and ephemeral SQLite/session storage. It blocks Sandbox payments and Kernel launches for public visitors.
 
-The local launch film runs for 165 seconds and has 64 aligned English caption cues. It combines original motion and score with actual captured application steps and recorded private proof. The owner will compare a human narration against the local neural version before approving publication. This media update does not create new private model or payment verification.
+The [published launch film](https://www.youtube.com/watch?v=l_cS_-SIsdQ) runs for 165 seconds. Its source includes 64 aligned English caption cues, available separately in the repository. It combines original motion and score with actual captured application steps and recorded private proof. The neural version was selected after the owner's comparison. YouTube currently exposes automatic English captions; the exact SRT remains the canonical text. This media update creates no new private model or payment verification.
 
 The separate **Read forecast** view retrieves a MET Norway model forecast with attribution, original model update time and forecast validity. It does not change an agreement or authorize capture. New policy checks reject renamed duplicate sources and incomplete or non-local actual observations. Declared source lineage is not a field-validated proof of independence.
 
@@ -266,7 +266,7 @@ Commercial operation needs verified authentication, operator authorization, dura
 
 The reusable component is the mandate and policy boundary. Other purchases need their own evidence and contractual conditions. Coordinated travel, events and B2B delivery milestones are expansion hypotheses, not existing customers or integrations.
 
-The hackathon requires meaningful use of PayPal and AI. Submission materials need English or an English translation. The current delivery checklist records a cutoff of November 12, 2026 at 12:00 PST, or 20:00 Canary Islands time. Registration, personal eligibility and final submission still require completion. A final public YouTube demonstration under three minutes remains pending. This presentation does not submit the project or guarantee an award.
+The hackathon requires meaningful use of PayPal and AI. Submission materials need English or an English translation. The delivery checklist records a cutoff of November 12, 2026 at 12:00 PST, or 20:00 Canary Islands time. The [public 2:45 demonstration](https://www.youtube.com/watch?v=l_cS_-SIsdQ) is linked throughout the package. Registration, personal eligibility, final entry fields and submission still require completion. This presentation does not submit the project or guarantee an award.
 
 Sources: [current submission draft](SUBMISSION.md), [architecture and field requirements](ARCHITECTURE.md), [official hackathon rules](https://paypalaihackathon.devpost.com/rules), [official event announcement](https://developer.paypal.com/community/blog/PayPal_AI_Hackathon/).
 

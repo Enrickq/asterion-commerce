@@ -1,0 +1,55 @@
+{
+  "schema": "asterion.youtube-publication.v1",
+  "url": "https://www.youtube.com/watch?v=l_cS_-SIsdQ",
+  "videoId": "l_cS_-SIsdQ",
+  "publishedByOwner": true,
+  "anonymousAccessCheckedAt": "2026-10-29T15:57:36.263Z",
+  "access": {
+    "method": "Anonymous HTTPS GET, no cookies or authorization",
+    "httpStatus": 200,
+    "playabilityStatus": "OK",
+    "isPrivate": false,
+    "isUnlisted": false
+  },
+  "title": "What If Your AI Refused to Pay? | ASTERION — PayPal AI Hackathon",
+  "durationSeconds": 165,
+  "browserReview": {
+    "date": "2026-10-28",
+    "playbackObserved": true,
+    "titleMatches": true,
+    "descriptionMatchesPreparedCopy": true,
+    "chapterLinks": 12,
+    "aiDisclosureVisible": true,
+    "disclosureText": [
+      "IA: el contenido se ha creado con IA",
+      "Creado con IA"
+    ]
+  },
+  "captions": {
+    "observedTracks": [
+      {
+        "languageCode": "en",
+        "kind": "asr",
+        "name": {
+          "simpleText": "Inglés (generados automáticamente)"
+        }
+      }
+    ],
+    "exactRepositorySrt": "docs/video/ASTERION-Launch-Captions.en.srt",
+    "canonicalCues": 64,
+    "canonicalWords": 307,
+    "exactTrackPublished": false,
+    "improvement": "Upload the canonical English SRT; the automatic track misrecognizes La Palma."
+  },
+  "localSelectedSource": {
+    "file": "ASTERION-The-Right-to-Spend-2026-10-26.mp4",
+    "sha256": "1addd5a781190d1b4474aa75a7b24a1dee348c4ef8464b139ad17ad6e0f6f2cb",
+    "note": "Hash of the local source file, not of YouTube transcoded bytes."
+  },
+  "scope": "Anonymous metadata and browser playback, image, description and disclosure checks. No direct subjective listening or word-by-word phonetic verification is claimed. This does not submit the Devpost entry.",
+  "outstanding": [
+    "Canonical YouTube caption track",
+    "Participant eligibility and final Devpost fields",
+    "Final submission confirmation"
+  ]
+}

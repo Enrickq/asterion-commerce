@@ -1,6 +1,6 @@
 # ASTERION · English recording script · target 2:50
 
-This is the earlier 2:50 rehearsal plan and private-demo reference. The current [2:45 launch-film script](video/ASTERION-Launch-Script.en.md), [human voice guide](video/RECORD-YOUR-VOICE.es.md) and [English deck](presentation/ASTERION-Pitch.en-2026-10-27.pptx) are the materials for the final voice comparison. Both versions preserve the public simulation and historical Sandbox boundary. The earlier scene timings below are retained as a reference.
+This is the earlier 2:50 rehearsal plan and private-demo reference. The owner selected the neural version of the current [2:45 launch film](https://www.youtube.com/watch?v=l_cS_-SIsdQ). Its [script](video/ASTERION-Launch-Script.en.md), [aligned captions](video/ASTERION-Launch-Captions.en.srt) and [English deck](presentation/ASTERION-Pitch.en-2026-10-27.pptx) are the current delivery materials. The [human voice guide](video/RECORD-YOUR-VOICE.es.md) remains an optional recording reference. The earlier scene timings below are retained as history; both plans preserve the public simulation and historical Sandbox boundary.
 
 ## Recording sequence
 
@@ -27,4 +27,4 @@ This is the earlier 2:50 rehearsal plan and private-demo reference. The current 
 - The optional offline verifier shot checks a complete receipt exported from the fresh walkthrough. It does not authenticate provider records or accept the sanitized evidence-summary format.
 - Record original footage without unlicensed music or third-party promotional assets. Review the final duration, subtitles and legibility before upload. Keep the next milestone, complete local weather observations, distinct from a read-only model forecast.
 
-The [official rules](https://paypalaihackathon.devpost.com/rules), checked on October 25, 2026, call for English materials or translations, a publicly visible YouTube demonstration, and a video shorter than three minutes. The local review cut is 2:50. Approval of the final edit and its public YouTube URL remain pending.
+The [official rules](https://paypalaihackathon.devpost.com/rules), checked on October 25, 2026, call for English materials or translations, a publicly visible YouTube demonstration, and a video shorter than three minutes. The selected public film is 2:45; [publication checks](evidence/youtube-publication.json) record its access and metadata. Final Devpost submission remains pending.

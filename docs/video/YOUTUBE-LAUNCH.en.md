@@ -1,6 +1,6 @@
 # YouTube publication copy — selected neural film
 
-The owner compared narration versions and selected the original 2:45 neural edit on 28 October 2026. Publication and the public YouTube URL are pending. Chapters below match that 165-second edit.
+The owner selected the original 2:45 neural edit after comparing narration versions. Its [YouTube publication](https://www.youtube.com/watch?v=l_cS_-SIsdQ) was checked on 28 October 2026: anonymous access, playable status, 165-second duration and public visibility passed; browser inspection confirmed the title, description, chapters and visible AI disclosure. See [publication verification](../evidence/youtube-publication.json). The exact selectable caption track remains to be published.
 
 ## Title
 
@@ -43,6 +43,8 @@ Built for the PayPal AI Hackathon. #PayPalAIHackathon #AgenticCommerce #ASTERION
 
 ## Publication state
 
-The narration choice is complete. No public video URL has been supplied yet; upload and final submission remain pending.
+The film is publicly accessible at https://www.youtube.com/watch?v=l_cS_-SIsdQ. Anonymous player metadata returned a playable 165-second public video on October 28, and browser inspection confirmed playback, the title, description, chapters and visible AI disclosure. These checks do not claim subjective listening. Final Devpost submission remains pending.
 
-During upload, set **AI use / Uso de IA: Yes / Sí**. The film includes a realistic generated landscape and neural narration disclosed above. YouTube applies its own disclosure labels; no permanent review sidebar needs to be added to the edit. See the [official YouTube guidance](https://support.google.com/youtube/answer/14328491?hl=en&co=GENIE.Platform%3DDesktop) and [voice publication review](VOICE-PUBLICATION.en.md). Keep the film's simulation, historical Sandbox and fixture-weather context labels.
+The public page displays the AI disclosure. Keep **AI use / Uso de IA: Yes / Sí** for the realistic generated landscape and neural narration disclosed above. YouTube controls the platform labels; no permanent review sidebar needs to be added to the edit. See the [official YouTube guidance](https://support.google.com/youtube/answer/14328491?hl=en&co=GENIE.Platform%3DDesktop) and [voice publication review](VOICE-PUBLICATION.en.md). Preserve the film's simulation, historical Sandbox and fixture-weather context labels.
+
+The currently exposed selectable English track is automatic (`kind=asr`) and includes a “La Palma” recognition error. Publishing the [selected film's exact 64-cue SRT](ASTERION-Launch-Captions.en.srt) remains pending in the owning channel. Use that SRT, not the earlier planning captions or the human recording's timings. This improves caption quality and accessibility; it is not recorded here as a separate competition requirement.

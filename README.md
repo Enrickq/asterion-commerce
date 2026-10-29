@@ -1,10 +1,10 @@
 # ASTERION
 
-![ASTERION. The right to spend. Agents negotiate. Evidence unlocks payment.](docs/assets/asterion-repository-hero.svg)
+[![Watch ASTERION: The right to spend. Agents negotiate. Evidence unlocks payment. 2:45 demonstration.](docs/assets/asterion-repository-hero.svg)](https://www.youtube.com/watch?v=l_cS_-SIsdQ)
 
 [![Verify ASTERION](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml) · [MIT](LICENSE) · Node.js 24 · React · PayPal Sandbox
 
-**[Try the demo](https://asterion-mj13.onrender.com/) · [Inspect verified runs](https://asterion-mj13.onrender.com/#verified-runs) · [Pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-27.pptx) · [Launch-film script](docs/video/ASTERION-Launch-Script.en.md)**
+**[Watch the 2:45 demo](https://www.youtube.com/watch?v=l_cS_-SIsdQ) · [Try it](https://asterion-mj13.onrender.com/) · [Reviewer guide](docs/JUDGES.en.md) · [Pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-27.pptx)**
 
 Coordinating a guide, telescope and transport creates several booking decisions for one night under the stars. ASTERION gives experience organizers one customer-approved agreement: a bundle, a spending ceiling and conditions that determine whether payment may proceed. Its first mission is private stargazing in La Palma.
 
@@ -38,7 +38,7 @@ The public walkthrough runs without accounts or keys, using deterministic agents
 2. Negotiate the **€1,480** bundle. Inspect the approved terms and supplier allocations.
 3. Grant consent and simulate authorization. Select clear skies, then **Arm autonomous execution**.
 4. Watch the server evaluate the evidence, complete capture and confirm the three supplier states without another payment click.
-5. Start a **new mission** with the cloudy scenario. Arm it and inspect the voided authorization and absent capture.
+5. Start a **new mission** with the cloudy scenario. Negotiate, approve its terms and simulate a new authorization before arming it. Inspect the voided authorization and absent capture.
 6. Export either receipt and check it locally:
 
 ```sh
@@ -47,7 +47,7 @@ pnpm verify:receipt path/to/asterion-receipt.json
 
 The free Render service can take a cold start, and its storage is ephemeral. Start a fresh mission if an old session has expired.
 
-The **2:45 launch film** combines the working application, protocol animation and recorded Sandbox evidence. The owner selected its neural narration after comparing both voice versions. [Script and media provenance](docs/video/ASTERION-Launch-Production.en.md) · [Aligned English captions](docs/video/ASTERION-Launch-Captions.en.srt). The public YouTube link and final Devpost submission are pending.
+The **[2:45 launch film](https://www.youtube.com/watch?v=l_cS_-SIsdQ)** combines the working application, protocol animation and recorded Sandbox evidence. It is publicly playable and includes an AI disclosure. [Publication checks](docs/evidence/youtube-publication.json) · [Script and media provenance](docs/video/ASTERION-Launch-Production.en.md) · [Exact English captions](docs/video/ASTERION-Launch-Captions.en.srt). The exact caption file is available here; YouTube currently exposes an automatic English track. Final Devpost submission remains pending.
 
 ## Run locally
 
@@ -131,10 +131,11 @@ Weather thresholds are illustrative policy parameters. A model forecast cannot e
 
 | For reviewers | For builders |
 | --- | --- |
+| [Watch the demo](https://www.youtube.com/watch?v=l_cS_-SIsdQ) and [follow the reviewer guide](docs/JUDGES.en.md) | [Local setup](#run-locally) |
 | [English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-27.pptx) and [manuscript](docs/PITCH.en.md) | [Architecture](docs/ARCHITECTURE.md) |
 | [English launch script](docs/video/ASTERION-Launch-Script.en.md) and [Spanish translation](docs/video/ASTERION-Launch-Script.es.md) | [Integration matrix](docs/INTEGRATIONS.md) |
 | [Narration, captions and production provenance](docs/video/) | [Receipt verifier](docs/RECEIPTS.md) |
 | [Devpost copy](docs/SUBMISSION.md) and [submission guide](docs/SUBMISSION-READINESS.en.md) | [Verification history](docs/VERIFICATION.es.md) and [changelog](CHANGELOG.md) |
 | [Delivery checklist](docs/DELIVERY.es.md) | [Optional account setup](docs/ACCOUNTS.es.md) |
 
-MIT licensed. Built for the PayPal AI Hackathon 2026. Video publication, participant eligibility and final submission remain pending owner review.
+MIT licensed. Built for the PayPal AI Hackathon 2026. The demonstration is public. Participant eligibility, final entry fields and Devpost submission remain pending.
