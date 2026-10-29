@@ -1,6 +1,6 @@
 # ASTERION submission readiness
 
-Updated 29 October 2026. The owner selected the **2:45 neural launch film** after comparing both narration versions. Its [YouTube publication](https://www.youtube.com/watch?v=l_cS_-SIsdQ) has passed anonymous-access and browser checks, recorded in [publication verification](evidence/youtube-publication.json). The entry is **not yet submitted**: participant/Devpost completion remains open. The owner declined the optional selectable-caption and custom-thumbnail changes on October 29; those tasks are closed and do not block delivery.
+Updated 29 October 2026. Participant registration is complete and the [ASTERION Devpost draft](https://devpost.com/software/asterion-061uwp) is saved. The interface shows **4 of 5 steps**; final review, the terms checkbox and **Submit project** remain pending. The entry is **not yet submitted**, and no submission receipt has been confirmed. The owner selected the **2:45 neural launch film** after comparing both narration versions. Its [YouTube publication](https://www.youtube.com/watch?v=l_cS_-SIsdQ) has passed anonymous-access and browser checks, recorded in [publication verification](evidence/youtube-publication.json). The owner declined the optional selectable-caption and custom-thumbnail changes on October 29; those tasks are closed and do not block delivery.
 
 This review compares the submission copy, English pitch manuscript, current film script, captions, provider evidence, integration matrix and PowerPoint text/notes. The owner's voice selection follows their comparison of the two local films. Automated media checks do not claim subjective listening or phonetic verification. No new private provider run or inspection in PowerPoint is claimed.
 
@@ -18,10 +18,12 @@ The [official rules](https://paypalaihackathon.devpost.com/rules), checked 27 Oc
 | Public video | [YouTube film](https://www.youtube.com/watch?v=l_cS_-SIsdQ), [publication verification](evidence/youtube-publication.json) | Anonymous request returned playable status, 165 seconds and public visibility on October 28. Browser checks confirmed playback, matching metadata/chapters and visible AI disclosure. No subjective listening assessment is claimed. |
 | Caption quality | [Exact English SRT](video/ASTERION-Launch-Captions.en.srt) | English automatic captions contain a “La Palma” recognition error. The owner declined the optional selectable-track replacement on October 29. The exact 64-cue file remains available locally and in the repository, and the film retains rendered captions. This task is closed, not a delivery blocker. |
 | English materials | English README, submission, deck, script, captions and setup instructions | Prepared for the selected neural film. The human comparison has different caption timings and remains a local alternative. |
-| Participant and submission | Owner's Devpost account, eligibility, identity, team representation and final entry fields | Unverified. Complete personally required details and confirm the final submission receipt. |
-| Original work and third-party rights | Repository history, license, [film media provenance](video/ASTERION-Launch-Production.en.md) | Sources and production choices documented. Owner confirmation of eligibility and rights remains necessary. |
+| Participant and submission | Registered Devpost participant and [saved ASTERION draft](https://devpost.com/software/asterion-061uwp) | Registration was confirmed in the interface. Additional information and the participant's eligibility declaration are saved. This is self-attestation, not independent organizer verification. Final review, terms acceptance, submission and receipt remain pending. |
+| Original work and third-party rights | Repository history, license, [film media provenance](video/ASTERION-Launch-Production.en.md) | Sources and production choices documented. Review the rights declarations and final terms before submission; final acceptance remains pending. |
 
 Sponsor prizes have their own conditions. Listing three sponsors does not create an automatic bonus. The rules limit combinations to one main prize plus one sponsor prize, or one honorable mention plus one sponsor prize. AG Grid and Render are evidenced application uses. APIMatic is evidenced development context; Kernel execution and proposed extensions remain unverified.
+
+The saved draft contains the project name, tagline, 845-word story, video/demo/source links, three gallery images and tags for tools actually used. Additional information, including Spain as the participant's country, their eligibility declaration and experience answers, is saved. The selected sponsor tools are **AG Grid, APIMatic and Render**; [the prize case](PRIZE-CASE.en.md) preserves the evidence and sponsor-brief limitations. Draft selections are not a submitted entry or an award qualification decision. No new provider transactions were created by this form completion.
 
 ## A three-minute path through the package
 
@@ -66,8 +68,8 @@ The current [deck](presentation/ASTERION-Pitch.en-2026-10-27.pptx), [manuscript]
 
 ## Close the entry
 
-1. Enter the verified video, repository and runnable-demo URLs from the [submission desk](SUBMISSION.md#entry-links-and-evidence-status). Complete the participant's eligibility, registration, identity, team/representative details and remaining Devpost fields.
-2. Review the exact final entry, submit before the cutoff and retain the submission confirmation. A public video or a saved Devpost draft is not a submitted entry.
+1. Review the saved [Devpost draft](https://devpost.com/software/asterion-061uwp), including the verified video, repository and runnable-demo URLs from the [submission desk](SUBMISSION.md#entry-links-and-evidence-status), gallery and selected sponsor tools.
+2. Review and accept the final terms, then submit before the cutoff and retain the submission confirmation. The terms checkbox and **Submit project** are still pending. A public video or a saved Devpost draft is not a submitted entry.
 
 The owner closed the optional selectable-caption and custom-thumbnail tasks on October 29 without pursuing phone verification. The automatic captions observed on October 28 are not the exact SRT; the selected film retains its rendered captions and the 64-cue file remains available locally and in the repository. The [publication reference](video/YOUTUBE-LAUNCH.en.md) and [voice checks](video/VOICE-PUBLICATION.en.md) preserve the selected edit, AI disclosure and simulation/Sandbox context.
 

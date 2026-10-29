@@ -38,7 +38,7 @@ El servidor, la orquestación autónoma y AG Grid funcionan en Render. Los preci
 
 El plan gratuito usa SQLite temporal. Un reinicio, reemplazo o suspensión por inactividad puede eliminar acuerdos y claves de sesión. La persistencia local probada no convierte ese alojamiento gratuito en almacenamiento durable. No se han contratado recursos de pago.
 
-Al registrar esta versión se preparó un montaje local de revisión de 2:50 con capturas de pasos reales, voz sintética y subtítulos. Posteriormente el propietario eligió y publicó la [edición de 2:45](https://www.youtube.com/watch?v=l_cS_-SIsdQ); su acceso y metadatos se recogen en el [registro de publicación](evidence/youtube-publication.json). El registro del participante y el envío final del hackathon siguen pendientes. Este documento acredita la versión pública del prototipo, no su elegibilidad final ni un resultado en el concurso.
+Al registrar esta versión se preparó un montaje local de revisión de 2:50 con capturas de pasos reales, voz sintética y subtítulos. Posteriormente el propietario eligió y publicó la [edición de 2:45](https://www.youtube.com/watch?v=l_cS_-SIsdQ); su acceso y metadatos se recogen en el [registro de publicación](evidence/youtube-publication.json). El participante ya está registrado y el borrador Devpost está guardado; la revisión y el envío final siguen pendientes. Este documento acredita la versión pública del prototipo, no su elegibilidad final ni un resultado en el concurso.
 
 ## Descarga de recibos desde el navegador
 

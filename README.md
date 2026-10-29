@@ -138,4 +138,4 @@ Weather thresholds are illustrative policy parameters. A model forecast cannot e
 | [Devpost copy](docs/SUBMISSION.md), [prize case](docs/PRIZE-CASE.en.md) and [submission guide](docs/SUBMISSION-READINESS.en.md) | [Verification history](docs/VERIFICATION.es.md) and [changelog](CHANGELOG.md) |
 | [Delivery checklist](docs/DELIVERY.es.md) | [Optional account setup](docs/ACCOUNTS.es.md) |
 
-MIT licensed. Built for the PayPal AI Hackathon 2026. The demonstration is public. Participant eligibility, final entry fields and Devpost submission remain pending.
+MIT licensed. Built for the PayPal AI Hackathon 2026. The demonstration is public and the [Devpost draft](https://devpost.com/software/asterion-061uwp) is prepared. Final review and submission remain pending.

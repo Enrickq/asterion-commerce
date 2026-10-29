@@ -1,12 +1,18 @@
 # ASTERION · Cierre de candidatura
 
-Estado actualizado el 29 de octubre de 2026. El [vídeo neuronal elegido, de 2:45](https://www.youtube.com/watch?v=l_cS_-SIsdQ), ya tiene acceso público y reproducción comprobados. El [registro de publicación](evidence/youtube-publication.json) recoge la consulta anónima y la inspección del navegador. La candidatura no está enviada; faltan el registro del participante, los campos finales y la confirmación de Devpost. El propietario ha cerrado las mejoras opcionales de miniatura y pista adicional de subtítulos sin solicitar cambios al canal.
+Estado actualizado el 29 de octubre de 2026. El registro del participante está completado y el [borrador de ASTERION en Devpost](https://devpost.com/software/asterion-061uwp) está guardado. La interfaz muestra **4 de 5 pasos**: quedan la revisión final, la aceptación de los términos y **Submit project**. La candidatura todavía no está enviada ni existe confirmación de recepción. El [vídeo neuronal elegido, de 2:45](https://www.youtube.com/watch?v=l_cS_-SIsdQ), tiene acceso público comprobado; el [registro de publicación](evidence/youtube-publication.json) conserva las consultas y la inspección del navegador. El propietario ha cerrado las mejoras opcionales de miniatura y pista adicional de subtítulos sin solicitar cambios al canal.
 
 ## Lo obligatorio pendiente
 
-1. Revisar el paquete final en inglés. Descripción, instrucciones, guion y [PowerPoint editable de diez diapositivas](presentation/ASTERION-Pitch.en-2026-10-27.pptx) disponibles. El [manuscrito](PITCH.en.md) aporta notas ampliadas. La edición inglesa conserva el deck español anterior.
-2. Confirmar elegibilidad e identidad del participante, registro en Devpost y campos de candidatura. La revisión técnica de las bases no confirma la elegibilidad personal.
-3. Introducir el vídeo, repositorio y demo en los campos de Devpost, revisar la candidatura completa y enviarla. Guardar la confirmación de envío. Un borrador guardado o un vídeo publicado no constituyen por sí solos una candidatura enviada.
+1. Revisar la candidatura guardada y el paquete final en inglés. Descripción, instrucciones, guion y [PowerPoint editable de diez diapositivas](presentation/ASTERION-Pitch.en-2026-10-27.pptx) disponibles. El [manuscrito](PITCH.en.md) aporta notas ampliadas. La edición inglesa conserva el deck español anterior.
+2. Revisar y aceptar los términos finales de Devpost antes de pulsar **Submit project**. El participante ya ha declarado su elegibilidad en el formulario; esta declaración no constituye una verificación independiente ni garantiza la aceptación por el organizador.
+3. Enviar la candidatura y guardar la confirmación de recepción. Un borrador guardado o un vídeo publicado no constituyen por sí solos una candidatura enviada.
+
+## Borrador guardado en Devpost
+
+El registro mostró la confirmación «Thanks for registering». Se han guardado el nombre, el lema, la historia de 845 palabras, los enlaces de vídeo, demo y código, tres imágenes de galería y las etiquetas de tecnologías realmente utilizadas. También están guardadas las respuestas de información adicional, incluido el país España, la declaración de elegibilidad del participante y las respuestas sobre experiencia.
+
+En el borrador se han seleccionado **AG Grid, APIMatic y Render**. La [justificación por premios](PRIZE-CASE.en.md) conserva el alcance demostrado y las diferencias con los briefs de cada sponsor. Esta selección guardada no es una confirmación de premio ni de elegibilidad definitiva. No se han creado nuevas transacciones de proveedores para cerrar el formulario.
 
 Según las [bases oficiales](https://paypalaihackathon.devpost.com/rules), consultadas el 27 de octubre, el cierre es el **12 de noviembre de 2026 a las 12:00 PST: 20:00 en Canarias**. Objetivo interno: dejar la entrega lista el 9 de noviembre. Debe mantenerse acceso para el jurado hasta que termine la evaluación.
 
@@ -38,4 +44,4 @@ El catálogo, disponibilidad y clima siguen simulados. No hay reserva con un ope
 
 La revisión meteorológica pasó **114 pruebas locales y CI**, compilación y preflight. El smoke y la verificación pública comprobaron captura y anulación en los escenarios simulados. La consulta externa de previsión también está verificada en Render y [registrada por separado](evidence/weather-preview.json); no reejecuta ni amplía las pruebas históricas de PayPal o Gemini.
 
-La revisión de experiencia e integridad del 25 de octubre pasó **142 pruebas** y añadió la vista pública **Verified runs**, recibos verificables offline, estados de reembolso seguros y mejoras de lectura y teclado. El 26 de octubre una descarga real de la interfaz detectó que su cliente extraía solo los términos del recibo. La corrección conserva todas las secciones, pasa **143 pruebas** y está desplegada. El recibo descargado desde la interfaz corregida pasó el verificador offline. La presentación inglesa está actualizada. El montaje neuronal tiene acceso público comprobado; quedan el registro del participante y el envío de la candidatura.
+La revisión de experiencia e integridad del 25 de octubre pasó **142 pruebas** y añadió la vista pública **Verified runs**, recibos verificables offline, estados de reembolso seguros y mejoras de lectura y teclado. El 26 de octubre una descarga real de la interfaz detectó que su cliente extraía solo los términos del recibo. La corrección conserva todas las secciones, pasa **143 pruebas** y está desplegada. El recibo descargado desde la interfaz corregida pasó el verificador offline. La presentación inglesa está actualizada. El montaje neuronal tiene acceso público comprobado; quedan la revisión final, la aceptación de términos y el envío de la candidatura con su confirmación.

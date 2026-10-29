@@ -2,7 +2,7 @@
 
 Reviewed 29 October 2026. This is a map of inspectable strengths for the entry, not an award prediction or a record of submitted category selections.
 
-The [official FAQ](https://paypalaihackathon.devpost.com/details/faqs) says projects using several sponsor tools are considered for each corresponding sponsor prize. One project can receive at most one Grand Prize or one Honorable Mention, plus one Sponsor Prize. The [rules](https://paypalaihackathon.devpost.com/rules) govern eligibility and judging. The registration and submission form still need completion.
+The [official FAQ](https://paypalaihackathon.devpost.com/details/faqs) says projects using several sponsor tools are considered for each corresponding sponsor prize. One project can receive at most one Grand Prize or one Honorable Mention, plus one Sponsor Prize. The [rules](https://paypalaihackathon.devpost.com/rules) govern eligibility and judging. Participant registration is complete and the [ASTERION draft](https://devpost.com/software/asterion-061uwp) is saved, with **AG Grid, APIMatic and Render** selected. The interface shows 4 of 5 steps; final review, terms acceptance, **Submit project** and the submission confirmation remain pending. Saved selections do not establish final eligibility or a submitted candidature.
 
 ## General awards
 
@@ -29,9 +29,8 @@ The public walkthrough uses simulated payments, deterministic agents and fixture
 
 ## Entry checklist
 
-1. Complete participant registration, eligibility and the final Devpost fields.
-2. Enter the working demo, public source and film from the [submission desk](SUBMISSION.md#entry-links-and-evidence-status).
-3. Describe evidenced tools with the scope above. Inspect the actual form for any sponsor questions; a documentation map is not a submitted selection.
-4. Review the complete entry, submit before the deadline and keep the submission confirmation.
+1. Review the [saved Devpost draft](https://devpost.com/software/asterion-061uwp). The name, tagline, 845-word story, three gallery images, actual technology tags and video/demo/source links are saved. Additional information and the participant's eligibility declaration are saved; this declaration does not replace the organizer's verification.
+2. Check that the selected sponsor tools remain AG Grid, APIMatic and Render, with the evidence and limitations above. Bryntum and Channel3 are not selected as used tools. A saved selection is not a submitted entry.
+3. Review and accept the final terms, press **Submit project** before the deadline and keep the submission confirmation. These final actions remain pending.
 
 The selected film is final for this delivery. Optional thumbnail and additional selectable caption-track changes were declined by the owner; the exact English SRT remains available and its captions are rendered into the film.
