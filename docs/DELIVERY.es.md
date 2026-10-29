@@ -1,6 +1,6 @@
 # ASTERION · Cierre de candidatura
 
-Estado actualizado el 28 de octubre de 2026. El [vídeo neuronal elegido, de 2:45](https://www.youtube.com/watch?v=l_cS_-SIsdQ), ya tiene acceso público y reproducción comprobados. El [registro de publicación](evidence/youtube-publication.json) recoge la consulta anónima y la inspección del navegador. La candidatura no está enviada; faltan los datos del participante, los campos finales y la confirmación de Devpost. Sustituir los subtítulos automáticos por el SRT exacto queda como mejora de presentación.
+Estado actualizado el 29 de octubre de 2026. El [vídeo neuronal elegido, de 2:45](https://www.youtube.com/watch?v=l_cS_-SIsdQ), ya tiene acceso público y reproducción comprobados. El [registro de publicación](evidence/youtube-publication.json) recoge la consulta anónima y la inspección del navegador. La candidatura no está enviada; faltan el registro del participante, los campos finales y la confirmación de Devpost. El propietario ha cerrado las mejoras opcionales de miniatura y pista adicional de subtítulos sin solicitar cambios al canal.
 
 ## Lo obligatorio pendiente
 
@@ -10,11 +10,11 @@ Estado actualizado el 28 de octubre de 2026. El [vídeo neuronal elegido, de 2:4
 
 Según las [bases oficiales](https://paypalaihackathon.devpost.com/rules), consultadas el 27 de octubre, el cierre es el **12 de noviembre de 2026 a las 12:00 PST: 20:00 en Canarias**. Objetivo interno: dejar la entrega lista el 9 de noviembre. Debe mantenerse acceso para el jurado hasta que termine la evaluación.
 
-## Último ajuste del vídeo
+## Vídeo cerrado para la entrega
 
 La consulta anónima confirmó estado reproducible, duración de 165 segundos y visibilidad pública. En el navegador se comprobaron título, descripción, capítulos y la etiqueta visible de IA. Esta revisión no atribuye una valoración subjetiva de escucha.
 
-YouTube expone por ahora una pista automática de inglés, con un error de reconocimiento en «La Palma». Publicar los [64 subtítulos exactos](video/ASTERION-Launch-Captions.en.srt) desde el canal propietario del vídeo mejorará nombres y frases; todavía no se ha confirmado esa subida. El vídeo ya está en inglés: este ajuste de calidad no se presenta como una obligación adicional de las bases. El [texto de publicación](video/YOUTUBE-LAUNCH.en.md) y la [revisión de voz](video/VOICE-PUBLICATION.en.md) conservan el contexto de simulación y evidencia histórica Sandbox.
+YouTube expone por ahora una pista automática de inglés, con un error de reconocimiento en «La Palma». Los [64 subtítulos exactos](video/ASTERION-Launch-Captions.en.srt) siguen disponibles en el repositorio y renderizados dentro del montaje. El propietario decidió el 29 de octubre no añadir otra pista ni cambiar la miniatura. Estas mejoras opcionales están cerradas y no bloquean la entrega. El [texto de publicación](video/YOUTUBE-LAUNCH.en.md) y la [revisión de voz](video/VOICE-PUBLICATION.en.md) conservan el contexto de simulación y evidencia histórica Sandbox.
 
 ## Mejoras que aportan evidencia
 
@@ -38,4 +38,4 @@ El catálogo, disponibilidad y clima siguen simulados. No hay reserva con un ope
 
 La revisión meteorológica pasó **114 pruebas locales y CI**, compilación y preflight. El smoke y la verificación pública comprobaron captura y anulación en los escenarios simulados. La consulta externa de previsión también está verificada en Render y [registrada por separado](evidence/weather-preview.json); no reejecuta ni amplía las pruebas históricas de PayPal o Gemini.
 
-La revisión de experiencia e integridad del 25 de octubre pasó **142 pruebas** y añadió la vista pública **Verified runs**, recibos verificables offline, estados de reembolso seguros y mejoras de lectura y teclado. El 26 de octubre una descarga real de la interfaz detectó que su cliente extraía solo los términos del recibo. La corrección conserva todas las secciones, pasa **143 pruebas** y está desplegada. El recibo descargado desde la interfaz corregida pasó el verificador offline. La presentación inglesa está actualizada. El montaje neuronal tiene acceso público comprobado; quedan la mejora de subtítulos y el envío de la candidatura.
+La revisión de experiencia e integridad del 25 de octubre pasó **142 pruebas** y añadió la vista pública **Verified runs**, recibos verificables offline, estados de reembolso seguros y mejoras de lectura y teclado. El 26 de octubre una descarga real de la interfaz detectó que su cliente extraía solo los términos del recibo. La corrección conserva todas las secciones, pasa **143 pruebas** y está desplegada. El recibo descargado desde la interfaz corregida pasó el verificador offline. La presentación inglesa está actualizada. El montaje neuronal tiene acceso público comprobado; quedan el registro del participante y el envío de la candidatura.

@@ -1,6 +1,6 @@
 # ASTERION — The Right to Spend
 
-Launch film produced 26 October 2026 · delivery verification 27 October 2026 · neural version selected and public YouTube access verified on 28 October 2026 · exact selectable-caption publication pending.
+Launch film produced 26 October 2026 · delivery verification 27 October 2026 · neural version selected and public YouTube access verified on 28 October 2026 · optional selectable-caption and custom-thumbnail changes declined by the owner on 29 October 2026.
 
 The story opens on a financial boundary: the most important button in autonomous commerce is the one an agent refuses to press. A private La Palma stargazing mandate becomes a negotiated agreement. Clear fixture conditions unlock a simulated capture and subsequent supplier transfers. A **different agreement** fails its weather policy and voids its authorization. The film then changes explicitly to the historical Gemini and PayPal Sandbox results.
 
@@ -9,7 +9,7 @@ The production combines original animated typography, a rotating procedural glob
 ## Deliverables
 
 - Local film: `output/ASTERION-The-Right-to-Spend-2026-10-26.mp4`.
-- [Public YouTube film](https://www.youtube.com/watch?v=l_cS_-SIsdQ); [publication verification](../evidence/youtube-publication.json) records anonymous access, playable status, duration, browser playback, metadata and visible AI disclosure. Publishing the exact selectable SRT remains open.
+- [Public YouTube film](https://www.youtube.com/watch?v=l_cS_-SIsdQ); [publication verification](../evidence/youtube-publication.json) records anonymous access, playable status, duration, browser playback, metadata and visible AI disclosure. The owner chose to retain the upload without the optional selectable-SRT and custom-thumbnail changes.
 - [Aligned English captions](ASTERION-Launch-Captions.en.srt), also beside the local MP4 as `output/ASTERION-The-Right-to-Spend-2026-10-26.en.srt`.
 - [English script and storyboard](ASTERION-Launch-Script.en.md): 307 spoken words, 12 scenes, 2:45.
 - [Spanish script](ASTERION-Launch-Script.es.md): translation for reviewing the story.
@@ -32,7 +32,7 @@ The preset file's SHA-256 matches the [published ONNX `af_heart.bin`](https://hu
 
 **Captions:** 64 English cues, exact synthesized-phrase insertion boundaries, maximum two lines and 41 characters per line. The spoken words match the script. Caption timing is phrase-aligned; it is not claimed to be forced word alignment.
 
-The YouTube upload currently exposes a selectable English automatic track (`kind=asr`), with a recognition error for “La Palma.” Publishing the exact SRT as a selectable YouTube track is a remaining quality improvement. That publication has not yet been confirmed; it is distinct from the captions rendered into the local film.
+The YouTube upload exposes a selectable English automatic track (`kind=asr`), with a recognition error for “La Palma.” The owner declined the optional exact-SRT upload on October 29, closing that task without pursuing phone verification. The exact file remains available locally and in the repository; the film retains its rendered captions. No publication of a corrected selectable track is claimed.
 
 **Illustration:** generated with the built-in imagegen tool and saved locally at `output/imagegen/asterion-la-palma-launch-illustration.png`. It illustrates a fictional use case and does not show an actual booking, observatory access or a current weather observation. The film labels it as an AI-generated illustration.
 

@@ -39,7 +39,11 @@
     "canonicalCues": 64,
     "canonicalWords": 307,
     "exactTrackPublished": false,
-    "improvement": "Upload the canonical English SRT; the automatic track misrecognizes La Palma."
+    "optionalUpdate": {
+      "status": "declined-by-owner",
+      "decisionDate": "2026-10-29",
+      "note": "Keep the existing upload; exact captions remain rendered into the film and available in the repository."
+    }
   },
   "localSelectedSource": {
     "file": "ASTERION-The-Right-to-Spend-2026-10-26.mp4",
@@ -48,8 +52,11 @@
   },
   "scope": "Anonymous metadata and browser playback, image, description and disclosure checks. No direct subjective listening or word-by-word phonetic verification is claimed. This does not submit the Devpost entry.",
   "outstanding": [
-    "Canonical YouTube caption track",
     "Participant eligibility and final Devpost fields",
     "Final submission confirmation"
-  ]
+  ],
+  "optionalThumbnailUpdate": {
+    "status": "declined-by-owner",
+    "decisionDate": "2026-10-29"
+  }
 }

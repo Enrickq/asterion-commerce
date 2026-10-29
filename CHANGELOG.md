@@ -2,6 +2,8 @@
 
 ## 2026-10-29 · Public film and reviewer package
 
+- Mapped the six general award cases and the evidenced sponsor uses to inspectable implementation and official briefs. Flagged AG Studio/Render Workflows scope and the unimplemented Bryntum/Channel3 extensions.
+- Closed optional YouTube thumbnail and additional caption-track changes at the owner's request. The public film, rendered captions and repository SRT remain available.
 - Linked the owner's published 2:45 film from the README, submission materials and editable pitch deck. Recorded anonymous public access, duration, metadata and the earlier browser disclosure checks.
 - Added a focused reviewer guide connecting the working demo, same-agreement Gemini/PayPal Sandbox evidence, complete receipts and local setup.
 - Refined the original repository banner and created an editable video-cover asset. Preserved the selected film's exact 64-cue SRT for the channel's caption update.

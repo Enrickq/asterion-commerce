@@ -135,7 +135,7 @@ Weather thresholds are illustrative policy parameters. A model forecast cannot e
 | [English pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-27.pptx) and [manuscript](docs/PITCH.en.md) | [Architecture](docs/ARCHITECTURE.md) |
 | [English launch script](docs/video/ASTERION-Launch-Script.en.md) and [Spanish translation](docs/video/ASTERION-Launch-Script.es.md) | [Integration matrix](docs/INTEGRATIONS.md) |
 | [Narration, captions and production provenance](docs/video/) | [Receipt verifier](docs/RECEIPTS.md) |
-| [Devpost copy](docs/SUBMISSION.md) and [submission guide](docs/SUBMISSION-READINESS.en.md) | [Verification history](docs/VERIFICATION.es.md) and [changelog](CHANGELOG.md) |
+| [Devpost copy](docs/SUBMISSION.md), [prize case](docs/PRIZE-CASE.en.md) and [submission guide](docs/SUBMISSION-READINESS.en.md) | [Verification history](docs/VERIFICATION.es.md) and [changelog](CHANGELOG.md) |
 | [Delivery checklist](docs/DELIVERY.es.md) | [Optional account setup](docs/ACCOUNTS.es.md) |
 
 MIT licensed. Built for the PayPal AI Hackathon 2026. The demonstration is public. Participant eligibility, final entry fields and Devpost submission remain pending.

@@ -1,6 +1,6 @@
 # YouTube publication copy — selected neural film
 
-The owner selected the original 2:45 neural edit after comparing narration versions. Its [YouTube publication](https://www.youtube.com/watch?v=l_cS_-SIsdQ) was checked on 28 October 2026: anonymous access, playable status, 165-second duration and public visibility passed; browser inspection confirmed the title, description, chapters and visible AI disclosure. See [publication verification](../evidence/youtube-publication.json). The exact selectable caption track remains to be published.
+The owner selected the original 2:45 neural edit after comparing narration versions. Its [YouTube publication](https://www.youtube.com/watch?v=l_cS_-SIsdQ) was checked on 28 October 2026: anonymous access, playable status, 165-second duration and public visibility passed; browser inspection confirmed the title, description, chapters and visible AI disclosure. See [publication verification](../evidence/youtube-publication.json). On October 29 the owner declined the optional selectable-caption and custom-thumbnail changes; neither remains a delivery task.
 
 ## Title
 
@@ -47,4 +47,4 @@ The film is publicly accessible at https://www.youtube.com/watch?v=l_cS_-SIsdQ. 
 
 The public page displays the AI disclosure. Keep **AI use / Uso de IA: Yes / Sí** for the realistic generated landscape and neural narration disclosed above. YouTube controls the platform labels; no permanent review sidebar needs to be added to the edit. See the [official YouTube guidance](https://support.google.com/youtube/answer/14328491?hl=en&co=GENIE.Platform%3DDesktop) and [voice publication review](VOICE-PUBLICATION.en.md). Preserve the film's simulation, historical Sandbox and fixture-weather context labels.
 
-The currently exposed selectable English track is automatic (`kind=asr`) and includes a “La Palma” recognition error. Publishing the [selected film's exact 64-cue SRT](ASTERION-Launch-Captions.en.srt) remains pending in the owning channel. Use that SRT, not the earlier planning captions or the human recording's timings. This improves caption quality and accessibility; it is not recorded here as a separate competition requirement.
+The selectable English track observed is automatic (`kind=asr`) and includes a “La Palma” recognition error. The owner declined an additional selectable-track upload on October 29. The [selected film's exact 64-cue SRT](ASTERION-Launch-Captions.en.srt) remains available in the repository and alongside the local film, which retains its rendered captions. The optional update is closed, not a submission blocker; no phone verification is being pursued for it. Any future caption update should use this SRT, not the earlier planning captions or the human recording's timings.
