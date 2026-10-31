@@ -1,6 +1,6 @@
-# Devpost submission draft
+# Devpost submission
 
-Reviewed 29 October 2026. The participant is registered and the [Devpost draft](https://devpost.com/software/asterion-061uwp) has its story, media, links and additional answers saved. The selected [2:45 neural film](https://www.youtube.com/watch?v=l_cS_-SIsdQ) is publicly accessible; [publication verification](evidence/youtube-publication.json) records the anonymous-access and browser checks. The owner declined optional YouTube thumbnail and additional caption-track changes. Final review and Devpost submission remain open.
+Delivery status updated 31 October 2026. ASTERION was [submitted to the PayPal AI Hackathon](https://devpost.com/software/asterion-061uwp) on 29 October; [the confirmation](evidence/devpost-submission.json) records the browser receipt and public entry check. The story, media, links, additional answers and source ZIP were saved before submission. The selected [2:45 neural film](https://www.youtube.com/watch?v=l_cS_-SIsdQ) is publicly accessible; [publication verification](evidence/youtube-publication.json) preserves its checks. The owner declined optional YouTube thumbnail and additional caption-track changes.
 
 ## Project name
 
@@ -67,7 +67,7 @@ Node.js 24, React, Vite, SQLite, PayPal Sandbox REST APIs, Gemini generateConten
 
 ## Submission desk
 
-The sections above contain the project description. The notes below track evidence and remaining submission fields; they are not part of the public pitch.
+The sections above contain the submitted project description. The notes below track evidence and the completed delivery; they are not part of the public pitch.
 
 ## Entry links and evidence status
 
@@ -78,8 +78,8 @@ The sections above contain the project description. The notes below track eviden
 - Local launch-film runtime: **verified, 165 seconds (2:45)**; [media verification](evidence/launch-film.json). The owner selected the neural narration on October 28 after comparing both versions. The selected film uses the [64-cue English captions](video/ASTERION-Launch-Captions.en.srt). [Title and description reference](video/YOUTUBE-LAUNCH.en.md).
 - Actual PayPal Sandbox authorization/capture/void and three individual Payouts: **verified**, [sanitized record](evidence/paypal-sandbox.json). Autonomous clear and cloudy Sandbox outcomes: **verified**. Webhook delivery: **pending**.
 - Complete three-supplier Gemini negotiation and subsequent autonomous Sandbox settlement: **verified**, [integrated record](evidence/ai-sandbox-run.json).
-- AG Grid Community and Render Web Service usage: **verified**. APIMatic Context Plugin: installed and consulted during development. Kernel external execution and the proposed Astropods, Elastic and Channel3 integrations: **pending**. Sponsor-category eligibility and selection require a separate review of the final entry.
+- AG Grid Community and Render Web Service usage: **verified**. APIMatic Context Plugin: installed and consulted during development. These three sponsor tools were selected in the submitted entry. Kernel external execution and the proposed Astropods, Elastic and Channel3 integrations: **pending**. Sponsor qualification remains for the organizers to assess; see the [prize case](PRIZE-CASE.en.md).
 - Recorded private outcomes are visible in the hosted **Verified runs** view. Complete receipt exports can be checked offline with `pnpm verify:receipt`; this checks internal consistency, not provider authenticity.
-- Submission requirements, prize compatibility and cutoff checked against the [official rules](https://paypalaihackathon.devpost.com/rules), most recently on October 29, 2026. Participant registration is complete and eligibility declarations were confirmed by the participant. The draft shows **4/5 steps**; final terms and submission remain **pending**. See the [readiness review](SUBMISSION-READINESS.en.md).
+- Submission requirements, prize compatibility and cutoff checked against the [official rules](https://paypalaihackathon.devpost.com/rules), most recently on October 29, 2026. Participant registration, self-attested eligibility, final terms and submission are complete. The browser returned **Project submitted!** on October 29. [Submission confirmation](evidence/devpost-submission.json) · [delivery review](SUBMISSION-READINESS.en.md).
 
-The official cutoff is **November 12, 2026, 12:00 PST (20:00 Canary Islands time)**. Submission materials need English or an English translation. The [English pitch deck](presentation/ASTERION-Pitch.en-2026-10-27.pptx), [launch-film script](video/ASTERION-Launch-Script.en.md) and [aligned captions](video/ASTERION-Launch-Captions.en.srt) support the entry. The selected 2:45 film combines original motion and score, an illustrated landscape, actual captured application steps and local neural narration. [Voice and publication checks](video/VOICE-PUBLICATION.en.md) record the reviewed sources and observed AI disclosure. The public video is verified and the Devpost draft is saved; final review and submission remain open. The [prize case](PRIZE-CASE.en.md) maps each general award and the evidenced sponsor uses to inspectable results.
+The official cutoff is **November 12, 2026, 12:00 PST (20:00 Canary Islands time)**. Submission materials need English or an English translation. The [English pitch deck](presentation/ASTERION-Pitch.en-2026-10-27.pptx), [launch-film script](video/ASTERION-Launch-Script.en.md) and [aligned captions](video/ASTERION-Launch-Captions.en.srt) support the submitted entry. The selected 2:45 film combines original motion and score, an illustrated landscape, actual captured application steps and local neural narration. [Voice and publication checks](video/VOICE-PUBLICATION.en.md) record the reviewed sources and observed AI disclosure. The [prize case](PRIZE-CASE.en.md) maps each general award and the evidenced sponsor uses to inspectable results.

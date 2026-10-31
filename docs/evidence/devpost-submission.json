@@ -1,0 +1,38 @@
+{
+  "schema": "asterion.devpost-submission.v1",
+  "project": "ASTERION",
+  "projectUrl": "https://devpost.com/software/asterion-061uwp",
+  "submissionId": 1271485,
+  "confirmationCapturedAt": "2026-10-29T22:06:53.333Z",
+  "confirmation": {
+    "method": "Authenticated browser UI after owner-authorized submission",
+    "message": "Project submitted!",
+    "state": "Submitted to PayPal AI Hackathon"
+  },
+  "selectedSponsors": [
+    "AG Grid",
+    "APIMatic",
+    "Render"
+  ],
+  "sourceArchive": {
+    "file": "ASTERION-Submission-2026-10-29.zip",
+    "sourceCommit": "df8bc0df4c2c8225ddc0f7e795abeafe35bd65a1",
+    "sha256": "66d46c2b67f5f37be88a4c2078f1dbba4972595ee1f94465610b816b4ca557be",
+    "uiSavedFileConfirmed": true,
+    "bytes": 912774,
+    "note": "Frozen source snapshot uploaded before the submission acknowledgement. Later documentation records the completed delivery."
+  },
+  "publicAccessRecheck": {
+    "date": "2026-10-31",
+    "method": "Anonymous HTTPS GET; no cookies or authorization",
+    "url": "https://devpost.com/software/asterion-061uwp",
+    "httpStatus": 200,
+    "projectTitlePresent": true,
+    "hackathonReferencePresent": true,
+    "videoReferencePresent": true,
+    "repositoryReferencePresent": true,
+    "demoReferencePresent": true,
+    "submissionMarkerPresent": true
+  },
+  "scope": "Records the observed Devpost receipt and public entry access. It does not establish organizer eligibility review, sponsor qualification or an award outcome."
+}

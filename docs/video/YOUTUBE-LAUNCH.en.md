@@ -43,7 +43,7 @@ Built for the PayPal AI Hackathon. #PayPalAIHackathon #AgenticCommerce #ASTERION
 
 ## Publication state
 
-The film is publicly accessible at https://www.youtube.com/watch?v=l_cS_-SIsdQ. Anonymous player metadata returned a playable 165-second public video on October 28, and browser inspection confirmed playback, the title, description, chapters and visible AI disclosure. These checks do not claim subjective listening. Final Devpost submission remains pending.
+The film is publicly accessible at https://www.youtube.com/watch?v=l_cS_-SIsdQ. Anonymous player metadata returned a playable 165-second public video on October 28, and browser inspection confirmed playback, the title, description, chapters and visible AI disclosure. These checks do not claim subjective listening. ASTERION was [submitted to the hackathon](https://devpost.com/software/asterion-061uwp) on October 29; the separate [submission confirmation](../evidence/devpost-submission.json) records Devpost's receipt.
 
 The public page displays the AI disclosure. Keep **AI use / Uso de IA: Yes / Sí** for the realistic generated landscape and neural narration disclosed above. YouTube controls the platform labels; no permanent review sidebar needs to be added to the edit. See the [official YouTube guidance](https://support.google.com/youtube/answer/14328491?hl=en&co=GENIE.Platform%3DDesktop) and [voice publication review](VOICE-PUBLICATION.en.md). Preserve the film's simulation, historical Sandbox and fixture-weather context labels.
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-31 · Submission receipt and delivery closeout
+
+- Recorded the successful Devpost submission confirmed on October 29, including the entry URL, selected sponsor tools and hash of the uploaded source archive.
+- Rechecked anonymous access to the public entry and its film, demo and source references. Updated current delivery documents to the submitted state while preserving dated verification history.
+- Kept the uploaded `df8bc0d` source archive frozen. This documentation closeout creates no new provider transactions or application deployment.
+
 ## 2026-10-29 · Public film and reviewer package
 
 - Prepared the Devpost draft with the film, story, working demo, repository, evidenced sponsor selections and original project cover. Registration and additional answers are saved; final submission is still pending.

@@ -51,12 +51,10 @@
     "note": "Hash of the local source file, not of YouTube transcoded bytes."
   },
   "scope": "Anonymous metadata and browser playback, image, description and disclosure checks. No direct subjective listening or word-by-word phonetic verification is claimed. This does not submit the Devpost entry.",
-  "outstanding": [
-    "Final Devpost review and terms",
-    "Final submission confirmation"
-  ],
+  "outstanding": [],
   "optionalThumbnailUpdate": {
     "status": "declined-by-owner",
     "decisionDate": "2026-10-29"
-  }
+  },
+  "devpostSubmissionEvidence": "docs/evidence/devpost-submission.json"
 }

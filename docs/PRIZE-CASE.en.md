@@ -1,8 +1,8 @@
 # ASTERION prize case
 
-Reviewed 29 October 2026. This is a map of inspectable strengths for the entry, not an award prediction or a record of submitted category selections.
+Updated 31 October 2026. This maps the inspectable strengths and evidenced sponsor selections of the submitted entry. Judges determine qualification and awards.
 
-The [official FAQ](https://paypalaihackathon.devpost.com/details/faqs) says projects using several sponsor tools are considered for each corresponding sponsor prize. One project can receive at most one Grand Prize or one Honorable Mention, plus one Sponsor Prize. The [rules](https://paypalaihackathon.devpost.com/rules) govern eligibility and judging. Participant registration is complete and the [ASTERION draft](https://devpost.com/software/asterion-061uwp) is saved, with **AG Grid, APIMatic and Render** selected. The interface shows 4 of 5 steps; final review, terms acceptance, **Submit project** and the submission confirmation remain pending. Saved selections do not establish final eligibility or a submitted candidature.
+The [official FAQ](https://paypalaihackathon.devpost.com/details/faqs) says projects using several sponsor tools are considered for each corresponding sponsor prize. One project can receive at most one Grand Prize or one Honorable Mention, plus one Sponsor Prize. The [rules](https://paypalaihackathon.devpost.com/rules) govern eligibility and judging. **[ASTERION was submitted](https://devpost.com/software/asterion-061uwp) on 29 October 2026**, with **AG Grid, APIMatic and Render** selected. Devpost confirmed “Project submitted!”; the [submission record](evidence/devpost-submission.json) preserves receipt. Submission and tool selection do not establish final prize eligibility or an award.
 
 ## General awards
 
@@ -27,10 +27,10 @@ The public walkthrough uses simulated payments, deterministic agents and fixture
 | Bryntum | No integrated Bryntum component. | The [official page](https://paypalaihackathon.devpost.com/details/bryntum) describes its scheduling components. A meaningful integration and demonstration would be new work before claiming use. |
 | Channel3 | Planned extension; no verified external calls. | The [official page](https://paypalaihackathon.devpost.com/details/channel3) requires meaningful API/MCP use. An equipment-search feature would need actual results, provenance and a demonstrated product role; a mention alone does not qualify. |
 
-## Entry checklist
+## Submitted entry
 
-1. Review the [saved Devpost draft](https://devpost.com/software/asterion-061uwp). The name, tagline, 845-word story, three gallery images, actual technology tags and video/demo/source links are saved. Additional information and the participant's eligibility declaration are saved; this declaration does not replace the organizer's verification.
-2. Check that the selected sponsor tools remain AG Grid, APIMatic and Render, with the evidence and limitations above. Bryntum and Channel3 are not selected as used tools. A saved selection is not a submitted entry.
-3. Review and accept the final terms, press **Submit project** before the deadline and keep the submission confirmation. These final actions remain pending.
+1. The [submitted entry](https://devpost.com/software/asterion-061uwp) includes the name, tagline, 845-word story, three gallery images, original cover, actual technology tags and video/demo/source links. Additional information and the participant's eligibility declaration were completed; this declaration does not replace the organizer's verification.
+2. AG Grid, APIMatic and Render were selected with the evidence and limitations above. Bryntum and Channel3 were not selected as used tools.
+3. Final terms were accepted with the participant's explicit authorization. Devpost confirmed submission `1271485` on **29 October 2026 at 22:06:53 UTC**. The [record](evidence/devpost-submission.json) preserves the confirmation and the attached source ZIP's pre-receipt commit `df8bc0d`.
 
-The selected film is final for this delivery. Optional thumbnail and additional selectable caption-track changes were declined by the owner; the exact English SRT remains available and its captions are rendered into the film.
+The selected film is final for this delivery. Optional YouTube thumbnail and additional selectable caption-track changes were declined by the owner; the exact English SRT remains available and its captions are rendered into the film.

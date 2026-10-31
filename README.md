@@ -4,7 +4,7 @@
 
 [![Verify ASTERION](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/Enrickq/asterion-commerce/actions/workflows/ci.yml) · [MIT](LICENSE) · Node.js 24 · React · PayPal Sandbox
 
-**[Watch the 2:45 demo](https://www.youtube.com/watch?v=l_cS_-SIsdQ) · [Try it](https://asterion-mj13.onrender.com/) · [Reviewer guide](docs/JUDGES.en.md) · [Pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-27.pptx)**
+**[Watch the 2:45 demo](https://www.youtube.com/watch?v=l_cS_-SIsdQ) · [Try it](https://asterion-mj13.onrender.com/) · [Devpost entry](https://devpost.com/software/asterion-061uwp) · [Reviewer guide](docs/JUDGES.en.md) · [Pitch deck](docs/presentation/ASTERION-Pitch.en-2026-10-27.pptx)**
 
 Coordinating a guide, telescope and transport creates several booking decisions for one night under the stars. ASTERION gives experience organizers one customer-approved agreement: a bundle, a spending ceiling and conditions that determine whether payment may proceed. Its first mission is private stargazing in La Palma.
 
@@ -47,7 +47,7 @@ pnpm verify:receipt path/to/asterion-receipt.json
 
 The free Render service can take a cold start, and its storage is ephemeral. Start a fresh mission if an old session has expired.
 
-The **[2:45 launch film](https://www.youtube.com/watch?v=l_cS_-SIsdQ)** combines the working application, protocol animation and recorded Sandbox evidence. It is publicly playable and includes an AI disclosure. [Publication checks](docs/evidence/youtube-publication.json) · [Script and media provenance](docs/video/ASTERION-Launch-Production.en.md) · [Exact English captions](docs/video/ASTERION-Launch-Captions.en.srt). The exact caption file is available here; YouTube currently exposes an automatic English track. Final Devpost submission remains pending.
+The **[2:45 launch film](https://www.youtube.com/watch?v=l_cS_-SIsdQ)** combines the working application, protocol animation and recorded Sandbox evidence. It is publicly playable and includes an AI disclosure. [Publication checks](docs/evidence/youtube-publication.json) · [Script and media provenance](docs/video/ASTERION-Launch-Production.en.md) · [Exact English captions](docs/video/ASTERION-Launch-Captions.en.srt). The exact caption file is available here; YouTube exposes an automatic English track. The [Devpost entry](https://devpost.com/software/asterion-061uwp) was submitted on 29 October 2026; [submission confirmation](docs/evidence/devpost-submission.json).
 
 ## Run locally
 
@@ -138,4 +138,4 @@ Weather thresholds are illustrative policy parameters. A model forecast cannot e
 | [Devpost copy](docs/SUBMISSION.md), [prize case](docs/PRIZE-CASE.en.md) and [submission guide](docs/SUBMISSION-READINESS.en.md) | [Verification history](docs/VERIFICATION.es.md) and [changelog](CHANGELOG.md) |
 | [Delivery checklist](docs/DELIVERY.es.md) | [Optional account setup](docs/ACCOUNTS.es.md) |
 
-MIT licensed. Built for the PayPal AI Hackathon 2026. The demonstration is public and the [Devpost draft](https://devpost.com/software/asterion-061uwp) is prepared. Final review and submission remain pending.
+MIT licensed. Submitted to the PayPal AI Hackathon 2026 on 29 October. [Devpost entry](https://devpost.com/software/asterion-061uwp) · [Submission confirmation](docs/evidence/devpost-submission.json).

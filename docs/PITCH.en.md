@@ -266,9 +266,9 @@ Commercial operation needs verified authentication, operator authorization, dura
 
 The reusable component is the mandate and policy boundary. Other purchases need their own evidence and contractual conditions. Coordinated travel, events and B2B delivery milestones are expansion hypotheses, not existing customers or integrations.
 
-The hackathon requires meaningful use of PayPal and AI. Submission materials need English or an English translation. The delivery checklist records a cutoff of November 12, 2026 at 12:00 PST, or 20:00 Canary Islands time. The [public 2:45 demonstration](https://www.youtube.com/watch?v=l_cS_-SIsdQ) is linked throughout the package. Registration, personal eligibility, final entry fields and submission still require completion. This presentation does not submit the project or guarantee an award.
+The hackathon requires meaningful use of PayPal and AI. Submission materials need English or an English translation. The delivery checklist records a cutoff of November 12, 2026 at 12:00 PST, or 20:00 Canary Islands time. The [public 2:45 demonstration](https://www.youtube.com/watch?v=l_cS_-SIsdQ) is linked throughout the package. The participant confirmed the required declarations, and ASTERION was [submitted to the hackathon](https://devpost.com/software/asterion-061uwp) on October 29. The [submission confirmation](evidence/devpost-submission.json) records receipt; it does not establish a judging outcome or guarantee an award.
 
-Sources: [current submission draft](SUBMISSION.md), [architecture and field requirements](ARCHITECTURE.md), [official hackathon rules](https://paypalaihackathon.devpost.com/rules), [official event announcement](https://developer.paypal.com/community/blog/PayPal_AI_Hackathon/).
+Sources: [submission copy](SUBMISSION.md), [architecture and field requirements](ARCHITECTURE.md), [official hackathon rules](https://paypalaihackathon.devpost.com/rules), [official event announcement](https://developer.paypal.com/community/blog/PayPal_AI_Hackathon/).
 
 ## Presentation files
 

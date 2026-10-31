@@ -16,7 +16,7 @@ The production combines original animated typography, a rotating procedural glob
 - [YouTube title, description and chapters](YOUTUBE-LAUNCH.en.md): publication reference matched against the upload during the October 28 browser inspection.
 - [Voice choice and publication checks](VOICE-PUBLICATION.en.md): provenance, bounded rules review and YouTube disclosure settings.
 
-The source MP4, raw captures, narration stems, model files and production tools remain outside the public Git repository. The public YouTube URL is verified separately in the linked publication record. This document preserves the source film's provenance; it does not claim a final hackathon submission.
+The source MP4, raw captures, narration stems, model files and production tools remain outside the public Git repository. The public YouTube URL is verified separately in the linked publication record. This document preserves the source film's provenance. The separate [submission confirmation](../evidence/devpost-submission.json) records ASTERION's completed hackathon submission on October 29.
 
 ## Media provenance
 

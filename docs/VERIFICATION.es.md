@@ -1,12 +1,16 @@
 # Verificación de la entrega pública
 
+## Cierre de candidatura
+
+ASTERION quedó [presentada en Devpost](https://devpost.com/software/asterion-061uwp) el **29 de octubre de 2026**. El [justificante](evidence/devpost-submission.json) conserva la confirmación de la interfaz y la comprobación pública del 31 de octubre. Este cierre documental no reejecuta las pruebas históricas de PayPal o Gemini ni cambia la aplicación desplegada.
+
 ## Revisión del paquete del 27 de octubre de 2026
 
 Sobre el código del baseline `9a2ecff` volvieron a pasar **143/143 pruebas**, build, preflight y smoke. El smoke cubrió captura clara, anulación con nubes o datos obsoletos, Autopilot claro y nublado y recibos íntegros. La consulta de solo lectura al despliegue devolvió HTTP 200 en la interfaz y en `/api/status`, con `mode=demo` y `publicDemo=true`. No se ejecutaron nuevas transacciones ni solicitudes privadas a Gemini o PayPal. La revisión de credenciales buscó patrones precisos y coincidencias con valores locales sin publicarlos.
 
 El paquete actual añade el deck inglés del 27 de octubre y alinea su secuencia con el vídeo de 165 segundos. Las diez diapositivas y seis tablas nativas se conservan; solo cambia visualmente la diapositiva 6. Las notas 6, 8 y 10 corrigen tiempos y enlaces. La comparación de píxeles no encontró cambios en las otras nueve diapositivas. Esta verificación utiliza renders y estructura del archivo, sin afirmar una inspección en PowerPoint.
 
-El README, el manuscrito y la candidatura separan el recorrido público de 1.480 EUR de la prueba histórica privada de 1.650 EUR. La locución humana, la elección final del vídeo, su publicación y la entrega en Devpost siguen pendientes de la revisión del propietario.
+El README, el manuscrito y la candidatura separan el recorrido público de 1.480 EUR de la prueba histórica privada de 1.650 EUR. En esta revisión del 27 de octubre aún estaban pendientes la comparación de voz, la selección del vídeo y el envío. El propietario eligió después la edición neuronal y la candidatura quedó enviada el 29 de octubre, según el justificante enlazado arriba.
 
 Verificación pública actualizada el **26 de octubre de 2026**, hora de Canarias. Las pruebas privadas de PayPal y Gemini abarcan el 22 y el 23 de octubre; sus registros conservan las marcas de tiempo UTC y la revisión histórica.
 
@@ -38,7 +42,7 @@ El servidor, la orquestación autónoma y AG Grid funcionan en Render. Los preci
 
 El plan gratuito usa SQLite temporal. Un reinicio, reemplazo o suspensión por inactividad puede eliminar acuerdos y claves de sesión. La persistencia local probada no convierte ese alojamiento gratuito en almacenamiento durable. No se han contratado recursos de pago.
 
-Al registrar esta versión se preparó un montaje local de revisión de 2:50 con capturas de pasos reales, voz sintética y subtítulos. Posteriormente el propietario eligió y publicó la [edición de 2:45](https://www.youtube.com/watch?v=l_cS_-SIsdQ); su acceso y metadatos se recogen en el [registro de publicación](evidence/youtube-publication.json). El participante ya está registrado y el borrador Devpost está guardado; la revisión y el envío final siguen pendientes. Este documento acredita la versión pública del prototipo, no su elegibilidad final ni un resultado en el concurso.
+Al registrar esta versión se preparó un montaje local de revisión de 2:50 con capturas de pasos reales, voz sintética y subtítulos. Posteriormente el propietario eligió y publicó la [edición de 2:45](https://www.youtube.com/watch?v=l_cS_-SIsdQ); su acceso y metadatos se recogen en el [registro de publicación](evidence/youtube-publication.json). El registro del participante y el envío final en Devpost están completados. Este documento acredita la versión pública del prototipo y el cierre de entrega, sin anticipar la revisión de elegibilidad ni el resultado del concurso.
 
 ## Descarga de recibos desde el navegador
 
